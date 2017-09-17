@@ -1,0 +1,44 @@
+﻿@model DateTime
+<div class="col-sm-4">
+    <div class="form-group">
+        <label class="control-label label-required" for="textinput">Date</label>
+        <input type="text" name="Date" class="form-control input-md datefield datefieldRequired" />
+        @*@Html.TextBoxFor(m => m.Date, new { @class = "form-control input-md datefield datefieldRequired" })*@
+    </div>
+</div>
+<div class="col-sm-4">
+    <div class="form-group">
+        <label class="control-label label-required" for="textinput">Hour</label>
+        <select name="Hour" class="form-control hourfield  ">
+            @for (int i = 0; i < 24; i++)
+            {
+                if (i == Model.Hour)
+                {
+                    <option value="@i" selected="selected">@i.ToString("D2")</option>
+                }
+                else
+                {
+                    <option value="@i">@i.ToString("D2")</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+<div class="col-sm-4">
+    <div class="form-group">
+        <label class="control-label label-required" for="textinput">Minute</label>
+        <select name="Minute" class="form-control minutefield ">
+            @for (int i = 0; i < 60; i++)
+            {
+                if (i == Model.Minute)
+                {
+                    <option value="@i" selected="selected">@i.ToString("D2")</option>
+                }
+                else
+                {
+                    <option value="@i">@i.ToString("D2")</option>
+                }
+            }
+        </select>
+    </div>
+</div>

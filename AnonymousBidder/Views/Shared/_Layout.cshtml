@@ -1,0 +1,128 @@
+﻿@using AnonymousBidder.Common;
+@using System.Collections.Generic;
+@{
+    UserInfoModel user = (UserInfoModel)HttpContext.Current.Session["UserLoginKey"];
+        }
+    }
+    var companyName = user != null ? user.CompanyName : "";
+}
+@{
+    var culture = System.Globalization.CultureInfo.CurrentCulture.ToString();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - AnonymousBidder</title>
+    @Styles.Render("~/Style/css")
+    @Styles.Render("~/Content/kendo/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Common")
+    @Scripts.Render("~/bundles/kendo")
+
+    <script type="text/javascript">
+        //Show notification message with type
+        function showNotification(message, type) {
+            var notificationWidget = $("#notification").data("kendoNotification");
+            notificationWidget.getNotifications().parent().remove();
+
+            //type: "info", "success", "warning" or "error"
+            notificationWidget.show(message, type);
+        };
+
+        function onNotificationShow(e) {
+            if (e.sender.getNotifications().length == 1) {
+                debugger
+                var element = e.element.parent(),
+                    eWidth = element.width(),
+                    eHeight = element.height(),
+                    wWidth = $(window).width(),
+                    wHeight = $(window).height(),
+                    newTop, newLeft;
+
+                newLeft = Math.floor(wWidth / 2 - eWidth / 2);
+                newTop = Math.floor(wHeight / 2 - eHeight / 2);
+
+                e.element.parent().css({ top: newTop, left: newLeft });
+            }
+        }
+        //Root URL
+        window.rootUrl = '@Url.Content("~/")';
+    </script>
+</head>
+
+<body>
+
+    @RenderSection("topLevel", required: false)
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default dark-green-bg">
+
+            <div class="container-fluid">
+                <div id="kWindow"></div>
+                <div id="kWindow1"></div>
+                @(Html.Kendo().Notification()
+                    .Name("notification")
+                    .AutoHideAfter(3000)
+                    .Stacking(NotificationStackingSettings.Down)
+                    .Events(e => e.Show("onNotificationShow"))
+                    .Button(false)
+                )
+
+                <div>
+                    @*<ul class="header-icon-wrapper">
+                        <li class="header-icon">
+
+                            <h4 style="color:#BAD9F2; font-family:Bauhaus 93; font-weight:bold;">@companyName</h4>
+                        </li>
+                    </ul>*@
+                </div>
+                <div class="navbar-header white-text pull-right col-xs-1">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <img class="user-icon" src="~/Content/Images/Global/UserIcon.png" />
+                    </a>
+                   
+                    <ul class="dropdown-menu" aria-labelledby="dropdown-menu">
+                        <li><a href='@Url.Action("ChangePassword", "Account", new { area = "" })'>Change Password</a> </li>
+                        @if (HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"] != "")
+                        {
+                            <li><a href='@Url.Action("LogOff", "Account", new { area = "" })'>Log out</a></li>
+                        }
+                        else
+                        {
+                            <li><a href='@Url.Action("LogOff", "Account")'>Log out</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @if (ViewBag.IsGeneral != true)
+        {
+            @Html.Partial("_MenuBar")
+        }
+        <div class="content">
+            @RenderBody()
+        </div>
+
+        <div class="modal fade" role="dialog" id="upload-item" data-keyboard="false" data-backdrop="static">
+        </div>
+    </div>
+
+    <footer>
+        <div class="container-fluid col-xs-12">
+            <div class="pull-right">© @DateTime.Now.Year.ToString() AnonymousBidder - All Rights Reserved</div>
+        </div>
+    </footer>
+
+    @RenderSection("scripts", required: false)
+    <script>
+        //Set current current to kendo UI, it should be placed in global cshtml
+        kendo.culture("@culture");
+    </script>
+</body>
+</html>

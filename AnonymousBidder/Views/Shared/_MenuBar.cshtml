@@ -1,0 +1,148 @@
+﻿@using AnonymousBidder.Common
+
+@{
+    UserInfoModel user = null;
+    List<AnonymousBidderMenu> _Menu = null;
+    if (Session["UserLoginKey"] != null)
+    {
+        user = (UserInfoModel)Session["UserLoginKey"];
+        _Menu = (List<AnonymousBidderMenu>)ViewData["Menu"];
+        if (_Menu != null)
+        {
+            _Menu = _Menu.OrderBy(x => x.Sequence).ToList();
+        }
+
+    }
+}
+@if (user != null)
+{
+    <div class="container-fluid clearfix logo-region">
+    </div>
+    <div class="tabs-container container-fluid">
+        <!--Load Menu-->
+        <ul class="nav nav-tabs col-sm-12">
+            @{AnonymousBidderMenu parent = null;}
+            @if (_Menu != null)
+            {
+                foreach (var tab in _Menu)
+                {
+                    if (tab.SubMenus != null)
+                    {
+                        foreach (var subTab in tab.SubMenus)
+                        {
+                            if (HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() == @subTab.ControllerName)
+                            {
+                                parent = tab;
+                                break;
+                            }
+                        }
+                    }
+                    if (parent != null && parent.ControllerName == tab.ControllerName)
+                    {
+                        <li role="presentation" class="active">
+                            <div class="outer-wrapper">
+                                <div class="inner-wrapper">
+                                    <a href="/@tab.AreaName/@tab.ControllerName/@tab.ActionName">@tab.MenuName</a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        if (HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() == tab.ControllerName)
+                        {
+                            <li role="presentation" class="active">
+                                <div class="outer-wrapper">
+                                    <div class="inner-wrapper">
+                                        <a href="~/@tab.AreaName/@tab.ControllerName/@tab.ActionName">@tab.MenuName</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li role="presentation">
+                                <div class="outer-wrapper">
+                                    <div class="inner-wrapper">
+                                        @if (string.IsNullOrEmpty(tab.AreaName))
+                                        {
+                                            <a href="~/@Model.AreaName/@tab.ControllerName/@tab.ActionName">@tab.MenuName</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="~/@tab.AreaName/@tab.ControllerName/@tab.ActionName">@tab.MenuName</a>
+                                        }
+
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                    }
+
+            <!--Load Sub Menus-->
+
+                }
+            }
+        </ul>
+    </div>
+    if (parent != null)
+    {
+        foreach (var tab1 in _Menu)
+        {
+            if (tab1.ControllerName == parent.ControllerName)
+            {
+
+                <div class="subnav container-fluid" role="navigation">
+                    @if (tab1.SubMenus != null && tab1.SubMenus.Count() > 0)
+                    {
+
+                        <ul class="nav nav-pills">
+                            @foreach (var subtab in @tab1.SubMenus)
+                            {
+                                if (@HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString() == @subtab.ActionName && @HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() == @subtab.ControllerName)
+                                {
+                                    <li role="presentation" class="active">
+                                        @if (!string.IsNullOrEmpty(subtab.AreaName))
+                                        {
+                                            <a href="~/@subtab.AreaName/@subtab.ControllerName/@subtab.ActionName"><div>@subtab.MenuName</div> </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="~/@subtab.ControllerName/@subtab.ActionName"><div>@subtab.MenuName</div> </a>
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li role="presentation">
+                                        @if (!string.IsNullOrEmpty(subtab.AreaName))
+                                        {
+                                            <a href="~/@subtab.AreaName/@subtab.ControllerName/@subtab.ActionName"><div>@subtab.MenuName</div></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="~/@subtab.AreaName/@subtab.ControllerName/@subtab.ActionName"><div>@subtab.MenuName</div></a>
+                                        }
+
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+                </div>
+            }
+        }
+
+    }
+    <div class="actions-divider1"></div>
+
+}

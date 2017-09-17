@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder", "AnonymousBidder\AnonymousBidder.csproj", "{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder.Data", "AnonymousBidder.Data\AnonymousBidder.Data.csproj", "{23127CAD-0F2C-40E9-8182-FA92D72D9B87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder.Common", "AnonymousBidder.Common\AnonymousBidder.Common.csproj", "{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E644897D-8878-4378-8779-357A9F672C27}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{D0F660AD-E214-4370-B7AF-FFEE5C400ED1}"
+	ProjectSection(SolutionItems) = preProject
+		References\Kendo.Mvc.dll = References\Kendo.Mvc.dll
+		References\Microsoft.Threading.Tasks.dll = References\Microsoft.Threading.Tasks.dll
+		References\Microsoft.Threading.Tasks.Extensions.Desktop.dll = References\Microsoft.Threading.Tasks.Extensions.Desktop.dll
+		References\Microsoft.Threading.Tasks.Extensions.dll = References\Microsoft.Threading.Tasks.Extensions.dll
+		References\MvcCheckBoxList.dll = References\MvcCheckBoxList.dll
+		References\Newtonsoft.Json.dll = References\Newtonsoft.Json.dll
+		References\ScheduleWidget.dll = References\ScheduleWidget.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23127CAD-0F2C-40E9-8182-FA92D72D9B87} = {9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}
+		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638} = {9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEAC6D26-5B84-4790-8B1E-8D2E02AD7485}
+	EndGlobalSection
+EndGlobal

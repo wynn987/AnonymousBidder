@@ -1,0 +1,151 @@
+﻿/*
+*   Fonts
+*/
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);*/
+@import url(open-sans-font.css) *
+
+{
+    font-family: Arial, 'Open Sans', sans-serif;
+}
+
+@font-face {
+    font-family: 'SegoePro-Regular';
+    src: url('fonts/SegoePro-Regular.eot');
+    src: url('fonts/SegoePro-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/SegoePro-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SegoePro';
+    src: url('fonts/SegoePro.woff') format('woff'), url('fonts/SegoePro.ttf') format('truetype'), url('fonts/SegoePro.svg#SegoePro') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.signin-logo {
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+    .signin-logo img {
+        width: 300px;
+        margin: auto;
+    }
+
+/*
+ *  Log in Page
+*/
+.signin-page, .signin-page-partner {
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 450px;
+}
+
+    .signin-page .box {
+        background: #F2F2F2;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px rgba(0,0,0,.5);
+        padding: 10px 0 20px;
+    }
+
+    .signin-page .form-section {
+        max-width: 330px;
+        margin: 0 auto;
+    }
+
+    .signin-page h4 {
+        padding: 0 20px;
+    }
+
+/*
+*   Secured Site 
+*/
+.secure-region {
+    padding-top: 5px;
+    padding-right: 20px;
+}
+
+    .secure-region img {
+        margin-left: 10px;
+        width: 20px;
+        height: 20px;
+        vertical-align: text-bottom;
+    }
+
+/*
+*   Green Divider Line 
+*/
+.signin-page hr {
+    margin-top: 0;
+    border: 2px solid #0E5D63;
+}
+
+/*
+*   Log in form 
+*/
+.signin-page form {
+    margin: 0 20px;
+}
+
+.signin-page label {
+    font-weight: normal;
+}
+
+.btn-signin {
+    background: #0E5D63;
+    color: #FFFFFF;
+    width: 100%;
+}
+
+    .btn-signin:hover, .btn-signin:focus, .btn-signin.focus {
+        color: #FFFFFF !important;
+    }
+
+.remember-me label {
+    padding-left: 5px;
+}
+
+.forgot-pass a {
+    color: #0E5D63;
+}
+
+.paddingleft {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+/* --------------------------- */
+.copy-right {
+    width: 42%;
+    font-size: 11px;
+    margin-top: 32px;
+    text-align: center;
+}
+
+#box-partner {
+    position: relative;
+    width: 58%;
+    text-align: center;
+    font-size: 11px;
+    font-family: 'SegoePro', sans-serif;
+    background: #F2F2F2;
+    float: left;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 12px 10px;
+    color: rgba(0,0,0, .8);
+    text-shadow: 0 1px 0 #fff;
+    line-height: 1.5;
+    /*margin: 20px auto;*/
+}
+
+.field-validation-error {
+    color: #ff0000;
+}
+
+.input-validation-error {
+    background-color: #ffeeee;
+    border: 1px solid #ff0000;
+}

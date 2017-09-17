@@ -1,0 +1,35 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Error";
+}
+
+<hgroup class="title">
+    <h1 class="error" style="text-align:center">Error!</h1>
+    <h2 class="error" style="text-align:center">An error occurred while processing your request.</h2>      
+    @{
+        if (Request.IsLocal)
+        {
+            if (@Model != null && @Model.Exception != null)
+            {
+                <h3 style="text-align:center">
+                    Exception was : @Model.Exception.Message
+                </h3>
+                <h4 style="text-align:center">
+                    Stack Trace: @Model.Exception.StackTrace
+                </h4>
+            }
+            else
+            {
+                <h3>
+                    Exception was null
+                </h3>
+            }
+        }
+        else
+        {
+            <h4 style="text-align:center">
+                The error has been reported to Administrator
+            </h4>
+        }
+}
+</hgroup>

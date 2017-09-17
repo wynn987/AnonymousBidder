@@ -1,0 +1,73 @@
+﻿@model AnonymousBidder.Common.LoginViewModel
+@{
+    Layout = null;
+    string message = ViewBag.ErrorMessage;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Log in to AnonymousBidder</title>
+    <link rel="shortcut icon" href="~/Content/Images/Others/AnonymousBidderFavicon.ico" />
+    @Styles.Render("~/Style/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+</head>
+<body>
+
+@*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
+    <form action="/Account/Login/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
+        @Html.ValidationSummary(true)
+        <div class="container signin-page">
+            <div class="signin-logo">
+            </div>
+            <div class="box">
+
+                <div class="form-section clearfix">
+                    <h4 class="pull-left">Log in to AnonymousBidder</h4>
+                    <div class="pull-right secure-region">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-section clearfix">
+
+                    <div class="form-group paddingleft">
+                        <label>Email Address</label>
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-md email-field" })
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
+
+                    </div>
+                    <div class="form-group paddingleft">
+                        <label>Password</label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control input-md password-field" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                    <div class="form-group paddingleft">
+                        <span class="field-validation-error">@message</span>
+
+                        <input type="submit" class="btn btn-signin" value="Log in" />
+                    </div>
+                    <div class="form-group paddingleft">
+                        <div class="pull-left remember-me">
+                            <input type="checkbox" id="RememberMe" name="RememberMe" value="true" @Html.Raw(Model != null && Model.RememberMe == true ? "checked" : "")><label>Remember me</label>
+                        </div>
+
+                        <div class="pull-right forgot-pass">
+                            @Html.ActionLink("Forgot Password?", "ForgotPassword")
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container signin-page">
+                <div class="pull-right">© @DateTime.Now.Year.ToString() AnonymousBidder - All Rights Reserved</div>
+            </div>
+        </footer>
+    </form>
+</body>
+</html>

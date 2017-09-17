@@ -1,0 +1,35 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Page Not Found";
+}
+<style>
+    hgroup.title h1, hgroup.title h2 {
+    display: inline;
+}
+.error {
+    color: #e80c4d;
+}
+h1{font-weight: bold;}
+h2 {
+    font-size: 1.75em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+</style>
+<hgroup class="title">
+    @if (@Model != null)
+    {
+        
+        <h2 class="error">@Model.Exception</h2>
+    }
+    else
+    {
+        <h2>
+            Page does not exist.
+        </h2>
+    }
+
+</hgroup>
