@@ -19,6 +19,10 @@ namespace AnonymousBidder.Data.Entity
         public DateTime StartDate { get; set; }
         [Required]
         public DateTime EndDate { get; set; }
+        [Required]
+        public bool SellerSent { get; set; }
+        [Required]
+        public bool BuyerReceived { get; set; }
 
         [ForeignKey("Bid")]
         public Guid? Auction_BidGUID { get; set; }

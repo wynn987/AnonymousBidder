@@ -32,13 +32,18 @@ namespace AnonymousBidder.Migrations
                     UserRoleGUID = Guid.NewGuid(),
                     UserRoleName = "ADMIN",
                 };
+                UserRole seller = new UserRole
+                {
+                    UserRoleGUID = Guid.NewGuid(),
+                    UserRoleName = "SELLER",
+                };
                 UserRole bidder = new UserRole
                 {
                     UserRoleGUID = Guid.NewGuid(),
                     UserRoleName = "BIDDER",
                 };
                 context.Role.AddOrUpdate(
-                    admin, bidder
+                    admin, bidder, seller
                 );
 
 
@@ -50,6 +55,8 @@ namespace AnonymousBidder.Migrations
                     StartDate = DateTime.Now,
                     ItemName = "Rare Pepe",
                     StartingBid = (decimal) 10000.00,
+                    BuyerReceived = false,
+                    SellerSent = false
                 };
                 context.Auction.AddOrUpdate(
                     auction
@@ -77,6 +84,15 @@ namespace AnonymousBidder.Migrations
                     ABUserGUID = Guid.NewGuid(),
                     ABUser_AuctionGUID = auction.AuctionGUID
                 };
+                ABUser sellerUser = new ABUser
+                {
+                    Alias = "NotShadyGuy",
+                    Email = "wynn1920@gmail.com",
+                    Password = Utilities.CreatePasswordHash("notshadypassword", "wynn1920@gmail.com"),
+                    ABUser_UserRoleGUID = seller.UserRoleGUID,
+                    ABUserGUID = Guid.NewGuid(),
+                    ABUser_AuctionGUID = auction.AuctionGUID
+                };
                 ABUser adminUser = new ABUser
                 {
                     Alias = "NotShadyAdmin",
@@ -86,7 +102,7 @@ namespace AnonymousBidder.Migrations
                     ABUserGUID = Guid.NewGuid()
                 };
                 context.User.AddOrUpdate(
-                    adminUser, bidUser);
+                    adminUser, sellerUser, bidUser);
 
                 //----------- BID --------------
                 Bid bid = new Bid

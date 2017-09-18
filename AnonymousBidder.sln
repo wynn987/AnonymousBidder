@@ -27,8 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\ScheduleWidget.dll = References\ScheduleWidget.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder.Tests", "AnonymousBidder.Tests\AnonymousBidder.Tests.csproj", "{EE772225-4CE1-488F-A641-186C06560C24}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +41,6 @@ Global
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE772225-4CE1-488F-A641-186C06560C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE772225-4CE1-488F-A641-186C06560C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE772225-4CE1-488F-A641-186C06560C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE772225-4CE1-488F-A641-186C06560C24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
