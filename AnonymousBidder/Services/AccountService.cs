@@ -11,12 +11,12 @@ namespace AnonymousBidder.Services
     public class AccountService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserRepository _userRepository;
+        private readonly ABUserRepository _userRepository;
 
         public AccountService()
         {
             _unitOfWork = new UnitOfWork();
-            _userRepository = new UserRepository(_unitOfWork);
+            _userRepository = new ABUserRepository(_unitOfWork);
         }
 
         #region Login

@@ -4,6 +4,7 @@ namespace AnonymousBidder.Controllers
 {
     public class ErrorController : Controller
     {
+        [AllowAnonymous]
         // The 404 action handler
         public ActionResult PageNotFound()
         {
@@ -11,6 +12,7 @@ namespace AnonymousBidder.Controllers
             Response.TrySkipIisCustomErrors = true;
             return View();
         }
+        [AllowAnonymous]
         public ActionResult Error()
         {
             //Error page

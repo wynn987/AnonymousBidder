@@ -12,7 +12,7 @@ using System.Web.Routing;
 
 namespace AnonymousBidder.Common
 {
-    public class SessionExpireFilterAttribute : ActionFilterAttribute
+    public class BidderFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -26,7 +26,10 @@ namespace AnonymousBidder.Common
             else
             {
                 UserInfoModel userModel = (UserInfoModel)HttpContext.Current.Session["UserLoginKey"];
-               
+               if (userModel.isAdmin)
+               {
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { area = "", action = "Error", controller = "Error", returnUrl = ctx.Request.Url.AbsolutePath }));
+                }
             }
             base.OnActionExecuting(filterContext);
         }

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace AnonymousBidder.Data.Repository
 {
-    public class UserRepository : RepositoryBase<ABUser>
+    public class UserRoleRepository : RepositoryBase<UserRole>
     {
-        public UserRepository(IUnitOfWork unit)
+        public UserRoleRepository(IUnitOfWork unit)
             : base(unit)
         { }
     }
