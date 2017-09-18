@@ -34,7 +34,7 @@ namespace AnonymousBidder.Controllers
         public JsonResult EmailExists(string emailAddress)
         {
             bool isUserExisted = false;
-            User user = AccountService.GetUserByUserName(emailAddress);
+            ABUser user = AccountService.GetUserByUserName(emailAddress);
             isUserExisted = user != null;
 
             return Json(isUserExisted, JsonRequestBehavior.AllowGet);
@@ -103,14 +103,14 @@ namespace AnonymousBidder.Controllers
         {
             if (string.IsNullOrEmpty(model.HashedPassword))
                 model.HashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
-            User user = AccountService.GetUserByUserNameAndPassword(model.EmailAddress, model.HashedPassword);
+            ABUser user = AccountService.GetUserByUserNameAndPassword(model.EmailAddress, model.HashedPassword);
 
             if (user != null) 
             {
                 UserInfoModel userInfo = new UserInfoModel
                 {
                     Email = user.Email,
-                    isAdmin = (user.Role != null && user.Role.RoleName == "ADMIN") ? true : false
+                    isAdmin = (user.Role != null && user.Role.UserRoleName == "ADMIN") ? true : false
                 };
 
                 Session["User"] = userInfo;
@@ -145,7 +145,7 @@ namespace AnonymousBidder.Controllers
                     return Redirect(returnUrl);
                 }
 
-                return RedirectToAction("Index", "Auction");
+                return RedirectToAction("Item", "Auction");
             }
             return View();
         }
@@ -178,7 +178,7 @@ namespace AnonymousBidder.Controllers
 
             if (ModelState.IsValid)
             {
-                User user = AccountService.GetUserByUserName(model.Email);
+                ABUser user = AccountService.GetUserByUserName(model.Email);
 
                 if (user == null)
                 {
@@ -193,7 +193,7 @@ namespace AnonymousBidder.Controllers
                 string code = Utilities.CreateRandomCode();
                 user.Token = code;
                 AccountService.UpdateUser(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { user.UserGUID, code = code }, protocol: Request.Url.Scheme);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { user.ABUserGUID, code = code }, protocol: Request.Url.Scheme);
                 string body = @"<p>Hi " + user.Alias + @",</p>
 
                                 <p>We received a request to reset your password for your AnonymousBidder account " + user.Email + @".</p>
@@ -293,7 +293,7 @@ namespace AnonymousBidder.Controllers
 
             if (isValidOldPassword)
             {
-                User ca_user = AccountService.GetUserByUserNameAndPassword(user.Email, hashedPassword);
+                ABUser ca_user = AccountService.GetUserByUserNameAndPassword(user.Email, hashedPassword);
 
                 hashedPassword = Utilities.CreatePasswordHash(model.Password, user.Email);
                 ca_user.Password = hashedPassword;

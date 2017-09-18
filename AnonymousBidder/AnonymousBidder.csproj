@@ -80,6 +80,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -147,6 +148,21 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuctionController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Data\Entity\Auction.cs" />
+    <Compile Include="Data\Entity\BaseEntity.cs" />
+    <Compile Include="Data\Entity\Bid.cs" />
+    <Compile Include="Data\Entity\FilePath.cs" />
+    <Compile Include="Data\Entity\Role.cs" />
+    <Compile Include="Data\Entity\ABUser.cs" />
+    <Compile Include="Data\Infrastructure\Disposable.cs" />
+    <Compile Include="Data\Infrastructure\IUnitOfWork.cs" />
+    <Compile Include="Data\Infrastructure\RepositoryBase.cs" />
+    <Compile Include="Data\Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Data\Repository\AuctionRepository.cs" />
+    <Compile Include="Data\Repository\BidRepository.cs" />
+    <Compile Include="Data\Repository\FilePathRepository.cs" />
+    <Compile Include="Data\Repository\RoleRepository.cs" />
+    <Compile Include="Data\Repository\UserRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -407,11 +423,12 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\Auction\Item.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Auction\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -423,10 +440,6 @@
     <ProjectReference Include="..\AnonymousBidder.Common\AnonymousBidder.Common.csproj">
       <Project>{9f4be9de-2f1d-4b97-8cb2-bbc8e22aa638}</Project>
       <Name>AnonymousBidder.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AnonymousBidder.Data\AnonymousBidder.Data.csproj">
-      <Project>{23127cad-0f2c-40e9-8182-fa92d72d9b87}</Project>
-      <Name>AnonymousBidder.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

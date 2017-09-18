@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder", "Anonymou
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder.Data", "AnonymousBidder.Data\AnonymousBidder.Data.csproj", "{23127CAD-0F2C-40E9-8182-FA92D72D9B87}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnonymousBidder.Common", "AnonymousBidder.Common\AnonymousBidder.Common.csproj", "{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E644897D-8878-4378-8779-357A9F672C27}"
@@ -39,10 +37,6 @@ Global
 		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44C0F6FF-62C0-4EE3-BBE5-0F1C985AEF14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23127CAD-0F2C-40E9-8182-FA92D72D9B87}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,7 +46,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{23127CAD-0F2C-40E9-8182-FA92D72D9B87} = {9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}
 		{9F4BE9DE-2F1D-4B97-8CB2-BBC8E22AA638} = {9B984B64-DEFF-47FA-B8C9-3BD00BA8727A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

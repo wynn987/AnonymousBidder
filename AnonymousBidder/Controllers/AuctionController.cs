@@ -9,7 +9,7 @@ namespace AnonymousBidder.Controllers
     public class AuctionController : Controller
     {
         // GET: Auction
-        public ActionResult Index()
+        public ActionResult Item()
         {
             return View();
         }

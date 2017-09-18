@@ -7,15 +7,18 @@ using System.Web;
 
 namespace AnonymousBidder.Data.Entity
 {
-    public class FilePath : BaseEntity
+    public class UserRole : BaseEntity
     {
         [Key, Required, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid FilePathGUID { get; set; }
+        public Guid UserRoleGUID { get; set; }
         [Required]
-        public string FilePathName { get; set; }
-        [Required]
-        public Guid FilePath_AuctionGUID { get; set; }
-        [ForeignKey("FilePath_AuctionGUID")]
-        public virtual Auction Auction { get; set; }
+        public string UserRoleName { get; set; }
+
+        public virtual ICollection<ABUser> ABUsers { get; set; }
+
+        public UserRole()
+        {
+            ABUsers = new List<ABUser>();
+        }
     }
 }

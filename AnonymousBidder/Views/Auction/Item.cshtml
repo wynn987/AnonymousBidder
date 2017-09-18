@@ -1,0 +1,66 @@
+﻿@model AnonymousBidder.Data.Entity.Auction
+
+@{
+    ViewBag.Title = "Auction";
+}
+
+<h2>View</h2>
+
+<div>
+    <h4>Auction</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Bid.Bid_AuctionGUID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bid.Bid_AuctionGUID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ItemName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartingBid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartingBid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Auction_BidGUID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Auction_BidGUID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AuctionGUID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

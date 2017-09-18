@@ -58,13 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnonymousBidderDataContext.cs" />
     <Compile Include="Entity\Auction.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\Bid.cs" />
     <Compile Include="Entity\FilePath.cs" />
-    <Compile Include="Entity\Role.cs" />
-    <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\UserRole.cs" />
+    <Compile Include="Entity\ABUser.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />

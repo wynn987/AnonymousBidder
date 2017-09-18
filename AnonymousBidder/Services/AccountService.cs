@@ -33,12 +33,12 @@ namespace AnonymousBidder.Services
             return user != null;
         }
 
-        public User GetUserByUserName(string username)
+        public ABUser GetUserByUserName(string username)
         {
             return _userRepository.FindBy(x => x.Email == username).FirstOrDefault();
         }
 
-        public User GetUserByUserNameAndPassword(string username, string hashedPassword)
+        public ABUser GetUserByUserNameAndPassword(string username, string hashedPassword)
         {
             var user = _userRepository.FindBy(x => x.Email == username && x.Password == hashedPassword).FirstOrDefault();
             
@@ -47,7 +47,7 @@ namespace AnonymousBidder.Services
         #endregion
         
         #region User Service
-        public bool UpdateUser(User user)
+        public bool UpdateUser(ABUser user)
         {
             try
             {

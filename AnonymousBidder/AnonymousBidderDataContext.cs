@@ -10,6 +10,7 @@ namespace AnonymousBidder.Data
     using System.Reflection;
     using System.Data.Entity.ModelConfiguration;
     using AnonymousBidder.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public partial class AnonymousBidderDataContext : DbContext
     {
@@ -23,13 +24,14 @@ namespace AnonymousBidder.Data
         public virtual DbSet<Auction> Auction { get; set; }
         public virtual DbSet<Bid> Bid { get; set; }
         public virtual DbSet<FilePath> FilePath { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserRole> Role { get; set; }
+        public virtual DbSet<ABUser> User { get; set; }
         #endregion Entities
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             var typesToRegister = from t in Assembly.GetExecutingAssembly().GetTypes()
                                   where !string.IsNullOrEmpty(t.Namespace) &&
                                         t.BaseType != null
