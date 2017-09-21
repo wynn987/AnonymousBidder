@@ -3,9 +3,6 @@
 @{
     UserInfoModel user = (UserInfoModel)HttpContext.Current.Session["UserLoginKey"];
         }
-    }
-    var companyName = user != null ? user.CompanyName : "";
-}
 @{
     var culture = System.Globalization.CultureInfo.CurrentCulture.ToString();
 }
@@ -103,9 +100,9 @@
         </nav>
         @if (ViewBag.IsGeneral != true)
         {
-            @Html.Partial("_MenuBar")
+            //@Html.Partial("_MenuBar")
         }
-        <div class="content">
+        <div class="container body-content">
             @RenderBody()
         </div>
 

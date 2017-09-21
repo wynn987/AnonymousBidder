@@ -152,7 +152,7 @@
     <Compile Include="Data\Entity\BaseEntity.cs" />
     <Compile Include="Data\Entity\Bid.cs" />
     <Compile Include="Data\Entity\FilePath.cs" />
-    <Compile Include="Data\Entity\Role.cs" />
+    <Compile Include="Data\Entity\UserRole.cs" />
     <Compile Include="Data\Entity\ABUser.cs" />
     <Compile Include="Data\Infrastructure\Disposable.cs" />
     <Compile Include="Data\Infrastructure\IUnitOfWork.cs" />
@@ -367,6 +367,7 @@
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\Views\Auction\Create\AuctionCreate.js" />
     <Content Include="Views\Shared\_RenderConfirmDelete.Modal.cshtml" />
     <Content Include="Content\CSS\kendo\fonts\glyphs\KendoUIGlyphs.eot" />
     <Content Include="Content\CSS\kendo\fonts\glyphs\KendoUIGlyphs.ttf" />

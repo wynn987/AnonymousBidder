@@ -1,5 +1,6 @@
 ﻿using AnonymousBidder.Common;
 using AnonymousBidder.Services;
+using AnonymousBidder.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,11 @@ namespace AnonymousBidder.Controllers
 {
     public class AuctionController : Controller
     {
-        AuctionService _auctionService;
+        private UserInfoModel UserInfoModel
+        {
+            get { return (UserInfoModel)System.Web.HttpContext.Current.Session["UserLoginKey"]; }
+        }
+        private readonly AuctionService _auctionService;
         public AuctionController()
         {
             _auctionService = new AuctionService();
@@ -24,7 +29,7 @@ namespace AnonymousBidder.Controllers
         [AdminFilter]
         public ActionResult Create()
         {
-            return View();
+            return View(new AuctionCreateViewModel());
         }
     }
 }

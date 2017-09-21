@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnonymousBidder.Common
 {
-    class AnonymousBidderMenu
+    public class AnonymousBidderMenu
     {
         public AnonymousBidderMenu()
         {

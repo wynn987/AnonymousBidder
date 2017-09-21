@@ -110,7 +110,7 @@ namespace AnonymousBidder.Controllers
                 UserInfoModel userInfo = new UserInfoModel
                 {
                     Email = user.Email,
-                    isAdmin = (user.Role != null && user.Role.UserRoleName == "ADMIN") ? true : false
+                    Role = user.Role.UserRoleName
                 };
 
                 Session["User"] = userInfo;
@@ -145,7 +145,10 @@ namespace AnonymousBidder.Controllers
                     return Redirect(returnUrl);
                 }
 
-                return RedirectToAction("Item", "Auction");
+                if (userInfo.Role == "ADMIN")
+                {
+                    return RedirectToAction("Create", "Auction");
+                }
             }
             return View();
         }

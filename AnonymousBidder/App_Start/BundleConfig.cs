@@ -63,7 +63,9 @@ namespace AnonymousBidder
 
             //Please reference to this link for styling: http://docs.telerik.com/kendo-ui/styles-and-layout/appearance-styling#common-css-files
             bundles.Add(new StyleBundle("~/Content/kendo/css").Include(
-               "~/Content/CSS/kendo/kendo.common-material.min.css"
+               "~/Content/CSS/kendo/kendo.common-material.min.css",
+               "~/Content/CSS/kendo/kendo.default.min.css",
+               "~/Content/CSS/kendo/kendo.default.mobile.min.css"
                ));
 
             BundleTable.EnableOptimizations = false;

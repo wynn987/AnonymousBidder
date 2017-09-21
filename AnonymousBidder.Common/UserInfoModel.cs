@@ -6,6 +6,6 @@ namespace AnonymousBidder.Common
     public class UserInfoModel
     {
         public string Email { get; set; }
-        public bool isAdmin { get; set; }
+        public string Role { get; set; }
     }
 }
