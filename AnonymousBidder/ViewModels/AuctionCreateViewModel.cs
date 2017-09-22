@@ -9,7 +9,7 @@ namespace AnonymousBidder.ViewModels
     public class AuctionCreateViewModel
     {
         public AuctionModel Auction { get; set; }
-        public FilePathModel FilePath { get; set; }
+        public IEnumerable<HttpPostedFileBase> Files { get; set; }
         public string CurrentDateStr { get; set; }
     }
 }

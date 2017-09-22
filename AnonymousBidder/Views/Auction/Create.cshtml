@@ -16,12 +16,20 @@
             <h4>Auction</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Auction.ItemName, htmlAttributes: new { @class = "required control-label col-md-2" })
-                    <div class="col-sm-6">
-                        <input type="text" id="Auction_ItemName" name="Auction_ItemName" class="form-control text-box single-line" placeholder="Item Name" required validationMessage="Enter Item Name" style="width: 220px;" />
-                    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Auction.ItemName, htmlAttributes: new { @class = "required control-label col-md-2" })
+                <div class="col-sm-6">
+                    <input type="text" id="Auction_ItemName" name="Auction_ItemName" class="form-control text-box single-line" placeholder="Item Name" required validationMessage="Enter Item Name" style="width: 220px;" />
                 </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.FilePath.FilePathName, htmlAttributes: new { @class = "required control-label col-md-2" })
+                <div class="col-sm-6">
+                    <input type="file" id="files" name="files" class="form-control text-box single-line" style="width: 220px;" />
+                    <div class="demo-hint">You can only upload <strong>GIF</strong>, <strong>JPG</strong>, <strong>PNG</strong> files.</div>
+                    <div class="demo-hint">Maximum allowed file size is <strong>4MB</strong>.</div>
+                </div>
+            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Auction.StartingBid, htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">

@@ -10,6 +10,13 @@
         timeFormat: 'HH:mm'
     });
 
+    $("#Auction_ItemName").kendoUpload({
+        validation: {
+            allowedExtensions: [".gif", ".jpg", ".png"],
+            maxFileSize: 4194304
+        }
+    });
+
     $("#Auction_StartingBid").kendoNumericTextBox();
 
     var validator = $("#AuctionCreateForm").kendoValidator({
@@ -26,7 +33,7 @@
                 if (input.is("[data-currentdate-field]") && input.val() != "") {
                     var date = kendo.parseDate(input.val());
 
-                    return date.getDate >= new Date().getDate();
+                    return date.getDate() >= new Date().getDate();
                 }
 
                 return true;
