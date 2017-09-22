@@ -21,16 +21,37 @@ namespace AnonymousBidder.Controllers
         {
             _auctionService = new AuctionService();
         }
+
+        //TODO: Complete Item Function
+        /// <summary>
+        /// Controller function for bidders to bid
+        /// </summary>
+        /// <returns>Auction Item View</returns>
         [BidderFilter]
-        // GET: Auction
         public ActionResult Item()
         {
             return View();
         }
+        //TODO: Test
+        /// <summary>
+        /// Controller function for admins to create auction
+        /// </summary>
+        /// <returns>Auction Item View</returns>
         [AdminFilter]
         public ActionResult Create()
         {
             return View(new AuctionCreateViewModel());
+        }
+        //TODO: Complete Save Function
+        /// <summary>
+        /// Controller function for system to save admin's new auction
+        /// </summary>
+        /// <returns>Auction Item View</returns>
+        [HttpPost]
+        public ActionResult Save(AuctionCreateViewModel vm)
+        {
+            ServiceResult result = _auctionService.AddAuction(vm);
+            return RedirectToAction("Create");
         }
     }
 }

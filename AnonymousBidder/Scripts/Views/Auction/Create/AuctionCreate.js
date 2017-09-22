@@ -10,7 +10,7 @@
         timeFormat: 'HH:mm'
     });
 
-    $("#Auction_ItemName").kendoUpload({
+    $("#files").kendoUpload({
         validation: {
             allowedExtensions: [".gif", ".jpg", ".png"],
             maxFileSize: 4194304
@@ -58,11 +58,7 @@
 
     $("form").submit(function (event) {
         event.preventDefault();
-        if (validator.validate()) {
-            status.text("Hooray! Your tickets has been booked!")
-                .removeClass("invalid")
-                .addClass("valid");
-        } else {
+        if (!validator.validate()) {
             status.text("Oops! There is invalid data in the form.")
                 .removeClass("valid")
                 .addClass("invalid");

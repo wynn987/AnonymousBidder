@@ -128,6 +128,7 @@
     <Compile Include="RandomPassword.cs" />
     <Compile Include="Sercurity.cs" />
     <Compile Include="AdminFilterAttribute.cs" />
+    <Compile Include="ServiceResult.cs" />
     <Compile Include="SqlConnectionHelper.cs" />
     <Compile Include="UserInfoModel.cs" />
     <Compile Include="Utilities.cs" />
