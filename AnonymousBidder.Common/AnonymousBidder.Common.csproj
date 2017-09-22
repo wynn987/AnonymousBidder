@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountModels.cs" />
+    <Compile Include="SellerFilterAttribute.cs" />
     <Compile Include="BidderFilterAttribute.cs" />
     <Compile Include="AnonymousBidderMenu.cs" />
     <Compile Include="BaseModel.cs" />

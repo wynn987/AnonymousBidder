@@ -33,11 +33,11 @@ namespace AnonymousBidder.Services
         internal ServiceResult AddAuction(AuctionCreateViewModel vm)
         {
             //Validate Data
-            bool validAuction = ValidateAuction(vm.Auction);
+            ServiceResult validAuction = ValidateAuction(vm.Auction);
             //Save Auction
-            bool validFilePath = ValidateFilePath(vm.Files);
+            ServiceResult validFilePath = ValidateFilePath(vm.Files);
             //Save File
-            if (validAuction && validFilePath)
+            if (validAuction.Success && validFilePath.Success)
             {
                 bool addAuctionSuccess = SaveAuction(vm.Auction);
                 bool addFileSuccess = SaveFile(vm.Files);
@@ -93,9 +93,21 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="files"></param>
         /// <returns>return true if success, false if fail</returns>
-        private bool ValidateFilePath(IEnumerable<HttpPostedFileBase> files)
+        private ServiceResult ValidateFilePath(IEnumerable<HttpPostedFileBase> files)
         {
-            throw new NotImplementedException();
+            ServiceResult results = new ServiceResult
+            {
+                ErrorMessage = string.Empty
+            };
+
+            if (files.Count() > 1)
+            {
+                results.ErrorMessage = "Select one file only\n";
+            }
+            if ()
+
+            results.Success = results.ErrorMessage == string.Empty ? true : false;
+            return results;
         }
 
         //TODO: Complete function
@@ -104,9 +116,39 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="files"></param>
         /// <returns>return true if success, false if fail</returns>
-        private bool ValidateAuction(AuctionModel auction)
+        private ServiceResult ValidateAuction(AuctionModel auction)
         {
-            throw new NotImplementedException();
+            ServiceResult results = new ServiceResult
+            {
+                ErrorMessage = string.Empty
+            };
+
+            if (auction.ItemName == string.Empty || auction.ItemName == null)
+            {
+                results.ErrorMessage += "Item name cannot be empty\n";
+            }
+            if (auction.StartDate == null)
+            {
+                results.ErrorMessage += "Start date cannot be empty\n";
+            }
+            if (auction.EndDate == null)
+            {
+                results.ErrorMessage += "End date cannot be empty\n";
+            }
+            if (auction.StartingBid < 0 || auction.StartingBid >= 9999999999)
+            {
+                results.ErrorMessage += "Starting bid must be within 1 to 9999999999\n";
+            }
+            if (auction.StartDate.Date < DateTime.Now.Date)
+            {
+                results.ErrorMessage += "Start date must be after today\n";
+            }
+            if (auction.StartDate > auction.EndDate)
+            {
+                results.ErrorMessage += "End date must be after start date";
+            }
+            results.Success = results.ErrorMessage == string.Empty ? true : false;
+            return results;
         }
     }
 }
