@@ -48,6 +48,7 @@ namespace AnonymousBidder.Controllers
         /// </summary>
         /// <returns>Auction Item View</returns>
         [HttpPost]
+        [AdminFilter]
         public ActionResult Save(AuctionCreateViewModel vm)
         {
             ServiceResult result = _auctionService.AddAuction(vm);

@@ -8,6 +8,8 @@ using AnonymousBidder.Common;
 using AnonymousBidder.Data.Repository;
 using AnonymousBidder.Data.Infrastructure;
 using AnonymousBidder.Data;
+using System.IO;
+using AnonymousBidder.Data.Entity;
 
 namespace AnonymousBidder.Services
 {
@@ -23,8 +25,8 @@ namespace AnonymousBidder.Services
             _filePathRepository = new FilePathRepository(_unitOfWork);
             _auctionRepository = new AuctionRepository(_unitOfWork);
         }
-
-        //TODO: Complete Function
+        
+        //TODO: Create Seller
         /// <summary>
         /// Point of access from controller's Save function
         /// </summary>
@@ -39,22 +41,53 @@ namespace AnonymousBidder.Services
             //Save File
             if (validAuction.Success && validFilePath.Success)
             {
-                bool addAuctionSuccess = SaveAuction(vm.Auction);
-                bool addFileSuccess = SaveFile(vm.Files);
+                Auction addAuctionSuccess = SaveAuction(vm.Auction);
+                bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
                 bool commitSuccess = Commit();
+                if (commitSuccess)
+                {
+                    return new ServiceResult()
+                    {
+                        Success = true
+                    };
+                }
             }
-            throw new NotImplementedException();
+            return new ServiceResult()
+            {
+                ErrorMessage = validAuction.ErrorMessage + validFilePath.ErrorMessage,
+                Success = false
+            };
         }
-
-        //TODO: Complete Function
+        
         /// <summary>
         /// Save image file
         /// </summary>
         /// <param name="files"></param>
         /// <returns>true if success, false if fail</returns>
-        private bool SaveFile(IEnumerable<HttpPostedFileBase> files)
+        private bool SaveFile(IEnumerable<HttpPostedFileBase> files, Guid auctionGuid)
         {
-            throw new NotImplementedException();
+            // The Name of the Upload component is "files"
+            if (files != null)
+            {
+                HttpPostedFileBase file = files.First();
+                // Some browsers send file names with full path. This needs to be stripped.
+                var fileName = Path.GetFileName(file.FileName);
+                var physicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Auction_Images", fileName);
+
+                // The files are not actually saved in this demo
+                file.SaveAs(physicalPath);
+
+                FilePath filePath = new FilePath(){
+                    FilePathGUID = Guid.NewGuid(),
+                    FilePathName = physicalPath,
+                    FilePath_AuctionGUID = auctionGuid
+                };
+
+                _filePathRepository.Add(filePath);
+            }
+
+            // Return an empty string to signify success
+            return true;
         }
 
         //TODO: Complete Function
@@ -63,9 +96,20 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="auction"></param>
         /// <returns>true if success, false if fail</returns>
-        private bool SaveAuction(AuctionModel auction)
+        private Auction SaveAuction(AuctionModel auctionModel)
         {
-            throw new NotImplementedException();
+            Auction auction = new Auction()
+            {
+                AuctionGUID = Guid.NewGuid(),
+                BuyerReceived = false,
+                EndDate = auctionModel.EndDate,
+                ItemName = auctionModel.ItemName,
+                SellerSent = false,
+                StartDate = auctionModel.StartDate,
+                StartingBid = auctionModel.StartingBid
+            };
+            _auctionRepository.Add(auction);
+            return auction;
         }
 
         //TODO: Add logging function for exceptions
@@ -86,8 +130,7 @@ namespace AnonymousBidder.Services
                 return false;
             }
         }
-
-        //TODO: Complete function
+        
         /// <summary>
         /// Validate if file path is in valid format before saving
         /// </summary>
@@ -104,13 +147,20 @@ namespace AnonymousBidder.Services
             {
                 results.ErrorMessage = "Select one file only\n";
             }
-            if ()
+            if (files.First().FileName == string.Empty)
+            {
+                results.ErrorMessage = "No file detected\n";
+            }
+            if (files.First().ContentType.ToLower() != "image/jpeg" 
+                && files.First().ContentType.ToLower() != "image/png")
+            {
+                results.ErrorMessage = "File is not an image\n";
+            }
 
-            results.Success = results.ErrorMessage == string.Empty ? true : false;
+            results.Success = (results.ErrorMessage == string.Empty || files.First() == null) ? true : false;
             return results;
         }
-
-        //TODO: Complete function
+        
         /// <summary>
         /// Validate if auction is in valid format before saving
         /// </summary>

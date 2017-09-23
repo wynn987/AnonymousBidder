@@ -12,7 +12,7 @@
 
     $("#files").kendoUpload({
         validation: {
-            allowedExtensions: [".gif", ".jpg", ".png"],
+            allowedExtensions: [".jpg", ".png"],
             maxFileSize: 4194304
         }
     });
@@ -56,12 +56,16 @@
     }).data("kendoValidator"),
         status = $(".status");
 
-    $("form").submit(function (event) {
+    $("#btnCreate").click(function (event) {
         event.preventDefault();
         if (!validator.validate()) {
             status.text("Oops! There is invalid data in the form.")
                 .removeClass("valid")
                 .addClass("invalid");
+        }
+        if (validator.validate()) {
+            var element = this;
+            $(element).closest("form").submit();
         }
     });
 });

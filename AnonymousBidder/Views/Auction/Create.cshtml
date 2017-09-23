@@ -8,7 +8,7 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm("Save", "Auction", FormMethod.Get, new { name = "AuctionCreateForm", id = "AuctionCreateForm" })) 
+@using (Html.BeginForm("Save", "Auction", FormMethod.Post, new { name = "AuctionCreateForm", id = "AuctionCreateForm" })) 
 {
     @Html.AntiForgeryToken()
     <div class="container-fluid" id="AuctionCreateDiv">
@@ -19,21 +19,21 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Auction.ItemName, htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">
-                    <input type="text" id="Auction_ItemName" name="Auction_ItemName" class="form-control text-box single-line" placeholder="Item Name" required validationMessage="Enter Item Name" style="width: 220px;" />
+                    <input type="text" id="Auction_ItemName" name="Auction.ItemName" class="form-control text-box single-line" placeholder="Item Name" required validationMessage="Enter Item Name" style="width: 220px;" />
                 </div>
             </div>
             <div class="form-group">
                 @Html.Label("Item Image", htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">
                     <input type="file" id="files" name="files" class="form-control text-box single-line" style="width: 220px;" />
-                    <div class="demo-hint">You can only upload <strong>GIF</strong>, <strong>JPG</strong>, <strong>PNG</strong> files.</div>
+                    <div class="demo-hint">You can only upload <strong>JPG</strong>, <strong>PNG</strong> files.</div>
                     <div class="demo-hint">Maximum allowed file size is <strong>4MB</strong>.</div>
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Auction.StartingBid, htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">
-                    <input id="Auction_StartingBid" name="Auction_StartingBid" type="text" min="1" max="9999999999" value="0" required validationMessage="Enter starting bid" data-max-msg="Enter value between 1 and 9999999999" style="width: 220px;" />
+                    <input id="Auction_StartingBid" name="Auction.StartingBid" type="text" min="1" max="9999999999" value="0" required validationMessage="Enter starting bid" data-max-msg="Enter value between 1 and 9999999999" style="width: 220px;" />
                     <span class="k-invalid-msg" data-for="Auction_StartingBid"></span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Auction.StartDate, htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">
-                    <input type="text" data-role='datetimepicker' data-currentdate-field="Auction_StartDate" data-type="date" id="Auction_StartDate" name="Auction_StartDate" style="width: 220px;" />
+                    <input type="text" data-role='datetimepicker' data-currentdate-field="Auction_StartDate" data-type="date" id="Auction_StartDate" name="Auction.StartDate" style="width: 220px;" />
                     <span class="k-invalid-msg" data-for="Auction_StartDate"></span>
                 </div>
             </div>
@@ -49,7 +49,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Auction.EndDate, htmlAttributes: new { @class = "required control-label col-md-2" })
                 <div class="col-sm-6">
-                    <input type="text" data-role='datetimepicker' data-type="date" data-greaterdate-field="Auction_StartDate" data-greaterdate-msg='End date should be after Start date' id="Auction_EndDate" name="Auction_EndDate" style="width: 220px;" />
+                    <input type="text" data-role='datetimepicker' data-type="date" data-greaterdate-field="Auction_StartDate" data-greaterdate-msg='End date should be after Start date' id="Auction_EndDate" name="Auction.EndDate" style="width: 220px;" />
                     <span class="k-invalid-msg" data-for="Auction_EndDate"></span>
                 </div>
             </div>
@@ -63,7 +63,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" id="btnCreate" name="btnCreate" value="Create" class="btn btn-default" />
                 </div>
             </div>
         </div>
