@@ -42,17 +42,49 @@ namespace AnonymousBidder.Controllers
         {
             return View(new AuctionCreateViewModel());
         }
-        //TODO: Complete Save Function
         /// <summary>
         /// Controller function for system to save admin's new auction
         /// </summary>
-        /// <returns>Auction Item View</returns>
+        /// <returns>ServiceResult with new Seller Guid as Params</returns>
         [HttpPost]
         [AdminFilter]
         public ActionResult Save(AuctionCreateViewModel vm)
         {
             ServiceResult result = _auctionService.AddAuction(vm);
-            return RedirectToAction("Create");
+            if (result.Success)
+            {
+                return RedirectToAction("SendRegistrationEmail", result);
+            }
+            return RedirectToAction("FailedtoCreate", result);
+        }
+        /// <summary>
+        /// Controller function to send registration email to seller when admin creates successfully
+        /// Input ServiceReslt has seller GUID as Params
+        /// </summary>
+        [AdminFilter]
+        public ActionResult SendRegistrationEmail(ServiceResult result)
+        {
+            string registrationPath = GenerateEmailRegistrationCode((Guid)result.Params);
+            ServiceResult emailResults = _auctionService.SendEmail(registrationPath);
+            return View(emailResults);
+        }
+        /// <summary>   
+        /// Function to generate seller registration callback url
+        /// </summary>
+        /// <param name="sellerGuid"></param>
+        /// <returns></returns>
+        private string GenerateEmailRegistrationCode(Guid sellerGuid)
+        {
+            string code = Utilities.CreateRandomCode();
+            return Url.Action("RegisterSeller", "Account", new { sellerGuid = sellerGuid, code = code }, protocol: Request.Url.Scheme);
+        }
+        /// <summary>
+        /// Controller function to display server errors if auction not successfully created
+        /// </summary>
+        [AdminFilter]
+        public ActionResult FailedtoCreate(ServiceResult result)
+        {
+            return View(result.ErrorMessage);
         }
     }
 }

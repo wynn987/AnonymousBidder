@@ -1,7 +1,6 @@
 ﻿using AnonymousBidder.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Web;
 
 namespace AnonymousBidder.ViewModels
@@ -10,6 +9,6 @@ namespace AnonymousBidder.ViewModels
     {
         public AuctionModel Auction { get; set; }
         public IEnumerable<HttpPostedFileBase> Files { get; set; }
-        public string CurrentDateStr { get; set; }
+        public ABUserModel Seller { get; set; }
     }
 }

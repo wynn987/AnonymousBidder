@@ -8,8 +8,10 @@ using AnonymousBidder.Common;
 using AnonymousBidder.Data.Repository;
 using AnonymousBidder.Data.Infrastructure;
 using AnonymousBidder.Data;
+using System.Web.Mvc;
 using System.IO;
 using AnonymousBidder.Data.Entity;
+using System.Net.Mail;
 
 namespace AnonymousBidder.Services
 {
@@ -17,6 +19,8 @@ namespace AnonymousBidder.Services
     {
         FilePathRepository _filePathRepository;
         AuctionRepository _auctionRepository;
+        UserRoleRepository _userRoleRepository;
+        ABUserRepository _abUserRepository;
         UnitOfWork _unitOfWork;
 
         public AuctionService()
@@ -24,6 +28,8 @@ namespace AnonymousBidder.Services
             _unitOfWork = new UnitOfWork(new AnonymousBidderDataContext());
             _filePathRepository = new FilePathRepository(_unitOfWork);
             _auctionRepository = new AuctionRepository(_unitOfWork);
+            _abUserRepository = new ABUserRepository(_unitOfWork);
+            _userRoleRepository = new UserRoleRepository(_unitOfWork);
         }
         
         //TODO: Create Seller
@@ -31,24 +37,31 @@ namespace AnonymousBidder.Services
         /// Point of access from controller's Save function
         /// </summary>
         /// <param name="vm"></param>
-        /// <returns>Service Result indicating pass or fail and any relevant error message</returns>
+        /// <returns>
+        /// Service Result indicating pass or fail and any relevant error message. 
+        /// Returns Seller GUID for email registration
+        /// </returns>
         internal ServiceResult AddAuction(AuctionCreateViewModel vm)
         {
             //Validate Data
             ServiceResult validAuction = ValidateAuction(vm.Auction);
             //Save Auction
             ServiceResult validFilePath = ValidateFilePath(vm.Files);
+            ServiceResult validSeller = ValidateSeller(vm.Seller);
             //Save File
             if (validAuction.Success && validFilePath.Success)
             {
                 Auction addAuctionSuccess = SaveAuction(vm.Auction);
+                Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
                 bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
+
                 bool commitSuccess = Commit();
                 if (commitSuccess)
                 {
                     return new ServiceResult()
                     {
-                        Success = true
+                        Success = true,
+                        Params = addUserSuccess
                     };
                 }
             }
@@ -58,9 +71,102 @@ namespace AnonymousBidder.Services
                 Success = false
             };
         }
-        
+
+        internal ServiceResult SendEmail(string registrationPath)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
-        /// Save image file
+        /// Function to send email to seller to register and view his auction
+        /// </summary>
+        /// <param name="addAuctionSuccess"></param>
+        /// <param name="sellerEmail"></param>
+        /// <returns></returns>
+        private bool PromptSellerRegistration(Auction addAuctionSuccess, string sellerEmail)
+        {
+            
+                string body = @"<p>Hi " + user.Alias + @",</p>
+
+                                <p>We received a request to reset your password for your AnonymousBidder account " + user.Email + @".</p>
+                                
+                                <p>Please kindly click <a href=" + callbackUrl + @">here</a> to set a new password.</p>
+
+                                <p>If you didn't ask to change your password, please kindly ignore this email.</p>
+
+                                <p>Your password is still safe and you can continue logging in with your current password.</p>
+
+                                <p>Thank you,</p>
+                              
+                                <p>AnonymousBidder Team</p>
+
+                                <p>AnonymousBidder Pte. Ltd.</p>
+                                
+                                <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
+            try
+            {
+                EmailHelper.SendMail("anonymousbidder3103@gmail.com", model.Email, "Reset Your AnonymousBidder Password", body, "", "smtp_anonymousbidder");
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Save Seller when admin creates auction
+        /// </summary>
+        /// <param name="files"></param>
+        /// <returns>true if success, false if fail</returns>
+        private Guid SaveSeller(ABUserModel ABUserModel, Guid auctionGUID)
+        {
+            Guid sellerRoleGuid = _userRoleRepository.FindBy(x => x.UserRoleName == "SELLER").FirstOrDefault().UserRoleGUID;
+            if (sellerRoleGuid != null && sellerRoleGuid != Guid.Empty)
+            {
+                ABUser abUser = new ABUser()
+                {
+                    ABUserGUID = Guid.NewGuid(),
+                    ABUser_AuctionGUID = auctionGUID,
+                    ABUser_UserRoleGUID = sellerRoleGuid,
+                    Email = ABUserModel.Email,
+                };
+                _abUserRepository.Add(abUser);
+                return abUser.ABUserGUID;
+            }
+            return Guid.Empty;
+        }
+
+        /// <summary>
+        /// Check if seller's email is valid when admin creating auction
+        /// </summary>
+        /// <param name="ABUser"></param>
+        /// <returns></returns>
+        private ServiceResult ValidateSeller(ABUserModel abUserModel)
+        {
+            ServiceResult results = new ServiceResult
+            {
+                ErrorMessage = string.Empty
+            };
+            if (abUserModel == null || abUserModel.Email == string.Empty || abUserModel.Email == null)
+            {
+                results.ErrorMessage = "Email is not a valid email\n";
+            }
+            try
+            {
+                MailAddress validEmail = new MailAddress(abUserModel.Email);
+            }
+            catch (FormatException)
+            {
+                results.ErrorMessage = "Invalid email formats\n";
+            }
+
+            results.Success = results.ErrorMessage == string.Empty ? true : false;
+            return results;
+        }
+
+        /// <summary>
+        /// Save image file when admin creates auction
         /// </summary>
         /// <param name="files"></param>
         /// <returns>true if success, false if fail</returns>
@@ -92,10 +198,10 @@ namespace AnonymousBidder.Services
 
         //TODO: Complete Function
         /// <summary>
-        /// Save auction details
+        /// Save auction details when admin creates auction
         /// </summary>
         /// <param name="auction"></param>
-        /// <returns>true if success, false if fail</returns>
+        /// <returns>Returns newly created auction</returns>
         private Auction SaveAuction(AuctionModel auctionModel)
         {
             Auction auction = new Auction()

@@ -11,11 +11,8 @@ namespace AnonymousBidder.Data.Entity
     {
         [Key, Required, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ABUserGUID { get; set; }
-        [Required]
         public string Alias { get; set; }
-        [Required]
         public string Email { get; set; }
-        [Required]
         public string Password { get; set; }
         public string Token { get; set; }
 
