@@ -49,7 +49,7 @@ namespace AnonymousBidder.Services
             ServiceResult validFilePath = ValidateFilePath(vm.Files);
             ServiceResult validSeller = ValidateSeller(vm.Seller);
             //Save File
-            if (validAuction.Success && validFilePath.Success)
+            if (validAuction.Success && validFilePath.Success && validSeller.Success)
             {
                 Auction addAuctionSuccess = SaveAuction(vm.Auction);
                 Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
@@ -61,7 +61,7 @@ namespace AnonymousBidder.Services
                     return new ServiceResult()
                     {
                         Success = true,
-                        Params = addUserSuccess
+                        Params = addUserSuccess.ToString()
                     };
                 }
             }
@@ -72,48 +72,46 @@ namespace AnonymousBidder.Services
             };
         }
 
-        internal ServiceResult SendEmail(string registrationPath)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Function to send email to seller to register and view his auction
         /// </summary>
-        /// <param name="addAuctionSuccess"></param>
-        /// <param name="sellerEmail"></param>
+        /// <param name="registrationPath"></param>
+        /// <param name="sellerGuid"></param>
         /// <returns></returns>
-        private bool PromptSellerRegistration(Auction addAuctionSuccess, string sellerEmail)
+        internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid)
         {
-            
-                string body = @"<p>Hi " + user.Alias + @",</p>
+            ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
+            if (seller != null 
+                && seller.Role != null 
+                && seller.Role.UserRoleName == "SELLER")
+            {
+                string body = @"<p>Your auction has been listed.</p>
 
-                                <p>We received a request to reset your password for your AnonymousBidder account " + user.Email + @".</p>
-                                
-                                <p>Please kindly click <a href=" + callbackUrl + @">here</a> to set a new password.</p>
+                                    <p>Please kindly click <a href=" + registrationPath + @">here</a> to register and view the auction.</p>
 
-                                <p>If you didn't ask to change your password, please kindly ignore this email.</p>
-
-                                <p>Your password is still safe and you can continue logging in with your current password.</p>
-
-                                <p>Thank you,</p>
+                                    <p>Thank you,</p>
                               
-                                <p>AnonymousBidder Team</p>
+                                    <p>AnonymousBidder Team</p>
 
-                                <p>AnonymousBidder Pte. Ltd.</p>
+                                    <p>AnonymousBidder Pte. Ltd.</p>
                                 
-                                <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
-            try
-            {
-                EmailHelper.SendMail("anonymousbidder3103@gmail.com", model.Email, "Reset Your AnonymousBidder Password", body, "", "smtp_anonymousbidder");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            return true;
-        }
+                                    <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
+                EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Reset Your AnonymousBidder Password", body, "", "smtp_anonymousbidder");
+
+                return new ServiceResult()
+                {
+                    Success = true
+                };
+            }
+            return new ServiceResult()
+            {
+                ErrorMessage = "Could not find user",
+                Success = false
+            };
+
+        }
+        #region Save
         /// <summary>
         /// Save Seller when admin creates auction
         /// </summary>
@@ -135,34 +133,6 @@ namespace AnonymousBidder.Services
                 return abUser.ABUserGUID;
             }
             return Guid.Empty;
-        }
-
-        /// <summary>
-        /// Check if seller's email is valid when admin creating auction
-        /// </summary>
-        /// <param name="ABUser"></param>
-        /// <returns></returns>
-        private ServiceResult ValidateSeller(ABUserModel abUserModel)
-        {
-            ServiceResult results = new ServiceResult
-            {
-                ErrorMessage = string.Empty
-            };
-            if (abUserModel == null || abUserModel.Email == string.Empty || abUserModel.Email == null)
-            {
-                results.ErrorMessage = "Email is not a valid email\n";
-            }
-            try
-            {
-                MailAddress validEmail = new MailAddress(abUserModel.Email);
-            }
-            catch (FormatException)
-            {
-                results.ErrorMessage = "Invalid email formats\n";
-            }
-
-            results.Success = results.ErrorMessage == string.Empty ? true : false;
-            return results;
         }
 
         /// <summary>
@@ -236,7 +206,8 @@ namespace AnonymousBidder.Services
                 return false;
             }
         }
-        
+        #endregion
+        #region Validate
         /// <summary>
         /// Validate if file path is in valid format before saving
         /// </summary>
@@ -306,5 +277,34 @@ namespace AnonymousBidder.Services
             results.Success = results.ErrorMessage == string.Empty ? true : false;
             return results;
         }
+
+        /// <summary>
+        /// Check if seller's email is valid when admin creating auction
+        /// </summary>
+        /// <param name="ABUser"></param>
+        /// <returns></returns>
+        private ServiceResult ValidateSeller(ABUserModel abUserModel)
+        {
+            ServiceResult results = new ServiceResult
+            {
+                ErrorMessage = string.Empty
+            };
+            if (abUserModel == null || abUserModel.Email == string.Empty || abUserModel.Email == null)
+            {
+                results.ErrorMessage = "Email is not a valid email\n";
+            }
+            try
+            {
+                MailAddress validEmail = new MailAddress(abUserModel.Email);
+            }
+            catch (FormatException)
+            {
+                results.ErrorMessage = "Invalid email formats\n";
+            }
+
+            results.Success = results.ErrorMessage == string.Empty ? true : false;
+            return results;
+        }
+        #endregion
     }
 }

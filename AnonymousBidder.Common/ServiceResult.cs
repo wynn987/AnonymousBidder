@@ -10,6 +10,8 @@ namespace AnonymousBidder.Common
     {
         public string ErrorMessage { get; set; }
         public bool Success { get; set; }
-        public object Params { get; set; }
+        public string Params { get; set; }
     }
 }
+
+

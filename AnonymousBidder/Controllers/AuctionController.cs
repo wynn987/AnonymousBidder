@@ -64,8 +64,10 @@ namespace AnonymousBidder.Controllers
         [AdminFilter]
         public ActionResult SendRegistrationEmail(ServiceResult result)
         {
-            string registrationPath = GenerateEmailRegistrationCode((Guid)result.Params);
-            ServiceResult emailResults = _auctionService.SendEmail(registrationPath);
+            Guid sellerGuid = Guid.Parse(result.Params);
+            string registrationPath = GenerateEmailRegistrationCode(sellerGuid);
+            ServiceResult emailResults = _auctionService.SendEmail(registrationPath, sellerGuid);
+
             return View(emailResults);
         }
         /// <summary>   
