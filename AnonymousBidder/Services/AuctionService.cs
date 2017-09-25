@@ -97,7 +97,7 @@ namespace AnonymousBidder.Services
                                 
                                     <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
-                EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Reset Your AnonymousBidder Password", body, "", "smtp_anonymousbidder");
+                EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder");
 
                 return new ServiceResult()
                 {

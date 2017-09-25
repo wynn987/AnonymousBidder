@@ -25,7 +25,6 @@ namespace AnonymousBidder.Common
             string USERNAME = mailSetting.Network.UserName;
             string PASSWORD = Sercurity.Decrypt(mailSetting.Network.Password);
             string ADMIN_MAIL = mailSetting.From;
-            bool enableSsl = mailSetting.Network.EnableSsl;
             string ADMIN_MAIL_NAME = "AnonymousBidder Administrator";
             string mailFrom = !string.IsNullOrEmpty(fromAddress) ? fromAddress : ADMIN_MAIL;
             try
@@ -66,7 +65,7 @@ namespace AnonymousBidder.Common
                 {
                     var credential = new NetworkCredential(USERNAME, PASSWORD);
                     smtpClient.Credentials = credential;
-                    smtpClient.EnableSsl = enableSsl;
+                    smtpClient.EnableSsl = true;
                     smtpClient.Send(mailMessage);
                     mailMessage.Dispose();
                 }
