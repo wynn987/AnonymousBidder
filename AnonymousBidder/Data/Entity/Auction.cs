@@ -23,6 +23,8 @@ namespace AnonymousBidder.Data.Entity
         public bool SellerSent { get; set; }
         [Required]
         public bool BuyerReceived { get; set; }
+        [Required]
+        public bool AuctionOver { get; set; }
 
         [ForeignKey("Bid")]
         public Guid? Auction_BidGUID { get; set; }

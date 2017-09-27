@@ -182,7 +182,8 @@ namespace AnonymousBidder.Services
                 ItemName = auctionModel.ItemName,
                 SellerSent = false,
                 StartDate = auctionModel.StartDate,
-                StartingBid = auctionModel.StartingBid
+                StartingBid = auctionModel.StartingBid,
+                AuctionOver = false
             };
             _auctionRepository.Add(auction);
             return auction;
