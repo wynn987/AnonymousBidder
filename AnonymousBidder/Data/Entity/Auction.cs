@@ -28,14 +28,14 @@ namespace AnonymousBidder.Data.Entity
 
         [ForeignKey("Bid")]
         public Guid? Auction_BidGUID { get; set; }
-        public virtual Bid Bid { get; set; } // Current Bidder info
+        public virtual Bid CurrentBid { get; set; } // Current Bidder info
         public virtual ICollection<FilePath> AuctionImages { get; set; }
-        public virtual ICollection<ABUser> ABUsers { get; set; }
+        public virtual ICollection<ABUser> AllUsers { get; set; }
 
         public Auction()
         {
             AuctionImages = new List<FilePath>();
-            ABUsers = new List<ABUser>();
+            AllUsers = new List<ABUser>();
         }
     }
 }

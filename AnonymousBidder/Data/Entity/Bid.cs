@@ -20,6 +20,6 @@ namespace AnonymousBidder.Data.Entity
 
         public virtual Auction Auction { get; set; }
         [ForeignKey("Bid_ABUserGUID")]
-        public virtual ABUser User { get; set; }
+        public virtual ABUser Bidder { get; set; }
     }
 }
