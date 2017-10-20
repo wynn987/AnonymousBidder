@@ -147,6 +147,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuctionController.cs" />
+    <Compile Include="Controllers\BidPostController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Data\Entity\Auction.cs" />
     <Compile Include="Data\Entity\BaseEntity.cs" />
@@ -434,6 +435,7 @@
     </Content>
     <Content Include="Views\Auction\Item.cshtml" />
     <Content Include="Views\Auction\Create.cshtml" />
+    <Content Include="Views\BidPost\BidPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
