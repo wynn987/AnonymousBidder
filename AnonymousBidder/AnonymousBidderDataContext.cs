@@ -15,7 +15,7 @@ namespace AnonymousBidder.Data
     public partial class AnonymousBidderDataContext : DbContext
     {
         public AnonymousBidderDataContext()
-            : base("LocalAnonymousBidderDb") // change to below if we get our own server
+            : base(SqlConnectionHelper.GetEntityConnectionString()) // change to below if we get our own server
         //: base(SqlConnectionHelper.GetEntityConnectionString())
         {
         }

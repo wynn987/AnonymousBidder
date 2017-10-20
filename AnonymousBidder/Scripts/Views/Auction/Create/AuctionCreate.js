@@ -57,7 +57,7 @@
         status = $(".status");
 
     $("#btnCreate").click(function (event) {
-        event.preventDefault();
+        event.preventDefault(); Convert.ToBase64String(imageBytes)
         if (!validator.validate()) {
             status.text("Oops! There is invalid data in the form.")
                 .removeClass("valid")

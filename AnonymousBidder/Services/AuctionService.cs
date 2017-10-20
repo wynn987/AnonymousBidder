@@ -12,6 +12,9 @@ using System.Web.Mvc;
 using System.IO;
 using AnonymousBidder.Data.Entity;
 using System.Net.Mail;
+using System.Drawing;
+using System.Net;
+
 
 namespace AnonymousBidder.Services
 {
@@ -85,10 +88,34 @@ namespace AnonymousBidder.Services
                 && seller.Role != null 
                 && seller.Role.UserRoleName == "SELLER")
             {
-                string body = @"<p>Your auction has been listed.</p>
+                var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", registrationPath, "250", "250");
+                WebResponse response = default(WebResponse);
+                Stream remoteStream = default(Stream);
+                StreamReader readStream = default(StreamReader);
+                WebRequest request = WebRequest.Create(url);
+                response = request.GetResponse();
+                remoteStream = response.GetResponseStream();
+                readStream = new StreamReader(remoteStream);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(remoteStream);
+                //img.Save("D:/QRCode/" + txtCode.Text + "facebook.png");
+                response.Close();
+                remoteStream.Close();
+                readStream.Close();
+                
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    img.Save(ms, img.RawFormat);
+                    byte[] imageBytes = ms.ToArray();
+                    
+                    string attachment =  Convert.ToBase64String(imageBytes);
+                    //string htmlBody = "<img src='data:image/png;base64," + Convert.ToBase64String(imageBytes) + @"'/>";                                
+
+
+                    string body = @"<p>Your auction has been listed.</p>
 
                                     <p>Please kindly click <a href=" + registrationPath + @">here</a> to register and view the auction.</p>
-
+                                   
                                     <p>Thank you,</p>
                               
                                     <p>AnonymousBidder Team</p>
@@ -97,8 +124,12 @@ namespace AnonymousBidder.Services
                                 
                                     <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
-                EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder");
 
+
+
+                    
+                    EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder",attachment);
+                }
                 return new ServiceResult()
                 {
                     Success = true

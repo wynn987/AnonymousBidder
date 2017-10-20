@@ -1,14 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
+
 
 namespace AnonymousBidder.Common
+
+
 {
     public class EmailHelper
     {
@@ -16,7 +28,17 @@ namespace AnonymousBidder.Common
         //if send mail successfully
         //return 1
         //else return 0
-        public static bool SendMail(string fromAddress, string toAddress, string subject, string body, string cc, string sectionName, string pathImageEmbedded = "", string bcc = "")
+        public static string FixBase64ForImage(string Image)
+        {
+            System.Text.StringBuilder sbText = new System.Text.StringBuilder(Image, Image.Length);
+            sbText.Replace("\r\n", string.Empty); sbText.Replace(" ", string.Empty);
+            return sbText.ToString();
+        }
+
+
+
+        public static bool SendMail(string fromAddress, string toAddress, string subject, string body, string cc, string sectionName, string attachmentFilename="", string pathImageEmbedded = "", string bcc = "")
+        //public static bool SendMail(string fromAddress, string toAddress, string subject, string body, string cc, string sectionName, string pathImageEmbedded = "", string bcc = "")
         {
             string sectionPath = "mailSettings/" + sectionName;
             SmtpSection mailSetting = (SmtpSection)ConfigurationManager.GetSection(sectionPath);
@@ -61,6 +83,21 @@ namespace AnonymousBidder.Common
                     }
                 }
 
+                
+                //Handle Attachment
+                if (!string.IsNullOrEmpty(attachmentFilename))
+                {
+
+                  
+                    Byte[] bytes = Convert.FromBase64String(attachmentFilename);
+                    Attachment att = new Attachment(new MemoryStream(bytes), "test.png");
+                    mailMessage.Attachments.Add(att);
+
+
+                    
+                }
+
+
                 using (var smtpClient = new SmtpClient(HOST, PORT))
                 {
                     var credential = new NetworkCredential(USERNAME, PASSWORD);
@@ -87,6 +124,12 @@ namespace AnonymousBidder.Common
                 BodyEncoding = Encoding.UTF8,
                 IsBodyHtml = true,
             };
+
+
+
+
+
+
             if (!string.IsNullOrEmpty(pathImageEmbedded))
             {
                 AlternateView avHtml = AlternateView.CreateAlternateViewFromString(body, null, System.Net.Mime.MediaTypeNames.Text.Html);

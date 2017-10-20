@@ -376,6 +376,7 @@
     <Content Include="Content\CSS\kendo\fonts\glyphs\KendoUIGlyphs.woff" />
     <Content Include="Content\CSS\kendo\images\kendoui.ttf" />
     <Content Include="Content\CSS\kendo\images\kendoui.woff" />
+    <None Include="Properties\PublishProfiles\anonymousbidder - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\test-kumo-01 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\test-kumo-01 - Web Deploy.pubxml" />
     <Content Include="Scripts\Custom\RichTextEditor\skins\lightgray\fonts\tinymce-small.eot" />
