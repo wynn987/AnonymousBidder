@@ -1,0 +1,61 @@
+﻿@model AnonymousBidder.ViewModels.DepositMoneyViewModel
+@{
+    Layout = null;
+    string message = ViewBag.ErrorMessage;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Deposit Money</title>
+    <link rel="shortcut icon" href="~/Content/Images/Others/AnonymousBidderFavicon.ico" />
+    @Styles.Render("~/Style/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+</head>
+<body>
+    @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
+    <form action="/Account/DepositMoney/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
+        @Html.ValidationSummary(true)
+        <div class="container signin-page">
+            <div class="signin-logo">
+            </div>
+            <div class="box">
+
+                <div class="form-section clearfix">
+                    <h4 class="pull-left">Deposit Money</h4>
+                    <div class="pull-right secure-region">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-section clearfix">
+
+                    <div class="form-group paddingleft">
+                        <label>Money</label>
+                        @Html.TextBoxFor(m => m.Money, new { @class = "form-control input-md email-field" })
+                        @Html.ValidationMessageFor(model => model.Money)
+
+                    </div>
+
+                    
+                    <div class="form-group paddingleft">
+                        <span class="field-validation-error">@message</span>
+
+                        <input type="submit" class="btn btn-signin" value="Deposit" />
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container signin-page">
+                <div class="pull-right">© @DateTime.Now.Year.ToString() AnonymousBidder - All Rights Reserved</div>
+            </div>
+        </footer>
+    </form>
+</body>
+</html>

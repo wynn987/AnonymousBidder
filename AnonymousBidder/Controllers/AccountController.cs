@@ -10,6 +10,7 @@ using AnonymousBidder.Common;
 using System.Linq;
 using AnonymousBidder.Services;
 using AnonymousBidder.Data.Entity;
+using AnonymousBidder.ViewModels;
 
 namespace AnonymousBidder.Controllers
 {
@@ -64,6 +65,72 @@ namespace AnonymousBidder.Controllers
 
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Register(AccountCreateViewModel model, string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return DoRegister(model, returnUrl);
+        }
+
+        [AllowAnonymous]
+        public ActionResult Register(string returnUrl)
+        {
+            AccountCreateViewModel model = new AccountCreateViewModel();
+            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+
+            if (cookie != null)
+            {
+                try
+                {
+                    return DoRegister(model, returnUrl);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        //[BidderFilter]
+        [AllowAnonymous]
+        public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return DoDeposit(model, returnUrl);
+        }
+
+      
+        //[BidderFilter]
+        [AllowAnonymous]
+        public ActionResult DepositMoney(string returnUrl)
+        {
+            DepositMoneyViewModel model = new DepositMoneyViewModel();
+            //Request for cookie
+            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+
+            if (cookie != null)
+            {
+                try
+                {
+                    return DoDeposit(model, returnUrl);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(model);
+        }
+
+
+
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -156,6 +223,37 @@ namespace AnonymousBidder.Controllers
                 }
             }
             return View();
+        }
+
+
+        private ActionResult DoRegister(AccountCreateViewModel model, string returnUrl)
+        {
+
+            var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
+            AccountCreateViewModel vm = new AccountCreateViewModel();
+            vm.Password = hashedPassword;
+            vm.EmailAddress = model.EmailAddress;
+            vm.ConfirmPassword = hashedPassword;
+            vm.Alias = model.Alias;
+
+            ServiceResult result = new ServiceResult();
+            result = AccountService.AddAccount(vm);
+            if (result.Success)
+            {
+                return RedirectToAction("RegisterSuccess", result);
+            }
+            return RedirectToAction("RegisterFail", result);
+        }
+
+        private ActionResult DoDeposit(DepositMoneyViewModel model, string returnUrl)
+        {
+            ServiceResult result = new ServiceResult();
+            result = AccountService.UpdateAccountWithMoney(model);
+            if (result.Success)
+            {
+                return RedirectToAction("DepositSuccess", result);
+            }
+            return RedirectToAction("DepositFail", result);
         }
 
         [AllowAnonymous]
@@ -280,6 +378,19 @@ namespace AnonymousBidder.Controllers
             UserInfoModel user = HttpSession.GetFromSession<UserInfoModel>();
             if (user == null) return RedirectToAction("Login");
 
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult RegisterSuccess()
+        {
+            return View();
+        }
+
+
+        [AllowAnonymous]
+        public ActionResult RegisterFail()
+        {
             return View();
         }
 
