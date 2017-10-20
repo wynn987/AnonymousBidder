@@ -23,6 +23,11 @@ namespace AnonymousBidder.Controllers
 
         }
 
+        // Write Controller function to receive URL
+        // Write View Model to tell the system what data to expect
+        // Write View to receive the data
+        // Write Service layer to get the data
+
         #region Login
 
         /// <summary>
