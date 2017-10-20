@@ -101,6 +101,8 @@ namespace AnonymousBidder.Migrations
                     ABUser_UserRoleGUID = admin.UserRoleGUID,
                     ABUserGUID = Guid.NewGuid()
                 };
+
+                
                 context.User.AddOrUpdate(
                     adminUser, sellerUser, bidUser);
 
