@@ -16,6 +16,8 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
+References/AnonymousBidder.Common.dll
+References/AnonymousBidder.Data.dll
 
 # NuGet Packages
 *.nupkg
