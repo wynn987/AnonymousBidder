@@ -38,12 +38,12 @@ namespace AnonymousBidderWebJob
         private void SendToLosers(Auction auction)
         {
             // If there has been at least one bid
-            if (auction.Bid != null)
+            if (auction.CurrentBid != null)
             {
                 // Find all buyers that isnt a winner
-                List<ABUser> losers = auction.ABUsers.Where(x => x.Role != null 
+                List<ABUser> losers = auction.AllUsers.Where(x => x.Role != null 
                                                               && x.Role.UserRoleName == "BUYER" 
-                                                              && x.ABUserGUID != auction.Bid.Bid_ABUserGUID).ToList();
+                                                              && x.ABUserGUID != auction.CurrentBid.Bid_ABUserGUID).ToList();
                 string body = @"<p>The auction you have registed for has ended.</p>
 
                                         <p>Unfortunately, you did not place the highest bid.</p>
@@ -65,7 +65,7 @@ namespace AnonymousBidderWebJob
         private void SendToWinner(Auction auction)
         {
             // If there has been at least one bid
-            if (auction.Bid != null && auction.Bid.User != null)
+            if (auction.CurrentBid != null && auction.CurrentBid.Bidder != null)
             {
                 // Find all buyers that isnt a winner
                 string body = @"<p>The auction you have registed for has ended.</p>
@@ -80,13 +80,13 @@ namespace AnonymousBidderWebJob
                                 
                                         <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
-            EmailHelper.SendMail("anonymousbidder3103@gmail.com", auction.Bid.User.Email, "The auction you have registered for has ended", body, "", "smtp_anonymousbidder");
+            EmailHelper.SendMail("anonymousbidder3103@gmail.com", auction.CurrentBid.Bidder.Email, "The auction you have registered for has ended", body, "", "smtp_anonymousbidder");
             }
         }
 
         private void SendToSeller(Auction auction)
         {
-            ABUser seller = auction.ABUsers.Where(x => x.Role != null && x.Role.UserRoleName == "SELLER").FirstOrDefault();
+            ABUser seller = auction.AllUsers.Where(x => x.Role != null && x.Role.UserRoleName == "SELLER").FirstOrDefault();
             if (seller != null)
             {
                 // Find all buyers that isnt a winner

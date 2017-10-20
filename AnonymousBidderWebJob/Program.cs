@@ -9,11 +9,13 @@ namespace AnonymousBidderWebJob
         public static void Main(string[] args)
         {
             AuctionEndChecker auctionEndChecker = new AuctionEndChecker();
+            NoShipChecker noShipChecker = new NoShipChecker();
             while (true)
             {
                 try
                 {
                     auctionEndChecker.SendNotificationsandCloseAuctions();
+                    noShipChecker.RefundPayment();
                 }
                 catch (Exception ex)
                 {
