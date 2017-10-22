@@ -24,6 +24,7 @@ namespace AnonymousBidder.Services
         AuctionRepository _auctionRepository;
         UserRoleRepository _userRoleRepository;
         ABUserRepository _abUserRepository;
+        BidRepository _bidRepository;
         UnitOfWork _unitOfWork;
 
         public AuctionService()
@@ -33,6 +34,7 @@ namespace AnonymousBidder.Services
             _auctionRepository = new AuctionRepository(_unitOfWork);
             _abUserRepository = new ABUserRepository(_unitOfWork);
             _userRoleRepository = new UserRoleRepository(_unitOfWork);
+            _bidRepository = new BidRepository(_unitOfWork);
         }
         
         //TODO: Create Seller
@@ -142,6 +144,59 @@ namespace AnonymousBidder.Services
             };
 
         }
+
+        #region View Auction Item by seller
+        internal AuctionItemViewModel ViewSellerAuction(string sellerEmail)
+        {
+            //looking for UserRole == "SELLER" GUID
+            //var sellerGUID = _
+
+            //look for the seller's GUID
+            var sellerInfoObj = _abUserRepository.FindBy(x => x.Email == sellerEmail).FirstOrDefault();
+
+            //Look for the Auction based on seller's GUID
+            var postedAuctionObj = _auctionRepository.FindBy(x => x.AuctionGUID == sellerInfoObj.ABUser_AuctionGUID).FirstOrDefault();
+
+            //Look for the Auction's bid information
+            var bidInfoObj = _bidRepository.FindBy(x => x.Bid_AuctionGUID == postedAuctionObj.AuctionGUID).FirstOrDefault();
+
+            //Look for auction's bidder info
+            var auctionBidderObj = _abUserRepository.FindBy(x => x.ABUserGUID == bidInfoObj.Bid_ABUserGUID && x.ABUser_AuctionGUID == bidInfoObj.Bid_AuctionGUID).FirstOrDefault();
+
+            //Storing Auction information into AuctionModel
+            AuctionModel postedAuctionModel = new AuctionModel();
+            postedAuctionModel.ItemName = postedAuctionObj.ItemName;
+            postedAuctionModel.StartingBid = postedAuctionObj.StartingBid;
+            postedAuctionModel.StartDate = postedAuctionObj.StartDate;
+            postedAuctionModel.EndDate = postedAuctionObj.EndDate;
+            postedAuctionModel.AuctionOver = postedAuctionObj.AuctionOver;
+            postedAuctionModel.SellerSent = postedAuctionObj.SellerSent;
+            postedAuctionModel.BuyerReceived = postedAuctionObj.BuyerReceived;
+
+            //Storing Bidder Info into BidderModel
+            ABUserModel bidderInfoModel = new ABUserModel();
+            bidderInfoModel.Alias = auctionBidderObj.Alias;
+
+            //Storing Bid Info into BidModel
+            BidModel bidInfoModel = new BidModel();
+            bidInfoModel.BidPlaced = bidInfoObj.BidPlaced;
+
+
+            if (postedAuctionObj != null)
+            {
+                return new AuctionItemViewModel()
+                {
+                    auctionItem = postedAuctionModel,
+                    bidderInfo = bidderInfoModel,
+                    bidInfo = bidInfoModel
+                };
+            }
+
+            return null;
+        }
+        #endregion
+
+
         #region Save
         /// <summary>
         /// Save Seller when admin creates auction

@@ -1,66 +1,178 @@
-﻿@model AnonymousBidder.Data.Entity.Auction
+﻿@model AnonymousBidder.ViewModels.AuctionItemViewModel
 
 @{
     ViewBag.Title = "Auction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Change Password</title>
+    <link rel="shortcut icon" href="~/Content/Images/Others/AnonymousBidderFavicon.ico" />
+    @Styles.Render("~/Style/css")
+    <style>
+        .signin-page h4 {
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2>View Auction</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt class="dl-horizontal">
+                Auction Status
+            </dt>
 
-<h2>View</h2>
 
-<div>
-    <h4>Auction</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Bid.Bid_AuctionGUID)
-        </dt>
+            @if (Model.auctionItem.AuctionOver)
+            {
+                <dd style="color:red;">
+                    Ended
+                </dd>
+            }
+            else
+            {
+                <dd style="color:lightgreen;">
+                    Ongoing
+                </dd>
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.Bid.Bid_AuctionGUID)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ItemName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.auctionItem.ItemName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ItemName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.auctionItem.ItemName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartingBid)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.auctionItem.StartingBid)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartingBid)
-        </dd>
+            <dd>
+                $@Html.DisplayFor(model => model.auctionItem.StartingBid)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.auctionItem.StartDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.auctionItem.StartDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.auctionItem.EndDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.auctionItem.EndDate)
+            </dd>
+        </dl>
+    </div>
+    <br />
+    <div>
+        <h3>Current Bid Info</h3>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Bidder Alias
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Auction_BidGUID)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.bidderInfo.Alias)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Auction_BidGUID)
-        </dd>
+            <dt>
+                Current Bid
+            </dt>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.AuctionGUID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            <dd>
+                $@Html.DisplayFor(model => model.bidInfo.BidPlaced)
+            </dd>
+        </dl>
+    </div>
+
+
+    @*If auction has ended, show the delivery information.*@
+
+    @if (Model.auctionItem.AuctionOver)
+    {
+        <h3>Delivery</h3>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Seller Sent
+            </dt>
+            @if (Model.auctionItem.SellerSent)
+            {
+                <dd style="color:lightgreen;">
+                    Yes
+                </dd>
+            }
+            else
+            {
+                <dd style="color:red;">
+                    No
+                </dd>
+                using (Html.BeginForm("View", "Auction", FormMethod.Post))
+                {
+                    <dt>
+                        Has item being sent out?
+                    </dt>
+                    <dd>
+                        @Html.DropDownList("Test", new List<SelectListItem>
+                        {
+                             new SelectListItem {Text="No", Value="no" },
+                             new SelectListItem {Text="Yes", Value="yes" }
+                        }, "Please Select")
+                        <input type="submit" value="Submit" />
+                    </dd>
+                }
+
+
+            }
+            @if (Model.auctionItem.SellerSent)
+            {
+                <dt>
+                    Buyer Received
+                </dt>
+                if (Model.auctionItem.BuyerReceived)
+                {
+                    <dd style="color:lightgreen;">
+                        Yes
+                    </dd>
+                }
+                else
+                {
+                    <dd style="color:red;">
+                        No
+                    </dd>
+                }
+            }
+            else
+            {
+
+            }
+
+        </dl>
+    }
+    else
+    {
+    }
+
+
+
+    <footer>
+        <div class="container signin-page">
+            <div class="pull-right">© @DateTime.Now.Year.ToString() AnonymousBidder - All Rights Reserved</div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
