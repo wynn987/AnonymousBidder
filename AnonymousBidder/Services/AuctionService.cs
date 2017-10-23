@@ -46,13 +46,13 @@ namespace AnonymousBidder.Services
         /// Service Result indicating pass or fail and any relevant error message. 
         /// Returns Seller GUID for email registration
         /// </returns>
-        internal ServiceResult AddAuction(AuctionCreateViewModel vm)
+        internal ViewModel AddAuction(AuctionCreateViewModel vm)
         {
             //Validate Data
-            ServiceResult validAuction = ValidateAuction(vm.Auction);
+            ViewModel validAuction = ValidateAuction(vm.Auction);
             //Save Auction
-            ServiceResult validFilePath = ValidateFilePath(vm.Files);
-            ServiceResult validSeller = ValidateSeller(vm.Seller);
+            ViewModel validFilePath = ValidateFilePath(vm.Files);
+            ViewModel validSeller = ValidateSeller(vm.Seller);
             //Save File
             if (validAuction.Success && validFilePath.Success && validSeller.Success)
             {
@@ -63,14 +63,14 @@ namespace AnonymousBidder.Services
                 bool commitSuccess = Commit();
                 if (commitSuccess)
                 {
-                    return new ServiceResult()
+                    return new ViewModel()
                     {
                         Success = true,
                         Params = addUserSuccess.ToString()
                     };
                 }
             }
-            return new ServiceResult()
+            return new ViewModel()
             {
                 ErrorMessage = validAuction.ErrorMessage + validFilePath.ErrorMessage,
                 Success = false
@@ -93,7 +93,7 @@ namespace AnonymousBidder.Services
         /// <param name="registrationPath"></param>
         /// <param name="sellerGuid"></param>
         /// <returns></returns>
-        internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid)
+        internal ViewModel SendEmail(string registrationPath, Guid sellerGuid)
         {
             ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
             if (seller != null 
@@ -136,17 +136,21 @@ namespace AnonymousBidder.Services
                                     <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
 
+<<<<<<< HEAD
 
 
                     
                     EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder",attachment);
                 }
                 return new ServiceResult()
+=======
+                return new ViewModel()
+>>>>>>> Isaac
                 {
                     Success = true
                 };
             }
-            return new ServiceResult()
+            return new ViewModel()
             {
                 ErrorMessage = "Could not find user",
                 Success = false
@@ -309,9 +313,9 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="files"></param>
         /// <returns>return true if success, false if fail</returns>
-        private ServiceResult ValidateFilePath(IEnumerable<HttpPostedFileBase> files)
+        private ViewModel ValidateFilePath(IEnumerable<HttpPostedFileBase> files)
         {
-            ServiceResult results = new ServiceResult
+            ViewModel results = new ViewModel
             {
                 ErrorMessage = string.Empty
             };
@@ -339,9 +343,9 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="files"></param>
         /// <returns>return true if success, false if fail</returns>
-        private ServiceResult ValidateAuction(AuctionModel auction)
+        private ViewModel ValidateAuction(AuctionModel auction)
         {
-            ServiceResult results = new ServiceResult
+            ViewModel results = new ViewModel
             {
                 ErrorMessage = string.Empty
             };
@@ -379,9 +383,9 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="ABUser"></param>
         /// <returns></returns>
-        private ServiceResult ValidateSeller(ABUserModel abUserModel)
+        private ViewModel ValidateSeller(ABUserModel abUserModel)
         {
-            ServiceResult results = new ServiceResult
+            ViewModel results = new ViewModel
             {
                 ErrorMessage = string.Empty
             };
