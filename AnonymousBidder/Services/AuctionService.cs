@@ -123,7 +123,6 @@ namespace AnonymousBidder.Services
                     string attachment =  Convert.ToBase64String(imageBytes);
                     //string htmlBody = "<img src='data:image/png;base64," + Convert.ToBase64String(imageBytes) + @"'/>";                                
 
-
                     string body = @"<p>Your auction has been listed.</p>
 
                                     <p>Please kindly click <a href=" + registrationPath + @">here</a> to register and view the auction.</p>
@@ -133,7 +132,7 @@ namespace AnonymousBidder.Services
                                     <p>AnonymousBidder Team</p>
 
                                     <p>AnonymousBidder Pte. Ltd.</p>
-                                
+
                                     <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
 
 
