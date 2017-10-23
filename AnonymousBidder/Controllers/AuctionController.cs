@@ -79,6 +79,7 @@ namespace AnonymousBidder.Controllers
         private string GenerateEmailRegistrationCode(Guid sellerGuid)
         {
             string code = Utilities.CreateRandomCode();
+            _auctionService.StoreCodetoGuid(sellerGuid, code);
             return Url.Action("RegisterSeller", "Account", new { sellerGuid = sellerGuid, code = code }, protocol: Request.Url.Scheme);
         }
         /// <summary>
