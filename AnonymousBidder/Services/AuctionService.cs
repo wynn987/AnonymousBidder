@@ -77,6 +77,16 @@ namespace AnonymousBidder.Services
             };
         }
 
+        internal void StoreCodetoGuid(Guid sellerGuid, string code)
+        {
+            var user = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
+            if (user != null)
+            {
+                user.Token = code;
+                Commit();
+            }
+        }
+
         /// <summary>
         /// Function to send email to seller to register and view his auction
         /// </summary>
