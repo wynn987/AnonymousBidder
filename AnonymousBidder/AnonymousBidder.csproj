@@ -147,6 +147,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuctionController.cs" />
+    <Compile Include="Controllers\BidPostController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Data\Entity\Auction.cs" />
     <Compile Include="Data\Entity\BaseEntity.cs" />
@@ -175,9 +176,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AuctionService.cs" />
+    <Compile Include="Services\BidPostService.cs" />
     <Compile Include="ViewModels\AccountCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionItemViewModel.cs" />
+    <Compile Include="ViewModels\BidPostViewModel.cs" />
     <Compile Include="ViewModels\DepositMoneyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +444,7 @@
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\RegisterFail.cshtml" />
     <Content Include="Views\Account\DepositMoney.cshtml" />
+    <Content Include="Views\BidPost\BidPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
