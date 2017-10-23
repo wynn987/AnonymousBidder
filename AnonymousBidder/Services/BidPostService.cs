@@ -29,7 +29,7 @@ namespace AnonymousBidder.Services
             _userRoleRepository = new UserRoleRepository(_unitOfWork);
         }
 
-        internal BidPostViewModel retrieveUserGUID(String email)
+        internal BidPostViewModel RetrieveUserGUID(String email)
         {
             //Create a viewmodel thsat has AUctionModel data
             BidPostViewModel result = GetBidPostByEmail(email);

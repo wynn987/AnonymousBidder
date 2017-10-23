@@ -7,3 +7,25 @@
 <h2>BidPost</h2>
 <div>@Model.AuctionModel.AuctionImages</div>
 
+<!-- Design this ! -->
+
+@using (Html.BeginForm("Bid", "BidPost", FormMethod.Post, new { name = "BidPostForm", id = "BidPostForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container-fluid" id="BidPostFormDiv">
+        <div class="form-horizontal">
+            <h4>Bid</h4>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="text" id="BidModel_BidPlaced" name="BidModel.BidPlaced" class="form-control text-box single-line" placeholder="bid amount" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="btnBid" name="btnBid" value="Bid" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}

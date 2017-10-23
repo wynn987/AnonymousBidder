@@ -29,7 +29,18 @@ namespace AnonymousBidder.Controllers
             BidPostViewModel model = _bidPostService.RetrieveUserGUID(userEmail);
             return View(model);
         }
+        
+        [HttpPost]
+        public ActionResult Bid(BidPostViewModel model, string returnUrl) 
+        {
+            var variable = model;
 
-
+            return null;
+        }
+        
+        public ActionResult Bid(string returnUrl)
+        {
+            return null;
+        }
     }
 }

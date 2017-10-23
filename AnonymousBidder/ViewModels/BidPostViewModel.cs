@@ -9,6 +9,7 @@ namespace AnonymousBidder.ViewModels
     public class BidPostViewModel
     {
         public AuctionModel AuctionModel { get; set; }
+        public BidModel BidModel { get; set; }
 
     }
 }
