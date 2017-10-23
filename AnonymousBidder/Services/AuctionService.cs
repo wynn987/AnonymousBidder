@@ -174,6 +174,7 @@ namespace AnonymousBidder.Services
 
             //Storing Auction information into AuctionModel
             AuctionModel postedAuctionModel = new AuctionModel();
+            postedAuctionModel.AuctionGUID = postedAuctionObj.AuctionGUID;
             postedAuctionModel.ItemName = postedAuctionObj.ItemName;
             postedAuctionModel.StartingBid = postedAuctionObj.StartingBid;
             postedAuctionModel.StartDate = postedAuctionObj.StartDate;
@@ -205,6 +206,33 @@ namespace AnonymousBidder.Services
         }
         #endregion
 
+        #region query seller by GUID
+        internal Auction ViewAuctionByGUID(Guid auctionGUID)
+        {
+            Auction queryResultObj = _auctionRepository.FindBy(x => x.AuctionGUID == auctionGUID).FirstOrDefault();
+            return queryResultObj;
+        }
+        #endregion
+
+        #region Save Auction Item Seller Shipping Status
+        internal ServiceResult SaveSellerShippingStatus(Auction auctionItemVM)
+        {
+            //auctionItemVM.auctionItem.AuctionGUID;
+
+
+            _auctionRepository.Update(auctionItemVM);
+
+            bool commitSuccess = Commit();
+            if (commitSuccess)
+            {
+                return new ServiceResult()
+                {
+                    Success = true
+                };
+            }
+            return new ServiceResult();
+        }
+        #endregion
 
         #region Save
         /// <summary>

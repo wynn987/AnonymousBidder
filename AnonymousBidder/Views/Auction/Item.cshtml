@@ -113,23 +113,39 @@
                 <dd style="color:lightgreen;">
                     Yes
                 </dd>
+                using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
+                {
+                    <dt>
+                        Has item being sent out?
+                    </dt>
+                    <dd>
+                        <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
+                        @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
+                        {
+                             new SelectListItem {Text="No", Value="0" },
+                             new SelectListItem {Text="Yes", Value="1" }
+                        })
+                        <input type="submit" value="Submit" />
+                    </dd>
+                }
             }
             else
             {
                 <dd style="color:red;">
                     No
                 </dd>
-                using (Html.BeginForm("View", "Auction", FormMethod.Post))
+                using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
                 {
                     <dt>
                         Has item being sent out?
                     </dt>
                     <dd>
-                        @Html.DropDownList("Test", new List<SelectListItem>
+                        <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
+                        @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
                         {
-                             new SelectListItem {Text="No", Value="no" },
-                             new SelectListItem {Text="Yes", Value="yes" }
-                        }, "Please Select")
+                             new SelectListItem {Text="No", Value="0" },
+                             new SelectListItem {Text="Yes", Value="1" }
+                        })
                         <input type="submit" value="Submit" />
                     </dd>
                 }
@@ -156,7 +172,6 @@
             }
             else
             {
-
             }
 
         </dl>

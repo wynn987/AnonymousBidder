@@ -1,4 +1,5 @@
 ﻿using AnonymousBidder.Common;
+using AnonymousBidder.Data.Entity;
 using AnonymousBidder.Services;
 using AnonymousBidder.ViewModels;
 using System;
@@ -33,6 +34,37 @@ namespace AnonymousBidder.Controllers
             AuctionItemViewModel result = _auctionService.ViewSellerAuction(UserInfoModel.Email);
             return View(result);
         }
+
+        [SellerFilter]
+        [HttpPost]
+        public ActionResult SaveSellerItemStatus(AuctionItemViewModel itemViewModel, FormCollection form)
+        {
+            string valueOf = form["auctionItem.SellerSent"].ToString();
+            if (valueOf.Equals("1"))
+            {
+                itemViewModel.auctionItem.SellerSent = true;
+            }
+            else if (valueOf.Equals("0"))
+            {
+                itemViewModel.auctionItem.SellerSent = false;
+            }
+            else
+            {
+                //if somebody tries to hack through here....
+            }
+
+            Auction queryObj = _auctionService.ViewAuctionByGUID(itemViewModel.auctionItem.AuctionGUID);
+            queryObj.SellerSent = itemViewModel.auctionItem.SellerSent;
+
+            ServiceResult result = _auctionService.SaveSellerShippingStatus(queryObj);
+            if (result.Success)
+            {
+                return RedirectToAction("Item", result);
+            }
+            return null;
+
+        }
+
         //TODO: Test
         /// <summary>
         /// Controller function for admins to create auction
