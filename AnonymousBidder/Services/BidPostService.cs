@@ -60,15 +60,13 @@ namespace AnonymousBidder.Services
                 BidPostViewModel result = new BidPostViewModel();
                 var auction = user.Auction;
                 var bid = auction.CurrentBid;
-                var filePath = user.Auction.AuctionImages;
 
-                foreach(var image in filePath)
+                FilePath f = _filePathRepository.FindBy(x => x.FilePath_AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
+                result.ImageModel = new FilePathModel()
                 {
-                    result.AuctionModel.AuctionImages.Add(new FilePathModel()
-                    {
-                        FilePathName = image.FilePathName
-                    });
-                }
+                    FilePathName = f.FilePathName
+                };
+
                 result.AuctionModel = new AuctionModel()
                 {
                     ItemName = auction.ItemName,
@@ -80,7 +78,7 @@ namespace AnonymousBidder.Services
                     BidPlaced = bid.BidPlaced
                 };
 
-                if (auction == null || bid == null || filePath == null)
+                if (auction == null || bid == null || f == null)
                 {
                     // if any of the details cannot be found,
                     // bid post is either corrupted or not setup

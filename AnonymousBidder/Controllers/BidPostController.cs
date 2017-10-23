@@ -23,10 +23,14 @@ namespace AnonymousBidder.Controllers
         }
 
         // GET: BidPost
-        public ActionResult Index()
+        public ActionResult BidPost()
         {
             string userEmail = UserInfoModel.Email;
             BidPostViewModel model = _bidPostService.RetrieveUserGUID(userEmail);
+            if (model == null)
+            {
+                return RedirectToAction("Login", "AccountController");
+            }
             return View(model);
         }
         
