@@ -27,10 +27,11 @@ namespace AnonymousBidder.Controllers
         /// Controller function for bidders to bid
         /// </summary>
         /// <returns>Auction Item View</returns>
-        [BidderFilter]
+        [SellerFilter]
         public ActionResult Item()
         {
-            return View();
+            AuctionItemViewModel result = _auctionService.ViewSellerAuction(UserInfoModel.Email);
+            return View(result);
         }
         //TODO: Test
         /// <summary>

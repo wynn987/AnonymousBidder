@@ -25,7 +25,7 @@ namespace AnonymousBidder.Common
             else
             {
                 UserInfoModel userModel = (UserInfoModel)HttpContext.Current.Session["UserLoginKey"];
-               if (userModel.Role == "SELLER")
+               if (!(userModel.Role == "SELLER"))
                {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { area = "", action = "Error", controller = "Error", returnUrl = ctx.Request.Url.AbsolutePath }));
                 }

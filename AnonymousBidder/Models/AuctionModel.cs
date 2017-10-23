@@ -19,6 +19,7 @@ namespace AnonymousBidder.Models
         public DateTime EndDate { get; set; }
         public bool SellerSent { get; set; }
         public bool BuyerReceived { get; set; }
+        public bool AuctionOver { get; set; }
 
         public Guid? Auction_BidGUID { get; set; }
         public ICollection<FilePathModel> AuctionImages { get; set; }
