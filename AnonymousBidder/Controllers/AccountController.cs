@@ -221,19 +221,9 @@ namespace AnonymousBidder.Controllers
                 {
                     return RedirectToAction("Create", "Auction");
                 }
-<<<<<<< HEAD
                 else if (userInfo.Role == "SELLER")
                 {
                     return RedirectToAction("Item", "Auction");
-=======
-                else if (userInfo.Role == "BIDDER")
-                {
-                    return RedirectToAction("BidPost", "BidPost");
-                }
-                else if (userInfo.Role == "SELLER")
-                {
-                    return RedirectToAction("ViewAuction", "ViewAuction");
->>>>>>> Isaac
                 }
             }
             return View();

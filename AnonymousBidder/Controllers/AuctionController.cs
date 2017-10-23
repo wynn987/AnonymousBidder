@@ -51,7 +51,7 @@ namespace AnonymousBidder.Controllers
         [AdminFilter]
         public ActionResult Save(AuctionCreateViewModel vm)
         {
-            ViewModel result = _auctionService.AddAuction(vm);
+            ServiceResult result = _auctionService.AddAuction(vm);
             if (result.Success)
             {
                 return RedirectToAction("SendRegistrationEmail", result);
@@ -63,11 +63,11 @@ namespace AnonymousBidder.Controllers
         /// Input ServiceReslt has seller GUID as Params
         /// </summary>
         [AdminFilter]
-        public ActionResult SendRegistrationEmail(ViewModel result)
+        public ActionResult SendRegistrationEmail(ServiceResult result)
         {
             Guid sellerGuid = Guid.Parse(result.Params);
             string registrationPath = GenerateEmailRegistrationCode(sellerGuid);
-            ViewModel emailResults = _auctionService.SendEmail(registrationPath, sellerGuid);
+            ServiceResult emailResults = _auctionService.SendEmail(registrationPath, sellerGuid);
 
             return View(emailResults);
         }
@@ -79,13 +79,14 @@ namespace AnonymousBidder.Controllers
         private string GenerateEmailRegistrationCode(Guid sellerGuid)
         {
             string code = Utilities.CreateRandomCode();
+            _auctionService.StoreCodetoGuid(sellerGuid, code);
             return Url.Action("RegisterSeller", "Account", new { sellerGuid = sellerGuid, code = code }, protocol: Request.Url.Scheme);
         }
         /// <summary>
         /// Controller function to display server errors if auction not successfully created
         /// </summary>
         [AdminFilter]
-        public ActionResult FailedtoCreate(ViewModel result)
+        public ActionResult FailedtoCreate(ServiceResult result)
         {
             return View(result.ErrorMessage);
         }

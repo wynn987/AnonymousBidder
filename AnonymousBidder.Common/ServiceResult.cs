@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnonymousBidder.Common
 {
-    public class ViewModel
+    public class ServiceResult
     {
         public string ErrorMessage { get; set; }
         public bool Success { get; set; }
