@@ -180,7 +180,11 @@
     <Compile Include="ViewModels\AccountCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionItemViewModel.cs" />
+<<<<<<< HEAD
+    <Compile Include="ViewModels\BAccountCreateViewModel.cs" />
+=======
     <Compile Include="ViewModels\BidPostViewModel.cs" />
+>>>>>>> 5e53d2aaad4ac85747c124363e1f5678e24d3446
     <Compile Include="ViewModels\DepositMoneyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -440,11 +444,15 @@
     </Content>
     <Content Include="Views\Auction\Item.cshtml" />
     <Content Include="Views\Auction\Create.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterSeller.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\RegisterFail.cshtml" />
     <Content Include="Views\Account\DepositMoney.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Views\Account\RegisterBidder.cshtml" />
+=======
     <Content Include="Views\BidPost\BidPost.cshtml" />
+>>>>>>> 5e53d2aaad4ac85747c124363e1f5678e24d3446
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

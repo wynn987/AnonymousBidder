@@ -6,11 +6,11 @@ using System.Web;
 
 namespace AnonymousBidder.ViewModels
 {
-    public class AccountCreateViewModel
+    public class BAccountCreateViewModel
     {
         //public ABUserModel ABUser { get; set; }
-        public Guid userGUID { get; set; }
-        public string userToken { get; set; }
+        public Guid auctionGUID { get; set; }
+        
 
         [Required]
         [Display(Name = "Email Address")]

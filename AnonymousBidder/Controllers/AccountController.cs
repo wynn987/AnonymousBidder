@@ -66,25 +66,80 @@ namespace AnonymousBidder.Controllers
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
 
+        
+
+        
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(AccountCreateViewModel model, string returnUrl)
+        public ActionResult RegisterBidder(BAccountCreateViewModel model,string returnUrl)
         {
+            Guid auctionGUID;
             ViewBag.ReturnUrl = returnUrl;
-            return DoRegister(model, returnUrl);
+            auctionGUID = model.auctionGUID;
+
+            return DoRegisterBidder(model,auctionGUID ,returnUrl);
+            //return RedirectToAction("", "");
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public ActionResult Register(string returnUrl)
+        public ActionResult RegisterBidder(string returnUrl)
         {
-            AccountCreateViewModel model = new AccountCreateViewModel();
-            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+            var auctionGuid = Request.QueryString["auctionGuid"];
+            BAccountCreateViewModel model = new BAccountCreateViewModel();
+            model.auctionGUID = new Guid(auctionGuid);
 
+            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
             if (cookie != null)
             {
                 try
                 {
-                    return DoRegister(model, returnUrl);
+                    
+                    return DoRegisterBidder(model, model.auctionGUID,returnUrl);
+                    //return RedirectToAction("","");
+                }
+                catch (Exception)
+                {
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(model);
+
+        }
+        
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult RegisterSeller(AccountCreateViewModel model, string returnUrl)
+        {
+            string code;
+            Guid sellerGuid;
+            ViewBag.ReturnUrl = returnUrl;
+            sellerGuid = model.userGUID;
+            code = model.userToken;
+
+            return DoRegister(model, sellerGuid, code, returnUrl);
+        }
+        
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RegisterSeller(string returnUrl)
+        {
+            //fetch the url sellerGUID and token code
+            var sellerGuid = Request.QueryString["sellerGuid"];
+            var code = Request.QueryString["code"];
+            AccountCreateViewModel model = new AccountCreateViewModel();
+            model.userGUID = new Guid(sellerGuid);
+            model.userToken = code;
+
+            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+            if (cookie != null)
+            {
+                try
+                {
+                    return DoRegister(model, model.userGUID, model.userToken, returnUrl);
                 }
                 catch (Exception)
                 {
@@ -95,9 +150,10 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
+      
+        [BidderFilter]
         [HttpPost]
-        //[BidderFilter]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -105,8 +161,8 @@ namespace AnonymousBidder.Controllers
         }
 
       
-        //[BidderFilter]
-        [AllowAnonymous]
+        [BidderFilter]
+        //[AllowAnonymous]
         public ActionResult DepositMoney(string returnUrl)
         {
             DepositMoneyViewModel model = new DepositMoneyViewModel();
@@ -224,34 +280,74 @@ namespace AnonymousBidder.Controllers
                 else if (userInfo.Role == "SELLER")
                 {
                     return RedirectToAction("Item", "Auction");
+<<<<<<< HEAD
+                } 
+=======
                 }
                 else if (userInfo.Role == "BIDDER")
                 {
                     return RedirectToAction("BidPost", "BidPost");
                 }
+>>>>>>> 5e53d2aaad4ac85747c124363e1f5678e24d3446
             }
             return View();
         }
 
 
-        private ActionResult DoRegister(AccountCreateViewModel model, string returnUrl)
+        private ActionResult DoRegister(AccountCreateViewModel model, Guid sellerGuid, string token, string returnUrl)
+        {
+            
+            ABUser currentUser = AccountService.GetUserByUserName(model.EmailAddress);
+            var currentUserGuid = currentUser.ABUserGUID;
+            var currentUserToken = currentUser.Token;
+            Guid tempCurrentUserGuid = sellerGuid;
+
+            if(tempCurrentUserGuid == currentUserGuid && currentUserToken == token)
+            {
+                var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
+                AccountCreateViewModel vm = new AccountCreateViewModel();
+                vm.Password = hashedPassword;
+                vm.EmailAddress = model.EmailAddress;
+                vm.ConfirmPassword = hashedPassword;
+                vm.Alias = model.Alias;
+
+                ServiceResult result = new ServiceResult();
+                result = AccountService.AddAccount(vm);
+                if (result.Success)
+                {
+                    return RedirectToAction("RegisterSuccess", result);
+                }
+                return RedirectToAction("RegisterFail", result);
+
+            }
+
+            return null;
+        }
+
+        
+        private ActionResult DoRegisterBidder(BAccountCreateViewModel model, Guid auctionGuid, string returnUrl)
         {
 
+            Guid tempCurrentAuctionGuid = auctionGuid;
             var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
-            AccountCreateViewModel vm = new AccountCreateViewModel();
+            BAccountCreateViewModel vm = new BAccountCreateViewModel();
             vm.Password = hashedPassword;
             vm.EmailAddress = model.EmailAddress;
             vm.ConfirmPassword = hashedPassword;
             vm.Alias = model.Alias;
 
+
             ServiceResult result = new ServiceResult();
-            result = AccountService.AddAccount(vm);
-            if (result.Success)
-            {
-                return RedirectToAction("RegisterSuccess", result);
-            }
-            return RedirectToAction("RegisterFail", result);
+                result = AccountService.AddBidderAccount(vm,tempCurrentAuctionGuid);
+                if (result.Success)
+                {
+                    return RedirectToAction("RegisterSuccess", result);
+                }
+                return RedirectToAction("RegisterFail", result);
+
         }
+       
+
 
         private ActionResult DoDeposit(DepositMoneyViewModel model, string returnUrl)
         {

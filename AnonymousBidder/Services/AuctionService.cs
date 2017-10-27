@@ -60,6 +60,7 @@ namespace AnonymousBidder.Services
             if (validAuction.Success && validFilePath.Success && validSeller.Success)
             {
                 Auction addAuctionSuccess = SaveAuction(vm.Auction);
+                // auction guid
                 Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
                 bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
 
