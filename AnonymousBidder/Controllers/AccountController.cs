@@ -280,7 +280,15 @@ namespace AnonymousBidder.Controllers
                 else if (userInfo.Role == "SELLER")
                 {
                     return RedirectToAction("Item", "Auction");
+<<<<<<< HEAD
                 } 
+=======
+                }
+                else if (userInfo.Role == "BIDDER")
+                {
+                    return RedirectToAction("BidPost", "BidPost");
+                }
+>>>>>>> 5e53d2aaad4ac85747c124363e1f5678e24d3446
             }
             return View();
         }

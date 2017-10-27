@@ -25,6 +25,11 @@ namespace AnonymousBidder.Controllers
         // GET: BidPost
         public ActionResult BidPost()
         {
+            if (UserInfoModel == null)
+            {
+                return RedirectToAction("Login", "AccountController");
+            }
+
             string userEmail = UserInfoModel.Email;
             BidPostViewModel model = _bidPostService.RetrieveUserGUID(userEmail);
             if (model == null)
@@ -35,16 +40,12 @@ namespace AnonymousBidder.Controllers
         }
         
         [HttpPost]
-        public ActionResult Bid(BidPostViewModel model, string returnUrl) 
+        public ActionResult Bid(BidPostViewModel data, string returnUrl) 
         {
-            var variable = model;
-
-            return null;
-        }
-        
-        public ActionResult Bid(string returnUrl)
-        {
-            return null;
+            decimal bid = data.BidModel.BidPlaced;
+            string userEmail = UserInfoModel.Email;
+            BidPostViewModel model = _bidPostService.updateAuctionBid(userEmail, bid);
+            return View(model);
         }
     }
 }
