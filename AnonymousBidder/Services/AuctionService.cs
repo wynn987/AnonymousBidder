@@ -36,6 +36,9 @@ namespace AnonymousBidder.Services
             _userRoleRepository = new UserRoleRepository(_unitOfWork);
             _bidRepository = new BidRepository(_unitOfWork);
         }
+
+        
+  
         
         //TODO: Create Seller
         /// <summary>
@@ -60,6 +63,7 @@ namespace AnonymousBidder.Services
                 Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
                 bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
 
+               
                 bool commitSuccess = Commit();
                 if (commitSuccess)
                 {
@@ -92,6 +96,7 @@ namespace AnonymousBidder.Services
         /// </summary>
         /// <param name="registrationPath"></param>
         /// <param name="sellerGuid"></param>
+
         /// <returns></returns>
         internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid)
         {
@@ -100,7 +105,7 @@ namespace AnonymousBidder.Services
                 && seller.Role != null 
                 && seller.Role.UserRoleName == "SELLER")
             {
-                var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", registrationPath, "250", "250");
+                var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", "https://anonymousbidder.azurewebsites.net", "250", "250");
                 WebResponse response = default(WebResponse);
                 Stream remoteStream = default(Stream);
                 StreamReader readStream = default(StreamReader);
