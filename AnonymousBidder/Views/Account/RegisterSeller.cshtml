@@ -19,7 +19,7 @@
 <body>
 
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
-    <form action="/Account/Register/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
+    <form action="/Account/RegisterSeller/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
         <div class="container signin-page">
             <div class="signin-logo">
@@ -60,7 +60,8 @@
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control input-md password-field" })
                         @Html.ValidationMessageFor(model => model.Password)
                     </div>
-
+                    <input type="hidden" name="userGUID" value="@Model.userGUID">
+                    <input type="hidden" name="userToken" value="@Model.userToken">
 
                     <div class="form-group paddingleft">
                         <span class="field-validation-error">@message</span>

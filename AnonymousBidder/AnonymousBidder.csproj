@@ -178,6 +178,7 @@
     <Compile Include="ViewModels\AccountCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionCreateViewModel.cs" />
     <Compile Include="ViewModels\AuctionItemViewModel.cs" />
+    <Compile Include="ViewModels\BAccountCreateViewModel.cs" />
     <Compile Include="ViewModels\DepositMoneyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -437,10 +438,11 @@
     </Content>
     <Content Include="Views\Auction\Item.cshtml" />
     <Content Include="Views\Auction\Create.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\RegisterSeller.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\RegisterFail.cshtml" />
     <Content Include="Views\Account\DepositMoney.cshtml" />
+    <Content Include="Views\Account\RegisterBidder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
