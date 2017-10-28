@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\BAccountCreateViewModel.cs" />
     <Compile Include="ViewModels\BidPostViewModel.cs" />
     <Compile Include="ViewModels\DepositMoneyViewModel.cs" />
+    <Compile Include="ViewModels\MAccountCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSS\Custom\bootstrap-multiselect.css" />
@@ -448,6 +449,7 @@
     <Content Include="Views\Account\DepositMoney.cshtml" />
     <Content Include="Views\Account\RegisterBidder.cshtml" />
     <Content Include="Views\BidPost\BidPost.cshtml" />
+    <Content Include="Views\Account\RegisterModerator.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
