@@ -450,6 +450,7 @@
     <Content Include="Views\Account\RegisterBidder.cshtml" />
     <Content Include="Views\BidPost\BidPost.cshtml" />
     <Content Include="Views\Account\RegisterModerator.cshtml" />
+    <Content Include="Views\Account\ModRegistrationSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
