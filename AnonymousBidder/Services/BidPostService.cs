@@ -52,27 +52,31 @@ namespace AnonymousBidder.Services
             Auction auction = user.Auction;
             if (auction != null)
             {
-                auction.Auction_BidGUID = null;
-                var bidList = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auction.AuctionGUID).ToList();
-                if (bidList != null && bidList.Count > 0)
+                // only delete if current user is the winner
+                if (auction.CurrentBid.Bidder.Email == email)
                 {
-                    foreach (var item in bidList)
+                    auction.Auction_BidGUID = null;
+                    var bidList = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auction.AuctionGUID).ToList();
+                    if (bidList != null && bidList.Count > 0)
                     {
-                        _bidRepository.Delete(item);
+                        foreach (var item in bidList)
+                        {
+                            _bidRepository.Delete(item);
+                        }
                     }
-                }
-                _unitOfWork.Commit();
-                var userList = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == auction.AuctionGUID).ToList();
-                if (userList != null && userList.Count > 0)
-                {
-                    foreach (var item in userList)
+                    _unitOfWork.Commit();
+                    var userList = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == auction.AuctionGUID).ToList();
+                    if (userList != null && userList.Count > 0)
                     {
-                        _abUserRepository.Delete(item);
+                        foreach (var item in userList)
+                        {
+                            _abUserRepository.Delete(item);
+                        }
                     }
+                    _unitOfWork.Commit();
+                    _auctionRepository.Delete(auction);
+                    _unitOfWork.Commit();
                 }
-                _unitOfWork.Commit();
-                _auctionRepository.Delete(auction);
-                _unitOfWork.Commit();
             }
         }
 
