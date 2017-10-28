@@ -26,10 +26,11 @@ namespace AnonymousBidder.Data.Entity
         [Required]
         public bool AuctionOver { get; set; }
 
-        [ForeignKey("CurrentBid")]
         public Guid? Auction_BidGUID { get; set; }
+        [ForeignKey("Auction_BidGUID")]
         public virtual Bid CurrentBid { get; set; } // Current Bidder info
         public virtual ICollection<FilePath> AuctionImages { get; set; }
+        public virtual ICollection<Bid> AllBids { get; set; }
         public virtual ICollection<ABUser> AllUsers { get; set; }
 
         public Auction()
