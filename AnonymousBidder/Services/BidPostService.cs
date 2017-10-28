@@ -46,6 +46,40 @@ namespace AnonymousBidder.Services
             return null;
         }
 
+        internal void DeleteAuctionData(string email)
+        {
+            ABUser user = _abUserRepository.FindBy(x => x.Email == email).FirstOrDefault();
+            Auction auction = user.Auction;
+            if (auction != null)
+            {
+                // only delete if current user is the winner
+                if (auction.CurrentBid.Bidder.Email == email)
+                {
+                    auction.Auction_BidGUID = null;
+                    var bidList = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auction.AuctionGUID).ToList();
+                    if (bidList != null && bidList.Count > 0)
+                    {
+                        foreach (var item in bidList)
+                        {
+                            _bidRepository.Delete(item);
+                        }
+                    }
+                    _unitOfWork.Commit();
+                    var userList = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == auction.AuctionGUID).ToList();
+                    if (userList != null && userList.Count > 0)
+                    {
+                        foreach (var item in userList)
+                        {
+                            _abUserRepository.Delete(item);
+                        }
+                    }
+                    _unitOfWork.Commit();
+                    _auctionRepository.Delete(auction);
+                    _unitOfWork.Commit();
+                }
+            }
+        }
+
         private BidPostViewModel GetBidPostByEmail(string email)
         {
             //Get database values and pass it to the view model
@@ -59,7 +93,8 @@ namespace AnonymousBidder.Services
                 {
                     ItemName = auction.ItemName,
                     EndDate = auction.EndDate,
-                    StartingBid = auction.StartingBid
+                    StartingBid = auction.StartingBid,
+                    AuctionOver = auction.AuctionOver
                 };
 
                 FilePath f = _filePathRepository.FindBy(x => x.FilePath_AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
@@ -118,6 +153,7 @@ namespace AnonymousBidder.Services
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
+                        SendEmail(user);
                         return new ServiceResult()
                         {
                             Success = true
@@ -134,6 +170,7 @@ namespace AnonymousBidder.Services
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
+                        SendEmail(user);
                         return new ServiceResult()
                         {
                             Success = true
@@ -159,7 +196,7 @@ namespace AnonymousBidder.Services
             return b;
         }
 
-        internal ServiceResult SendEmail(ABUser user, Auction data, decimal bid)
+        internal ServiceResult SendEmail(ABUser user)
         {
             if (user != null
                 && user.Role != null
