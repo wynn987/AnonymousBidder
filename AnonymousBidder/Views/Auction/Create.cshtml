@@ -6,15 +6,24 @@
 }
 
 
-<h2>Create</h2>
+<ul class="nav navbar-nav">
+    <li class="active"><a href='@Url.Action("RegisterModerator", "Account", new { area = "" })'>Create Moderator Account</a></li>
+</ul>
 
+
+<br />
+<br />
+<h2>Create</h2>
 
 @using (Html.BeginForm("Save", "Auction", FormMethod.Post, new { name = "AuctionCreateForm", id = "AuctionCreateForm" })) 
 {
     @Html.AntiForgeryToken()
     <div class="container-fluid" id="AuctionCreateDiv">
+        
         <div class="form-horizontal">
+            
             <h4>Auction</h4>
+         
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

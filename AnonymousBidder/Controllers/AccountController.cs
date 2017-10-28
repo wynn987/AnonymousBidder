@@ -369,7 +369,7 @@ namespace AnonymousBidder.Controllers
                 result = AccountService.AddModeratorAccount(ModViewModel);
                 if (result.Success)
                 {
-                    return RedirectToAction("RegisterSuccess", result);
+                    return RedirectToAction("ModRegistrationSuccess", result);
                 }
                 return RedirectToAction("RegisterFail", result);
 
@@ -512,6 +512,13 @@ namespace AnonymousBidder.Controllers
 
         [AllowAnonymous]
         public ActionResult RegisterFail()
+        {
+            return View();
+        }
+
+        [AdminFilter]
+        //[AllowAnonymous]
+        public ActionResult ModRegistrationSuccess()
         {
             return View();
         }

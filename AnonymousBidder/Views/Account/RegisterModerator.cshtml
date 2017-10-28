@@ -1,8 +1,9 @@
 ﻿@model AnonymousBidder.ViewModels.MAccountCreateViewModel
 @{
-    Layout = null;
     string message = ViewBag.ErrorMessage;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <!DOCTYPE html>
 <html>
@@ -17,58 +18,68 @@
     @Scripts.Render("~/bundles/jqueryui")
 </head>
 <body>
+    <h2>Create</h2>
+
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
     
     <form action="/Account/RegisterModerator/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
-        <div class="container signin-page">
-            <div class="signin-logo">
-            </div>
-            <div class="box">
-                <div class="form-section clearfix">
-                    <h4 class="pull-left">Register Moderator</h4>
-                    <div class="pull-right secure-region">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-section clearfix">
 
-                    <div class="form-group paddingleft">
+
+        <div class="container-fluid" id="AuctionCreateDiv">
+            <div class="form-horizontal">
+
+                <h4>Moderator</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                
+
+                <div class="form-group paddingleft">
+                    <div class="col-sm-6">
                         <label>Email Address</label>
+
                         @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-md email-field" })
                         @Html.ValidationMessageFor(model => model.EmailAddress)
                     </div>
+                    </div>
 
-                    <div class="form-group paddingleft">
+
+                <div class="form-group paddingleft">
+                    <div class="col-sm-6">
                         <label>Alias</label>
                         @Html.TextBoxFor(m => m.Alias, new { @class = "form-control input-md email-field" })
                         @Html.ValidationMessageFor(model => model.Alias)
+                        </div>
                     </div>
 
-                    <div class="form-group paddingleft">
+                <div class="form-group paddingleft">
+                    <div class="col-sm-6">
                         <label>Password</label>
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control input-md password-field" })
                         @Html.ValidationMessageFor(model => model.Password)
+                        </div>
                     </div>
-                    <div class="form-group paddingleft">
+                <div class="form-group paddingleft">
+                    <div class="col-sm-6">
                         <label>Confirm Password</label>
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control input-md password-field" })
                         @Html.ValidationMessageFor(model => model.Password)
+                        </div>
                     </div>
-                    <input type="hidden" name="userGUID" value="@Model.userGUID">
-                    <div class="form-group paddingleft">
+                <input type="hidden" name="userGUID" value="@Model.userGUID">
+                <div class="form-group paddingleft">
+                    <div class="col-sm-6">
                         <span class="field-validation-error">@message</span>
-                        <input type="submit" class="btn btn-signin" value="Register" />
+                        <input type="submit" class="btn btn-signin" value="Ceate" />
+                        </div>
                     </div>
 
-                </div>
             </div>
         </div>
-        <footer>
-            <div class="container signin-page">
-                <div class="pull-right">© @DateTime.Now.Year.ToString() AnonymousBidder - All Rights Reserved</div>
-            </div>
-        </footer>
+      
     </form>
 </body>
 </html>
+
+
+
