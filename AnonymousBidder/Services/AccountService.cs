@@ -188,6 +188,13 @@ namespace AnonymousBidder.Services
             return _userRepository.FindBy(x => x.Email == username).FirstOrDefault();
         }
 
+        public ABUser GetUserByGUID(string guid)
+        {
+            Guid tempGuid = new Guid(guid);
+            return _userRepository.FindBy(x => x.ABUserGUID == tempGuid ).FirstOrDefault();
+        }
+
+
         public ABUser GetUserByUserNameAndPassword(string username, string hashedPassword)
         {
             var user = _userRepository.FindBy(x => x.Email == username && x.Password == hashedPassword).FirstOrDefault();
