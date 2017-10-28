@@ -22,7 +22,7 @@
 
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
     
-    <form action="/Account/RegisterModerator/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
+    <form action="/MAccount/RegisterModerator/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
 
 

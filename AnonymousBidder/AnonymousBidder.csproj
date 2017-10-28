@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AuctionController.cs" />
     <Compile Include="Controllers\BidPostController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\MAccountController.cs" />
     <Compile Include="Data\Entity\Auction.cs" />
     <Compile Include="Data\Entity\BaseEntity.cs" />
     <Compile Include="Data\Entity\Bid.cs" />
@@ -449,8 +450,8 @@
     <Content Include="Views\Account\DepositMoney.cshtml" />
     <Content Include="Views\Account\RegisterBidder.cshtml" />
     <Content Include="Views\BidPost\BidPost.cshtml" />
-    <Content Include="Views\Account\RegisterModerator.cshtml" />
-    <Content Include="Views\Account\ModRegistrationSuccess.cshtml" />
+    <Content Include="Views\MAccount\RegisterModerator.cshtml" />
+    <Content Include="Views\MAccount\ModRegistrationSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
