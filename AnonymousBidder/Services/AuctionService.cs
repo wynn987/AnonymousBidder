@@ -37,9 +37,9 @@ namespace AnonymousBidder.Services
             _bidRepository = new BidRepository(_unitOfWork);
         }
 
-        
-  
-        
+
+
+
         //TODO: Create Seller
         /// <summary>
         /// Point of access from controller's Save function
@@ -64,7 +64,7 @@ namespace AnonymousBidder.Services
                 Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
                 bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
 
-               
+
                 bool commitSuccess = Commit();
                 if (commitSuccess)
                 {
@@ -102,8 +102,8 @@ namespace AnonymousBidder.Services
         internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid)
         {
             ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
-            if (seller != null 
-                && seller.Role != null 
+            if (seller != null
+                && seller.Role != null
                 && seller.Role.UserRoleName == "SELLER")
             {
                 var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", "https://anonymousbidder.azurewebsites.net", "250", "250");
@@ -119,14 +119,14 @@ namespace AnonymousBidder.Services
                 response.Close();
                 remoteStream.Close();
                 readStream.Close();
-                
+
 
                 using (MemoryStream ms = new MemoryStream())
                 {
                     img.Save(ms, img.RawFormat);
                     byte[] imageBytes = ms.ToArray();
-                    
-                    string attachment =  Convert.ToBase64String(imageBytes);
+
+                    string attachment = Convert.ToBase64String(imageBytes);
                     //string htmlBody = "<img src='data:image/png;base64," + Convert.ToBase64String(imageBytes) + @"'/>";                                
 
                     string body = @"<p>Your auction has been listed.</p>
@@ -144,8 +144,8 @@ namespace AnonymousBidder.Services
 
 
 
-                    
-                    EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder",attachment);
+
+                    EmailHelper.SendMail("anonymousbidder3103@gmail.com", seller.Email, "Your auction has been listed", body, "", "smtp_anonymousbidder", attachment);
                 }
                 return new ServiceResult()
                 {
@@ -163,8 +163,11 @@ namespace AnonymousBidder.Services
         #region View Auction Item by seller
         internal AuctionItemViewModel ViewSellerAuction(string sellerEmail)
         {
-            //looking for UserRole == "SELLER" GUID
-            //var sellerGUID = _
+            //define all the needed Model to pass into ViewModel
+            AuctionModel postedAuctionModel = new AuctionModel();       // auction info
+            BidModel bidInfoModel = new BidModel();                     // bid details
+            ABUserModel bidderInfoModel = new ABUserModel();            // bidder user info (if any)
+
 
             //look for the seller's GUID
             var sellerInfoObj = _abUserRepository.FindBy(x => x.Email == sellerEmail).FirstOrDefault();
@@ -175,11 +178,29 @@ namespace AnonymousBidder.Services
             //Look for the Auction's bid information
             var bidInfoObj = _bidRepository.FindBy(x => x.Bid_AuctionGUID == postedAuctionObj.AuctionGUID).FirstOrDefault();
 
-            //Look for auction's bidder info
-            var auctionBidderObj = _abUserRepository.FindBy(x => x.ABUserGUID == bidInfoObj.Bid_ABUserGUID && x.ABUser_AuctionGUID == bidInfoObj.Bid_AuctionGUID).FirstOrDefault();
+            //try to look for Bid (if any)
+            try
+            {
+                //Look for auction's bidder info
+                var auctionBidderObj = _abUserRepository.FindBy(x => x.ABUserGUID == bidInfoObj.Bid_ABUserGUID && x.ABUser_AuctionGUID == bidInfoObj.Bid_AuctionGUID).FirstOrDefault();
+
+                //Storing Bidder Info into BidderModel
+                bidderInfoModel.Alias = auctionBidderObj.Alias;
+
+                //Storing Bid Info into BidModel
+                //BidModel bidInfoModel = new BidModel();
+                bidInfoModel.BidPlaced = bidInfoObj.BidPlaced;
+            }
+            catch
+            {
+                //Storing Bidder Info into BidderModel
+                bidderInfoModel.Alias = "No Bidders";
+                //BidModel bidInfoModel = new BidModel();
+                bidInfoModel.BidPlaced = -1;
+            }
+
 
             //Storing Auction information into AuctionModel
-            AuctionModel postedAuctionModel = new AuctionModel();
             postedAuctionModel.AuctionGUID = postedAuctionObj.AuctionGUID;
             postedAuctionModel.ItemName = postedAuctionObj.ItemName;
             postedAuctionModel.StartingBid = postedAuctionObj.StartingBid;
@@ -189,23 +210,28 @@ namespace AnonymousBidder.Services
             postedAuctionModel.SellerSent = postedAuctionObj.SellerSent;
             postedAuctionModel.BuyerReceived = postedAuctionObj.BuyerReceived;
 
-            //Storing Bidder Info into BidderModel
-            ABUserModel bidderInfoModel = new ABUserModel();
-            bidderInfoModel.Alias = auctionBidderObj.Alias;
-
-            //Storing Bid Info into BidModel
-            BidModel bidInfoModel = new BidModel();
-            bidInfoModel.BidPlaced = bidInfoObj.BidPlaced;
-
 
             if (postedAuctionObj != null)
             {
-                return new AuctionItemViewModel()
+                //if there are bids for this auction
+                if (bidInfoModel != null)
                 {
-                    auctionItem = postedAuctionModel,
-                    bidderInfo = bidderInfoModel,
-                    bidInfo = bidInfoModel
-                };
+                    return new AuctionItemViewModel()
+                    {
+                        auctionItem = postedAuctionModel,
+                        bidderInfo = bidderInfoModel,
+                        bidInfo = bidInfoModel
+                    };
+
+                }
+                //if there are NO bids for this auction
+                else
+                {
+                    return new AuctionItemViewModel()
+                    {
+                        auctionItem = postedAuctionModel
+                    };
+                }
             }
 
             return null;
@@ -282,7 +308,8 @@ namespace AnonymousBidder.Services
                 // The files are not actually saved in this demo
                 file.SaveAs(physicalPath);
 
-                FilePath filePath = new FilePath(){
+                FilePath filePath = new FilePath()
+                {
                     FilePathGUID = Guid.NewGuid(),
                     FilePathName = physicalPath,
                     FilePath_AuctionGUID = auctionGuid
@@ -358,7 +385,7 @@ namespace AnonymousBidder.Services
             {
                 results.ErrorMessage = "No file detected\n";
             }
-            if (files.First().ContentType.ToLower() != "image/jpeg" 
+            if (files.First().ContentType.ToLower() != "image/jpeg"
                 && files.First().ContentType.ToLower() != "image/png")
             {
                 results.ErrorMessage = "File is not an image\n";
@@ -367,7 +394,7 @@ namespace AnonymousBidder.Services
             results.Success = (results.ErrorMessage == string.Empty || files.First() == null) ? true : false;
             return results;
         }
-        
+
         /// <summary>
         /// Validate if auction is in valid format before saving
         /// </summary>
