@@ -118,6 +118,7 @@ namespace AnonymousBidder.Services
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
+                        SendEmail(user);
                         return new ServiceResult()
                         {
                             Success = true
@@ -134,6 +135,7 @@ namespace AnonymousBidder.Services
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
+                        SendEmail(user);
                         return new ServiceResult()
                         {
                             Success = true
@@ -159,7 +161,7 @@ namespace AnonymousBidder.Services
             return b;
         }
 
-        internal ServiceResult SendEmail(ABUser user, Auction data, decimal bid)
+        internal ServiceResult SendEmail(ABUser user)
         {
             if (user != null
                 && user.Role != null
