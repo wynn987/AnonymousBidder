@@ -34,10 +34,11 @@
                 <hr>
                 <div class="form-section clearfix">
 
+                    
                     <div class="form-group paddingleft">
-                        <label>Email Address</label>
-                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-md email-field" })
-                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                        
+                       @Html.HiddenFor(m => m.EmailAddress, new { @Value = ViewBag.UserEmail })
+
 
                     </div>
 

@@ -33,10 +33,12 @@ namespace AnonymousBidder.Services
             abuserModel.Alias = vm.Alias;
             abuserModel.Email = vm.EmailAddress;
             abuserModel.Password = vm.Password;
+            abuserModel.Token = null;
 
             ABUser currentUser = GetUserByUserName(vm.EmailAddress);
             currentUser.Alias = vm.Alias;
             currentUser.Password = vm.Password;
+            currentUser.Token = null;
 
             _userRepository.Update(currentUser);
 
@@ -187,6 +189,13 @@ namespace AnonymousBidder.Services
         {
             return _userRepository.FindBy(x => x.Email == username).FirstOrDefault();
         }
+
+        public ABUser GetUserByGUID(string guid)
+        {
+            Guid tempGuid = new Guid(guid);
+            return _userRepository.FindBy(x => x.ABUserGUID == tempGuid ).FirstOrDefault();
+        }
+
 
         public ABUser GetUserByUserNameAndPassword(string username, string hashedPassword)
         {

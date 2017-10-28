@@ -11,12 +11,12 @@ namespace AnonymousBidder.ViewModels
         //public ABUserModel ABUser { get; set; }
         public Guid userGUID { get; set; }
         public string userToken { get; set; }
-
+        
         [Required]
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "The Email Address is invalid.")]
         public string EmailAddress { get; set; }
-
+        
 
         [Required]
         [Display(Name = "Alias")]
