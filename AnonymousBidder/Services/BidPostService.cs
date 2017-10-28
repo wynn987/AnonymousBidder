@@ -137,7 +137,7 @@ namespace AnonymousBidder.Services
         }
 
         internal ServiceResult updateAuctionBid(string email, decimal bid)
-        {
+        { 
             ABUser user = _abUserRepository.FindBy(x => x.Email.ToString() == email).FirstOrDefault();
             if (user != null && user.Role.UserRoleName.ToString() == "BIDDER")
             {
@@ -153,7 +153,6 @@ namespace AnonymousBidder.Services
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
-                        SendEmail(user);
                         return new ServiceResult()
                         {
                             Success = true
@@ -164,13 +163,18 @@ namespace AnonymousBidder.Services
                 {
                     if (bid > auctionResult.CurrentBid.BidPlaced)
                     {
+                        // save previous bidder
+                        Bid pBid = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auctionResult.AuctionGUID).FirstOrDefault();
+                        ABUser pBidder = _abUserRepository.FindBy(x => x.ABUserGUID == pBid.Bid_ABUserGUID).FirstOrDefault();
                         // create new bid
                         Bid b = createNewBid(user, auctionResult, bid);
                         _bidRepository.Add(b);
                         // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
-                        SendEmail(user);
+                        // send email to previous bidder                        
+                        SendEmail(pBidder);
+
                         return new ServiceResult()
                         {
                             Success = true
