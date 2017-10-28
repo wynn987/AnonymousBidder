@@ -155,7 +155,38 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
-      
+        [HttpPost]
+        [AdminFilter]
+        //[AllowAnonymous]
+        public ActionResult RegisterModerator(MAccountCreateViewModel model, string returnUrl)
+        {    
+            ViewBag.ReturnUrl = returnUrl;      
+            return DoRegisterModerator(model, returnUrl);
+        }
+
+        [AdminFilter]
+        //[AllowAnonymous]
+        public ActionResult RegisterModerator(string returnUrl)
+        {
+            MAccountCreateViewModel model = new MAccountCreateViewModel();
+            //Request for cookie
+            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+
+            if (cookie != null)
+            {
+                try
+                {
+                    return DoRegisterModerator(model, returnUrl);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(model);
+        }
+
         [BidderFilter]
         [HttpPost]
         //[AllowAnonymous]
@@ -329,7 +360,8 @@ namespace AnonymousBidder.Controllers
             return null;
         }
 
-        
+       
+
         private ActionResult DoRegisterBidder(BAccountCreateViewModel model, Guid auctionGuid, string returnUrl)
         {
 
@@ -351,7 +383,26 @@ namespace AnonymousBidder.Controllers
                 return RedirectToAction("RegisterFail", result);
 
         }
-       
+
+        private ActionResult DoRegisterModerator(MAccountCreateViewModel ModeratorViewModel, string returnUrl)
+        {
+            
+                var hashedPassword = Utilities.CreatePasswordHash(ModeratorViewModel.Password, ModeratorViewModel.EmailAddress);
+                MAccountCreateViewModel ModViewModel = new MAccountCreateViewModel();
+                ModViewModel.Password = hashedPassword;
+                ModViewModel.EmailAddress = ModeratorViewModel.EmailAddress;
+                ModViewModel.ConfirmPassword = hashedPassword;
+                ModViewModel.Alias = ModeratorViewModel.Alias;
+
+                ServiceResult result = new ServiceResult();
+                result = AccountService.AddModeratorAccount(ModViewModel);
+                if (result.Success)
+                {
+                    return RedirectToAction("RegisterSuccess", result);
+                }
+                return RedirectToAction("RegisterFail", result);
+
+        }
 
 
         private ActionResult DoDeposit(DepositMoneyViewModel model, string returnUrl)
