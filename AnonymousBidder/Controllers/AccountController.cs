@@ -516,12 +516,6 @@ namespace AnonymousBidder.Controllers
             return View();
         }
 
-        [AdminFilter]
-        //[AllowAnonymous]
-        public ActionResult ModRegistrationSuccess()
-        {
-            return View();
-        }
 
         // POST: /Account/DoChangePassword
         [HttpPost]

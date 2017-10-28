@@ -53,6 +53,14 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
+
+        [AdminFilter]
+        //[AllowAnonymous]
+        public ActionResult ModRegistrationSuccess()
+        {
+            return View();
+        }
+
         private ActionResult DoRegisterModerator(MAccountCreateViewModel ModeratorViewModel, string returnUrl)
         {
 
