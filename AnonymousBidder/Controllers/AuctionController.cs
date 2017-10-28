@@ -86,7 +86,7 @@ namespace AnonymousBidder.Controllers
             ServiceResult result = _auctionService.AddAuction(vm);
             if (result.Success)
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("SendRegistrationEmail", result);
             }
             return RedirectToAction("Create");
         }
@@ -101,7 +101,7 @@ namespace AnonymousBidder.Controllers
             string registrationPath = GenerateEmailRegistrationCode(sellerGuid);
             ServiceResult emailResults = _auctionService.SendEmail(registrationPath, sellerGuid);
 
-            return View(emailResults);
+            return RedirectToAction("Create");
         }
         /// <summary>   
         /// Function to generate seller registration callback url

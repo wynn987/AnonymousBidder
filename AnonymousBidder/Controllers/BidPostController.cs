@@ -44,16 +44,24 @@ namespace AnonymousBidder.Controllers
         //[BidderFilter]
         public ActionResult BidPost(BidPostViewModel data, string returnUrl) 
         {
-            decimal bid = data.BidModel.BidPlaced;
-            string userEmail = UserInfoModel.Email;
-            _bidPostService.updateAuctionBid(userEmail, bid);
-            
-            BidPostViewModel model = _bidPostService.RetrieveUserGUID(userEmail);
-            if (model == null)
+            if (data.AuctionModel != null && data.AuctionModel.BuyerReceived == true)
             {
-                return RedirectToAction("Login", "Account");
+                _bidPostService.DeleteAuctionData(UserInfoModel.Email);
             }
-            return View(model);
+            else
+            {
+                decimal bid = data.BidModel.BidPlaced;
+                string userEmail = UserInfoModel.Email;
+                _bidPostService.updateAuctionBid(userEmail, bid);
+            
+                BidPostViewModel model = _bidPostService.RetrieveUserGUID(userEmail);
+                if (model == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                return View(model);
+            }
+            return RedirectToAction("Login", "Account");
         }
 
         // new methods here
