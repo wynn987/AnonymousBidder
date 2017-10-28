@@ -24,8 +24,7 @@ namespace AnonymousBidder.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
-            try
-            {
+            
                 //---------- ROLES --------------
                 UserRole admin = new UserRole
                 {
@@ -117,12 +116,8 @@ namespace AnonymousBidder.Migrations
                 context.Bid.AddOrUpdate(
                     bid
                 );
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-                throw;
-            }
+
+            context.Commit();
             //
         }
     }

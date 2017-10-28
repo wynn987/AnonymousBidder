@@ -54,15 +54,15 @@ namespace AnonymousBidder.Services
             //Validate Data
             ServiceResult validAuction = ValidateAuction(vm.Auction);
             //Save Auction
-            ServiceResult validFilePath = ValidateFilePath(vm.Files);
+            //ServiceResult validFilePath = ValidateFilePath(vm.Files);
             ServiceResult validSeller = ValidateSeller(vm.Seller);
             //Save File
-            if (validAuction.Success && validFilePath.Success && validSeller.Success)
+            if (validAuction.Success && validSeller.Success)
             {
                 Auction addAuctionSuccess = SaveAuction(vm.Auction);
                 // auction guid
                 Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
-                bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
+                //bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
 
                
                 bool commitSuccess = Commit();
@@ -77,7 +77,7 @@ namespace AnonymousBidder.Services
             }
             return new ServiceResult()
             {
-                ErrorMessage = validAuction.ErrorMessage + validFilePath.ErrorMessage,
+                ErrorMessage = validAuction.ErrorMessage,
                 Success = false
             };
         }
