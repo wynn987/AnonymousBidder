@@ -130,6 +130,11 @@ namespace AnonymousBidder.Controllers
             //fetch the url sellerGUID and token code
             var sellerGuid = Request.QueryString["sellerGuid"];
             var code = Request.QueryString["code"];
+
+            ABUser currentUser = AccountService.GetUserByGUID(sellerGuid);
+            var currentUserEmail = currentUser.Email;
+            ViewBag.UserEmail = currentUserEmail;
+
             AccountCreateViewModel model = new AccountCreateViewModel();
             model.userGUID = new Guid(sellerGuid);
             model.userToken = code;
@@ -293,7 +298,7 @@ namespace AnonymousBidder.Controllers
             return View();
         }
 
-
+        // register a seller
         private ActionResult DoRegister(AccountCreateViewModel model, Guid sellerGuid, string token, string returnUrl)
         {
             

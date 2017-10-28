@@ -86,9 +86,9 @@ namespace AnonymousBidder.Controllers
             ServiceResult result = _auctionService.AddAuction(vm);
             if (result.Success)
             {
-                return RedirectToAction("SendRegistrationEmail", result);
+                return RedirectToAction("Create");
             }
-            return RedirectToAction("FailedtoCreate", result);
+            return RedirectToAction("Create");
         }
         /// <summary>
         /// Controller function to send registration email to seller when admin creates successfully

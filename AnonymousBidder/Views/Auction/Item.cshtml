@@ -75,110 +75,120 @@
         </dl>
     </div>
     <br />
-    <div>
-        <h3>Current Bid Info</h3>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                Bidder Alias
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.bidderInfo.Alias)
-            </dd>
-
-            <dt>
-                Current Bid
-            </dt>
-
-            <dd>
-                $@Html.DisplayFor(model => model.bidInfo.BidPlaced)
-            </dd>
-        </dl>
-    </div>
-
-
-    @*If auction has ended, show the delivery information.*@
-
-    @if (Model.auctionItem.AuctionOver)
+    @*If there are no bids*@
+    @if (Model.bidInfo.BidPlaced < 0)
     {
-        <h3>Delivery</h3>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                Seller Sent
-            </dt>
-            @if (Model.auctionItem.SellerSent)
-            {
-                <dd style="color:lightgreen;">
-                    Yes
-                </dd>
-                using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
-                {
-                    <dt>
-                        Has item being sent out?
-                    </dt>
-                    <dd>
-                        <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
-                        @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
-                        {
-                             new SelectListItem {Text="No", Value="0" },
-                             new SelectListItem {Text="Yes", Value="1" }
-                        })
-                        <input type="submit" value="Submit" />
-                    </dd>
-                }
-            }
-            else
-            {
-                <dd style="color:red;">
-                    No
-                </dd>
-                using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
-                {
-                    <dt>
-                        Has item being sent out?
-                    </dt>
-                    <dd>
-                        <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
-                        @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
-                        {
-                             new SelectListItem {Text="No", Value="0" },
-                             new SelectListItem {Text="Yes", Value="1" }
-                        })
-                        <input type="submit" value="Submit" />
-                    </dd>
-                }
-
-
-            }
-            @if (Model.auctionItem.SellerSent)
-            {
+        <h2>There are no bids yet.</h2>
+    }
+    else
+    {
+        <div>
+            <h3>Current Bid Info</h3>
+            <hr />
+            <dl class="dl-horizontal">
                 <dt>
-                    Buyer Received
+                    Bidder Alias
                 </dt>
-                if (Model.auctionItem.BuyerReceived)
+
+                <dd>
+                    @Html.DisplayFor(model => model.bidderInfo.Alias)
+                </dd>
+
+                <dt>
+                    Current Bid
+                </dt>
+
+                <dd>
+                    $@Html.DisplayFor(model => model.bidInfo.BidPlaced)
+                </dd>
+            </dl>
+        </div>
+
+
+        @*If auction has ended, show the delivery information.*@
+
+        if (Model.auctionItem.AuctionOver)
+        {
+            <h3>Delivery</h3>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    Seller Sent
+                </dt>
+                @if (Model.auctionItem.SellerSent)
                 {
                     <dd style="color:lightgreen;">
                         Yes
                     </dd>
+                    using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
+                    {
+                        <dt>
+                            Has item being sent out?
+                        </dt>
+                        <dd>
+                            <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
+                            @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
+                            {
+                                 new SelectListItem {Text="No", Value="0" },
+                                 new SelectListItem {Text="Yes", Value="1" }
+                            })
+                            <input type="submit" value="Submit" />
+                        </dd>
+                    }
                 }
                 else
                 {
                     <dd style="color:red;">
                         No
                     </dd>
-                }
-            }
-            else
-            {
-            }
+                    using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
+                    {
+                        <dt>
+                            Has item being sent out?
+                        </dt>
+                        <dd>
+                            <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
+                            @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
+                            {
+                                 new SelectListItem {Text="No", Value="0" },
+                                 new SelectListItem {Text="Yes", Value="1" }
+                            })
+                            <input type="submit" value="Submit" />
+                        </dd>
+                    }
 
-        </dl>
+
+                }
+                @if (Model.auctionItem.SellerSent)
+                {
+                    <dt>
+                        Buyer Received
+                    </dt>
+                    if (Model.auctionItem.BuyerReceived)
+                    {
+                        <dd style="color:lightgreen;">
+                            Yes
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd style="color:red;">
+                            No
+                        </dd>
+                    }
+                }
+                else
+                {
+                }
+
+            </dl>
+        }
+        else
+        {
+        }
     }
-    else
-    {
-    }
+
 
 
 
