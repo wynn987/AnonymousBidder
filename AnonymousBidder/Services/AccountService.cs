@@ -33,10 +33,12 @@ namespace AnonymousBidder.Services
             abuserModel.Alias = vm.Alias;
             abuserModel.Email = vm.EmailAddress;
             abuserModel.Password = vm.Password;
+            abuserModel.Token = null;
 
             ABUser currentUser = GetUserByUserName(vm.EmailAddress);
             currentUser.Alias = vm.Alias;
             currentUser.Password = vm.Password;
+            currentUser.Token = null;
 
             _userRepository.Update(currentUser);
 
