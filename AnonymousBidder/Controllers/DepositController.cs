@@ -14,7 +14,7 @@ using AnonymousBidder.ViewModels;
 
 
 
-namespace AnonymousBidder.Controllers
+namespace AnonymousBidder.Controllerss
 {
     public class DepositController : Controller
     {
@@ -25,8 +25,6 @@ namespace AnonymousBidder.Controllers
             AccountService = new AccountService();
 
         }
-
-
         [BidderFilter]
         [HttpPost]
         //[AllowAnonymous]

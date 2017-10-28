@@ -172,8 +172,7 @@ namespace AnonymousBidder.Controllers
             //Request for cookie
             HttpCookie cookie = Request.Cookies["AnonymousBidder"];
 
-<<<<<<< HEAD
-=======
+
             if (cookie != null)
             {
                 try
@@ -189,43 +188,12 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
-        [BidderFilter]
-        [HttpPost]
-        //[AllowAnonymous]
-        public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return DoDeposit(model, returnUrl);
-        }
-
-      
-        [BidderFilter]
-        //[AllowAnonymous]
-        public ActionResult DepositMoney(string returnUrl)
-        {
-            DepositMoneyViewModel model = new DepositMoneyViewModel();
-            //Request for cookie
-            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
-
-            if (cookie != null)
-            {
-                try
-                {
-                    return DoDeposit(model, returnUrl);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-
-            return View(model);
-        }
+       
 
 
 
 
->>>>>>> 60f55127bab759caf3690c4f4b95e91fefee164f
+
 
         [HttpPost]
         [AllowAnonymous]
