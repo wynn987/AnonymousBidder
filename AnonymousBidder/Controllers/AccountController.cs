@@ -155,31 +155,29 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
-        
-
-        [BidderFilter]
         [HttpPost]
+        [AdminFilter]
         //[AllowAnonymous]
-        public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return DoDeposit(model, returnUrl);
+        public ActionResult RegisterModerator(MAccountCreateViewModel model, string returnUrl)
+        {    
+            ViewBag.ReturnUrl = returnUrl;      
+            return DoRegisterModerator(model, returnUrl);
         }
 
-      
-        [BidderFilter]
+        [AdminFilter]
         //[AllowAnonymous]
-        public ActionResult DepositMoney(string returnUrl)
+        public ActionResult RegisterModerator(string returnUrl)
         {
-            DepositMoneyViewModel model = new DepositMoneyViewModel();
+            MAccountCreateViewModel model = new MAccountCreateViewModel();
             //Request for cookie
             HttpCookie cookie = Request.Cookies["AnonymousBidder"];
+
 
             if (cookie != null)
             {
                 try
                 {
-                    return DoDeposit(model, returnUrl);
+                    return DoRegisterModerator(model, returnUrl);
                 }
                 catch (Exception)
                 {
@@ -189,6 +187,9 @@ namespace AnonymousBidder.Controllers
 
             return View(model);
         }
+
+       
+
 
 
 
@@ -354,16 +355,28 @@ namespace AnonymousBidder.Controllers
 
         }
 
-        private ActionResult DoDeposit(DepositMoneyViewModel model, string returnUrl)
+        private ActionResult DoRegisterModerator(MAccountCreateViewModel ModeratorViewModel, string returnUrl)
         {
-            ServiceResult result = new ServiceResult();
-            result = AccountService.UpdateAccountWithMoney(model);
-            if (result.Success)
-            {
-                return RedirectToAction("DepositSuccess", result);
-            }
-            return RedirectToAction("DepositFail", result);
+            
+                var hashedPassword = Utilities.CreatePasswordHash(ModeratorViewModel.Password, ModeratorViewModel.EmailAddress);
+                MAccountCreateViewModel ModViewModel = new MAccountCreateViewModel();
+                ModViewModel.Password = hashedPassword;
+                ModViewModel.EmailAddress = ModeratorViewModel.EmailAddress;
+                ModViewModel.ConfirmPassword = hashedPassword;
+                ModViewModel.Alias = ModeratorViewModel.Alias;
+
+                ServiceResult result = new ServiceResult();
+                result = AccountService.AddModeratorAccount(ModViewModel);
+                if (result.Success)
+                {
+                    return RedirectToAction("ModRegistrationSuccess", result);
+                }
+                return RedirectToAction("RegisterFail", result);
+
         }
+
+
+    
 
         [AllowAnonymous]
         public ActionResult LogOff()
