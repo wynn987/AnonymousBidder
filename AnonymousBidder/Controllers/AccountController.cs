@@ -155,43 +155,6 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
-      
-        [BidderFilter]
-        [HttpPost]
-        //[AllowAnonymous]
-        public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return DoDeposit(model, returnUrl);
-        }
-
-      
-        [BidderFilter]
-        //[AllowAnonymous]
-        public ActionResult DepositMoney(string returnUrl)
-        {
-            DepositMoneyViewModel model = new DepositMoneyViewModel();
-            //Request for cookie
-            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
-
-            if (cookie != null)
-            {
-                try
-                {
-                    return DoDeposit(model, returnUrl);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-
-            return View(model);
-        }
-
-
-
-
 
         [HttpPost]
         [AllowAnonymous]
@@ -354,16 +317,7 @@ namespace AnonymousBidder.Controllers
        
 
 
-        private ActionResult DoDeposit(DepositMoneyViewModel model, string returnUrl)
-        {
-            ServiceResult result = new ServiceResult();
-            result = AccountService.UpdateAccountWithMoney(model);
-            if (result.Success)
-            {
-                return RedirectToAction("DepositSuccess", result);
-            }
-            return RedirectToAction("DepositFail", result);
-        }
+    
 
         [AllowAnonymous]
         public ActionResult LogOff()
