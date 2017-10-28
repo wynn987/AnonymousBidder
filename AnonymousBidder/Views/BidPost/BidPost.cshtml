@@ -4,35 +4,51 @@
     ViewBag.Title = "BidPost";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Log in to AnonymousBidder</title>
+        <link rel="shortcut icon" href="~/Content/Images/Others/AnonymousBidderFavicon.ico" />
+        @Styles.Render("~/Style/css")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/jqueryui")
+    </head>
+    <body>
+        <h2>Auction Bid Post</h2>
+        <hr />
 
-
-<h2>BidPost</h2>
-
-@using (Html.BeginForm("Bid", "BidPost", FormMethod.Post, new { name = "BidPostForm", id = "BidPostForm" }))
-{
-    @Html.AntiForgeryToken()
-    <div class="container-fluid" id="BidPostFormDiv">
-        <div class="row">
-            <div class="col-6">
-                <img src="C:/Users/ABC/Pictures/black_wallpaper.jpg"> <!-- @Model.ImageModel.FilePathName -->
-            </div>
-
-            <div class="col-6">
-                <div class="form-horizontal">
-                    <h4>Bid</h4>
-                    <hr />
-                    <div class="form-group">
-                        <div class="col-md-5">
-                            <input type="text" id="BidModel_BidPlaced" name="BidModel.BidPlaced" class="form-control text-box single-line" placeholder="bid amount" required />
-                        </div>
-                        <div class="col-md-offset-1 col-md-2">
-                            <input type="submit" id="btnBid" name="btnBid" value="Bid" class="btn btn-default" />
+        @using (Html.BeginForm("BidPost", "BidPost", FormMethod.Post, new { name = "BidPostForm", id = "BidPostForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="container-fluid" id="BidPostFormDiv">
+                <div class="row">
+                    <div class="col">
+                        <h3>@Model.AuctionModel.ItemName</h3>
+                        <p>Current Bid: @Model.BidModel.BidPlaced</p>
+                        <p>This auction will end on @Model.AuctionModel.EndDate</p>
+                        <br/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-md-5">
+                                    <input type="text" id="BidModel_BidPlaced" name="BidModel.BidPlaced" class="form-control text-box single-line" placeholder="bid amount" required />
+                                </div>
+                                <div class="col-md-offset-1 col-md-2">
+                                    <input type="submit" id="btnBid" name="btnBid" value="Bid" class="btn btn-default" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-}
+        }
 
 
+    </body>
+</html>
