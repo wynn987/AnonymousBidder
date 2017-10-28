@@ -15,30 +15,40 @@ namespace AnonymousBidder.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ABUserRepository _userRepository;
+        private readonly UserRoleRepository _roleRepository;
 
         public AccountService()
         {
             _unitOfWork = new UnitOfWork();
             _userRepository = new ABUserRepository(_unitOfWork);
-        }
+            _roleRepository = new UserRoleRepository(_unitOfWork);
 
+        }
+        /*
+        *This function is for updatig user or equal to add a new seller into system
+        */
         internal ServiceResult AddAccount(AccountCreateViewModel vm)
         {
             ABUserModel abuserModel = new ABUserModel();
             abuserModel.Alias = vm.Alias;
             abuserModel.Email = vm.EmailAddress;
             abuserModel.Password = vm.Password;
-            abuserModel.ABUserGUID = Guid.NewGuid();
-            abuserModel.ABUser_UserRoleGUID = Guid.Parse("16d4a3fc-8351-4620-9eee-a47302de60b0");
-            ABUser addUserSuccess = SaveAccount(abuserModel);
-            bool commitSuccess = UpdateUser(addUserSuccess);
+
+            ABUser currentUser = GetUserByUserName(vm.EmailAddress);
+            currentUser.Alias = vm.Alias;
+            currentUser.Password = vm.Password;
+
+            _userRepository.Update(currentUser);
+
+
+            bool commitSuccess = UpdateUser(currentUser);
 
             if (commitSuccess)
             {
                 return new ServiceResult()
                 {
                     Success = true,
-                    Params = addUserSuccess.ToString()
+                    Params = currentUser.ToString()
                 };
             }
 
@@ -49,6 +59,35 @@ namespace AnonymousBidder.Services
             };
         }
 
+        
+        internal ServiceResult AddBidderAccount(BAccountCreateViewModel vm,Guid auctionGuid)
+        {
+            ABUserModel abuserModel = new ABUserModel();
+            abuserModel.Alias = vm.Alias;
+            abuserModel.Email = vm.EmailAddress;
+            abuserModel.Password = vm.Password;
+            abuserModel.ABUserGUID = Guid.NewGuid();
+            abuserModel.ABUser_AuctionGUID = auctionGuid;
+            ABUser addBidderSuccess = SaveBidderAccount(abuserModel);
+            bool commitSuccess = UpdateUser(addBidderSuccess);
+
+            if (commitSuccess)
+            {
+                return new ServiceResult()
+                {
+                    Success = true,
+                    Params = addBidderSuccess.ToString()
+                };
+            }
+
+            return new ServiceResult()
+            {
+                ErrorMessage = "Error message",
+                Success = false
+            };
+
+        }
+        
         
 
         internal ServiceResult UpdateAccountWithMoney(DepositMoneyViewModel vm)
@@ -84,17 +123,34 @@ namespace AnonymousBidder.Services
   
 
 
-
+        //save account for seller
         private ABUser SaveAccount(ABUserModel abuserModel)
         {
+            var role = getGUID();
             ABUser abuser = new ABUser()
             {
                 ABUserGUID = Guid.NewGuid(),
                 Alias = abuserModel.Alias,
                 Email = abuserModel.Email,
                 Password = abuserModel.Password,
-                ABUser_UserRoleGUID = Guid.Parse("16d4a3fc-8351-4620-9eee-a47302de60b0")
+                Role = role
         };
+            _userRepository.Add(abuser);
+            return abuser;
+        }
+
+        private ABUser SaveBidderAccount(ABUserModel abuserModel)
+        {
+            var role = getBidderRoleGUID();
+            ABUser abuser = new ABUser()
+            {
+                ABUserGUID = Guid.NewGuid(),
+                Alias = abuserModel.Alias,
+                Email = abuserModel.Email,
+                Password = abuserModel.Password,
+                Role = role,
+                ABUser_AuctionGUID = abuserModel.ABUser_AuctionGUID
+            };
             _userRepository.Add(abuser);
             return abuser;
         }
@@ -111,6 +167,20 @@ namespace AnonymousBidder.Services
         {
             var user = _userRepository.FindBy(x => x.Email == username && x.Password == password).FirstOrDefault();
             return user != null;
+        }
+
+        // get roleGUID for seller
+        public UserRole getGUID()
+        {
+            var sellerRole = _roleRepository.FindBy(x => x.UserRoleName == "SELLER").FirstOrDefault();
+            return sellerRole;
+
+        }
+
+        public UserRole getBidderRoleGUID()
+        {
+            var bidderRole = _roleRepository.FindBy(x => x.UserRoleName == "BIDDER").FirstOrDefault();
+            return bidderRole;
         }
 
         public ABUser GetUserByUserName(string username)
