@@ -25,9 +25,8 @@ namespace AnonymousBidder.Controllers
             AccountService = new AccountService();
 
         }
-        //[BidderFilter]
+        [BidderFilter]
         [HttpPost]
-        [AllowAnonymous]
         public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -35,8 +34,7 @@ namespace AnonymousBidder.Controllers
         }
 
 
-        //[BidderFilter]
-        //[AllowAnonymous]
+        [BidderFilter]
         public ActionResult DepositMoney(string returnUrl)
         {
             DepositMoneyViewModel model = new DepositMoneyViewModel();
