@@ -453,6 +453,8 @@
     <Content Include="Views\Account\RegisterModerator.cshtml" />
     <Content Include="Views\Account\ModRegistrationSuccess.cshtml" />
     <Content Include="Views\Deposit\DepositMoney.cshtml" />
+    <Content Include="Views\Deposit\DepositSuccess.cshtml" />
+    <Content Include="Views\Deposit\DepositFail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
