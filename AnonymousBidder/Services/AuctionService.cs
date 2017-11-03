@@ -51,6 +51,7 @@ namespace AnonymousBidder.Services
         /// </returns>
         internal ServiceResult AddAuction(AuctionCreateViewModel vm)
         {
+            vm = StripStringsAuctionCreate(vm);
             //Validate Data
             ServiceResult validAuction = ValidateAuction(vm.Auction);
             //Save Auction
@@ -80,6 +81,12 @@ namespace AnonymousBidder.Services
                 ErrorMessage = validAuction.ErrorMessage,
                 Success = false
             };
+        }
+
+        private AuctionCreateViewModel StripStringsAuctionCreate(AuctionCreateViewModel vm)
+        {
+            vm.Auction.ItemName = Utilities.RemoveSpecialCharacters(vm.Auction.ItemName);
+            return vm;
         }
 
         internal void StoreCodetoGuid(Guid sellerGuid, string code)

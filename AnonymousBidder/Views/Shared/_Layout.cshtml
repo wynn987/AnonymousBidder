@@ -86,14 +86,7 @@
                    
                     <ul class="dropdown-menu" aria-labelledby="dropdown-menu">
                         <li><a href='@Url.Action("ChangePassword", "Account", new { area = "" })'>Change Password</a> </li>
-                        @if (HttpContext.Current.Request.RequestContext.RouteData.DataTokens["area"] != "")
-                        {
-                            <li><a href='@Url.Action("LogOff", "Account", new { area = "" })'>Log out</a></li>
-                        }
-                        else
-                        {
-                            <li><a href='@Url.Action("LogOff", "Account")'>Log out</a></li>
-                        }
+                        <li><a href='@Url.Action("LogOff", "Account")'>Log out</a></li>
                     </ul>
                 </div>
             </div>
