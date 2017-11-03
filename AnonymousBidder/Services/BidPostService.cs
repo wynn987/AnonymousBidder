@@ -97,12 +97,6 @@ namespace AnonymousBidder.Services
                     AuctionOver = auction.AuctionOver
                 };
 
-                FilePath f = _filePathRepository.FindBy(x => x.FilePath_AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
-                result.ImageModel = new FilePathModel()
-                {
-                    FilePathName = f.FilePathName
-                };
-
                 Auction auctionBid = _auctionRepository.FindBy(x => x.AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
                 if (auctionBid.Auction_BidGUID == null)
                 {
@@ -120,7 +114,7 @@ namespace AnonymousBidder.Services
                     };
                 }
                 
-                if (auction == null || auctionBid == null || f == null)
+                if (auction == null || auctionBid == null)
                 {
                     // if any of the details cannot be found,
                     // bid post is either corrupted or not setup

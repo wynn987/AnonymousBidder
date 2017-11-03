@@ -14,7 +14,7 @@ using AnonymousBidder.ViewModels;
 
 
 
-namespace AnonymousBidder.Controllerss
+namespace AnonymousBidder.Controllers
 {
     public class DepositController : Controller
     {
@@ -27,7 +27,6 @@ namespace AnonymousBidder.Controllerss
         }
         [BidderFilter]
         [HttpPost]
-        //[AllowAnonymous]
         public ActionResult DepositMoney(DepositMoneyViewModel model, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -36,7 +35,6 @@ namespace AnonymousBidder.Controllerss
 
 
         [BidderFilter]
-        //[AllowAnonymous]
         public ActionResult DepositMoney(string returnUrl)
         {
             DepositMoneyViewModel model = new DepositMoneyViewModel();
@@ -69,5 +67,22 @@ namespace AnonymousBidder.Controllerss
             }
             return RedirectToAction("DepositFail", result);
         }
+
+
+        [AllowAnonymous]
+        public ActionResult DepositSuccess()
+        {
+            return View();
+        }
+
+
+        [AllowAnonymous]
+        public ActionResult DepositFail()
+        {
+            return View();
+        }
     }
+
+
+    
 }

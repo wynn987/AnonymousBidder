@@ -10,6 +10,5 @@ namespace AnonymousBidder.ViewModels
     {
         public AuctionModel AuctionModel { get; set; }
         public BidModel BidModel { get; set; }
-        public FilePathModel ImageModel { get; set; }
     }
 }
