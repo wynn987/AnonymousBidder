@@ -23,7 +23,7 @@ namespace AnonymousBidder.Controllers
         }
 
         // GET: BidPost
-        //[BidderFilter]
+        [BidderFilter]
         public ActionResult BidPost()
         {
             if (UserInfoModel == null)
@@ -41,7 +41,7 @@ namespace AnonymousBidder.Controllers
         }
         
         [HttpPost]
-        //[BidderFilter]
+        [BidderFilter]
         public ActionResult BidPost(BidPostViewModel data, string returnUrl) 
         {
             if (data.AuctionModel != null && data.AuctionModel.BuyerReceived == true)
