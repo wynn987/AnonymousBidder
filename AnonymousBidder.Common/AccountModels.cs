@@ -11,13 +11,13 @@ namespace AnonymousBidder.Common
         [Required]
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "The Email Address is invalid.")]
-        [System.Web.Mvc.Remote("EmailExists", "Account", ErrorMessage = "The Email Address does not exist.")]
+        //[System.Web.Mvc.Remote("EmailExists", "Account", ErrorMessage = "The Email Address does not exist.")]
         public string EmailAddress { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
-        [System.Web.Mvc.Remote("CheckPassword", "Account", AdditionalFields = "EmailAddress", ErrorMessage = "The Password is incorrect.")]
+        //[System.Web.Mvc.Remote("CheckPassword", "Account", AdditionalFields = "EmailAddress", ErrorMessage = "The Password is incorrect.")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]
