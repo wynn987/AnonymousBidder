@@ -19,7 +19,6 @@ namespace AnonymousBidder.ViewModels
 
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]{6,10}$", ErrorMessage = "The alias cannot contain symbols and should contain 6 to 10 characters.")]
         [Display(Name = "Alias")]
         public string Alias { get; set; }
 
@@ -35,6 +34,13 @@ namespace AnonymousBidder.ViewModels
         [Display(Name = "Confirm password")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Currency)]
+        [Display(Name = "Money to deposit")]
+        public int Money { get; set; }
+
 
     }
 }

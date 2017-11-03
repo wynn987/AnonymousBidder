@@ -70,6 +70,8 @@ namespace AnonymousBidder.Services
             abuserModel.Password = vm.Password;
             abuserModel.ABUserGUID = Guid.NewGuid();
             abuserModel.ABUser_AuctionGUID = auctionGuid;
+            abuserModel.Money = vm.Money;
+
             ABUser addBidderSuccess = SaveBidderAccount(abuserModel);
             bool commitSuccess = UpdateUser(addBidderSuccess);
 
@@ -176,6 +178,7 @@ namespace AnonymousBidder.Services
                 Email = abuserModel.Email,
                 Password = abuserModel.Password,
                 Role = role,
+                Money = abuserModel.Money,
                 ABUser_AuctionGUID = abuserModel.ABUser_AuctionGUID
             };
             _userRepository.Add(abuser);
