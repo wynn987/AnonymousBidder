@@ -134,7 +134,7 @@ namespace AnonymousBidder.Controllers
             string code2 = Utilities.CreateRandomCode();
             Guid bidderGuid = _auctionService.StoreCodetoGuid2(sellerGuid);
 
-            return Url.Action("RegisterBidder", "Account", new { bidderGuid = bidderGuid }, protocol: Request.Url.Scheme);
+            return Url.Action("RegisterBidder", "Account", new { auctionGuid = bidderGuid }, protocol: Request.Url.Scheme);
         }
         /// <summary>
         /// Controller function to display server errors if auction not successfully created
