@@ -19,16 +19,18 @@ namespace AnonymousBidder.ViewModels
 
 
         [Required]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,10}$", ErrorMessage = "The alias cannot contain symbols and should contain 6 to 10 characters.")]
         [Display(Name = "Alias")]
         public string Alias { get; set; }
 
         [Required]
-        // [RegularExpression(@"((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,16})", ErrorMessage = "The password is not strong enough.")]
+        [RegularExpression(@"((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,16})", ErrorMessage = "The password is not strong enough.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-
+        [Required]
+        [RegularExpression(@"((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,16})", ErrorMessage = "The password is not strong enough.")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

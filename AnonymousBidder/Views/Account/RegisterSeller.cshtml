@@ -21,6 +21,7 @@
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
     <form action="/Account/RegisterSeller/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
         <div class="container signin-page">
             <div class="signin-logo">
             </div>
@@ -33,13 +34,10 @@
                 </div>
                 <hr>
                 <div class="form-section clearfix">
-
-                    
                     <div class="form-group paddingleft">
-                        
-                       @Html.HiddenFor(m => m.EmailAddress, new { @Value = ViewBag.UserEmail })
-
-
+                        <label>Email Address</label>
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-md email-field" })
+                        @Html.ValidationMessageFor(model => model.EmailAddress)
                     </div>
 
                     <div class="form-group paddingleft">

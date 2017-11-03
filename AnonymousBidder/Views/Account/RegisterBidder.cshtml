@@ -22,6 +22,7 @@
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
     <form action="/Account/RegisterBidder/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
         <div class="container signin-page">
             <div class="signin-logo">
             </div>
