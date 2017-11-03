@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AnonymousBidder.Common;
+using System;
 
 namespace AnonymousBidder
 {
@@ -10,15 +11,22 @@ namespace AnonymousBidder
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleAndLogErrorAttribute());
+            filters.Add(new CustomErrorHandler());
         }
         
     }
-    public class HandleAndLogErrorAttribute : HandleErrorAttribute
+    public class CustomErrorHandler : HandleErrorAttribute
     {
         public override void OnException(ExceptionContext filterContext)
         {
-            base.OnException(filterContext);
+            Exception e = filterContext.Exception;
+            filterContext.ExceptionHandled = true;
+            var result = new ViewResult()
+            {
+                ViewName = "Error"
+            }; ;
+            result.ViewBag.Error = "Error Occur While Processing Your Request Please Check After Some Time";
+            filterContext.Result = result;
         }
     }
 }

@@ -303,6 +303,7 @@
     <Content Include="Content\CSS\kendo\textures\stripe6.png" />
     <Content Include="Content\CSS\kendo\textures\transparency.png" />
     <Content Include="Content\CSS\kendo\textures\transtexture.png" />
+    <Content Include="Content\Images\Global\UserIcon.png" />
     <Content Include="Content\Images\Others\Bgline1.png" />
     <Content Include="Content\Images\Others\ClearAll.png" />
     <Content Include="Content\Images\Others\Copy.png" />
@@ -311,7 +312,6 @@
     <Content Include="Content\Images\Others\Download.png" />
     <Content Include="Content\Images\Others\Edit.png" />
     <Content Include="Content\Images\Others\Email.png" />
-    <Content Include="Content\Images\Others\KUMOFavicon.ico" />
     <Content Include="Content\Images\Others\Load.gif" />
     <Content Include="Content\Images\Others\NewFolder.png" />
     <Content Include="Content\Images\Others\Paste.png" />
@@ -426,11 +426,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\DefaultMVC\jquery-1.10.2.min.map" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Shared\_MvcFileUpload.cshtml" />
     <Content Include="Views\Shared\_MenuBar.cshtml" />
@@ -447,11 +443,8 @@
     <Content Include="Views\Account\RegisterSeller.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\RegisterFail.cshtml" />
-    <Content Include="Views\Account\DepositMoney.cshtml" />
     <Content Include="Views\Account\RegisterBidder.cshtml" />
     <Content Include="Views\BidPost\BidPost.cshtml" />
-    <Content Include="Views\Account\RegisterModerator.cshtml" />
-    <Content Include="Views\Account\ModRegistrationSuccess.cshtml" />
     <Content Include="Views\Deposit\DepositMoney.cshtml" />
     <Content Include="Views\Deposit\DepositSuccess.cshtml" />
     <Content Include="Views\Deposit\DepositFail.cshtml" />

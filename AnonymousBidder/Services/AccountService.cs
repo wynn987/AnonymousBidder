@@ -213,6 +213,7 @@ namespace AnonymousBidder.Services
             return user != null;
         }
 
+
         // get roleGUID for seller
         public UserRole getGUID()
         {

@@ -75,6 +75,14 @@ namespace AnonymousBidder.Controllers
         {
             return View(new AuctionCreateViewModel());
         }
+
+        [HttpPost]
+        public JsonResult CheckEmail(string emailAddress)
+        {
+            bool valid = _auctionService.DuplicateEmailCheck(emailAddress);
+            return Json(valid, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// Controller function for system to save admin's new auction
         /// </summary>
