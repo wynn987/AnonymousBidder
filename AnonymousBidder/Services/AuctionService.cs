@@ -82,6 +82,12 @@ namespace AnonymousBidder.Services
                 Success = false
             };
         }
+        
+        internal bool DuplicateEmailCheck(string emailAddress)
+        {
+            var user = _abUserRepository.FindBy(x => x.Email.Equals(emailAddress, StringComparison.InvariantCultureIgnoreCase) ).FirstOrDefault();
+            return (user == null ? true : false);
+        }
 
         private AuctionCreateViewModel StripStringsAuctionCreate(AuctionCreateViewModel vm)
         {

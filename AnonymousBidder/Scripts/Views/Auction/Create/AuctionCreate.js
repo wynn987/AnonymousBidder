@@ -64,8 +64,24 @@
                 .addClass("invalid");
         }
         if (validator.validate()) {
-            var element = this;
-            $(element).closest("form").submit();
+            // Check if email is duplicate 
+            $.ajax({
+                type: "POST",
+                url: '/Auction/CheckEmail',
+                data: { emailAddress: $("#Seller_Email").val() },
+                success: function (result) {
+                    if (result != true) {
+                        alert("Email already in use.");
+                    }
+                    else {
+                        var element = this;
+                        $("#btnCreate").closest("form").submit();
+                    }
+                },
+                error: function (xhr, status, p3, p4) {
+                    alert("Couldn't complete function");
+                }
+            });
         }
     });
 });
