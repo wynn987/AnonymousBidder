@@ -11,6 +11,8 @@ using System.Linq;
 using AnonymousBidder.Services;
 using AnonymousBidder.Data.Entity;
 using AnonymousBidder.ViewModels;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace AnonymousBidder.Controllers
 {
@@ -200,9 +202,20 @@ namespace AnonymousBidder.Controllers
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-
+            //var response = Request["g-recaptcha-response"];
+            //string secretKey = "6LfACTcUAAAAAAUtHbQSZwH17ksmX9x2n8HRv5CB";
+            //var client = new WebClient();
+            //var result = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            //var obj = JObject.Parse(result);
+            //var status = (bool)obj.SelectToken("success");
+            //ViewBag.Message = status ? "Google reCaptcha validation success" : "Google reCaptcha validation failed";
+            //if (!status)
+            //{
+            //    throw new Exception();
+            //}
             return DoLogin(model, returnUrl);
         }
+        
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -374,10 +387,7 @@ namespace AnonymousBidder.Controllers
                 return RedirectToAction("RegisterFail", result);
 
         }
-
-
-    
-
+        
         [AllowAnonymous]
         public ActionResult LogOff()
         {
@@ -389,111 +399,7 @@ namespace AnonymousBidder.Controllers
             Session.Abandon();
             return RedirectToAction("Login");
         }
-
-        // GET: /Account/ForgotPassword
-        [AllowAnonymous]
-        public ActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                ABUser user = AccountService.GetUserByUserName(model.Email);
-
-                if (user == null)
-                {
-                    ViewBag.NotExistingUser = "The Email Address does not exist.";
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View();
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-
-                string code = Utilities.CreateRandomCode();
-                user.Token = code;
-                AccountService.UpdateUser(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { user.ABUserGUID, code = code }, protocol: Request.Url.Scheme);
-                string body = @"<p>Hi " + user.Alias + @",</p>
-
-                                <p>We received a request to reset your password for your AnonymousBidder account " + user.Email + @".</p>
-                                
-                                <p>Please kindly click <a href=" + callbackUrl + @">here</a> to set a new password.</p>
-
-                                <p>If you didn't ask to change your password, please kindly ignore this email.</p>
-
-                                <p>Your password is still safe and you can continue logging in with your current password.</p>
-
-                                <p>Thank you,</p>
-                              
-                                <p>AnonymousBidder Team</p>
-
-                                <p>AnonymousBidder Pte. Ltd.</p>
-                                
-                                <p><i>This is a system auto-generated email. Please do not reply to this email. </i></p>";
-
-                EmailHelper.SendMail("anonymousbidder3103@gmail.com", model.Email, "Reset Your AnonymousBidder Password", body, "", "smtp_anonymousbidder");
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
-        {
-            return code == null ? View("Error") : View();
-        }
-
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = AccountService.GetUserByUserName(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            string hashedPassword = Utilities.CreatePasswordHash(model.Password, model.Email);
-            user.Password = hashedPassword;
-            var result = AccountService.UpdateUser(user);
-            if (result)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-
-            return View();
-        }
-        [AllowAnonymous]
-        public ActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
-
+        
         [AllowAnonymous]
         public ActionResult ChangePassword()
         {
@@ -543,7 +449,7 @@ namespace AnonymousBidder.Controllers
 
                 if (result)
                 {
-                    return RedirectToAction("Index", "Auction");
+                    return RedirectToAction("Login");
                 }
             }
             else

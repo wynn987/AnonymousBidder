@@ -15,6 +15,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
 
@@ -50,15 +51,7 @@
 
                         <input type="submit" class="btn btn-signin" value="Log in" />
                     </div>
-                    <div class="form-group paddingleft">
-                        <div class="pull-left remember-me">
-                            <input type="checkbox" id="RememberMe" name="RememberMe" value="true" @Html.Raw(Model != null && Model.RememberMe == true ? "checked" : "")><label>Remember me</label>
-                        </div>
-
-                        <div class="pull-right forgot-pass">
-                            @Html.ActionLink("Forgot Password?", "ForgotPassword")
-                        </div>
-                    </div>
+                    @*<div class="g-recaptcha" data-sitekey="6LfACTcUAAAAAGawFAkWsbXh38fSwfh-OntUjMgb"></div>*@
 
                 </div>
             </div>
