@@ -98,11 +98,27 @@ namespace AnonymousBidder.Services
         internal void StoreCodetoGuid(Guid sellerGuid, string code)
         {
             var user = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
+
             if (user != null)
             {
                 user.Token = code;
                 Commit();
             }
+        }
+
+        internal Guid StoreCodetoGuid2(Guid sellerGuid)
+        {
+            ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
+            Guid auctionGuid = seller.Auction.AuctionGUID;
+            //ABUser bidderQr = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == seller.ABUser_AuctionGUID).FirstOrDefault();
+            return auctionGuid;
+
+            if (seller != null)
+            {
+                //user.Token = code;
+                Commit();
+            }
+
         }
 
         /// <summary>
@@ -112,14 +128,17 @@ namespace AnonymousBidder.Services
         /// <param name="sellerGuid"></param>
 
         /// <returns></returns>
-        internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid)
+        internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid, string bidderRegistrationPath)
         {
             ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
+            ABUser bidderQr = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == seller.ABUser_AuctionGUID).FirstOrDefault();
+
             if (seller != null
                 && seller.Role != null
                 && seller.Role.UserRoleName == "SELLER")
             {
-                var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", "https://anonymousbidder.azurewebsites.net", "250", "250");
+
+                var url = string.Format("http://chart.apis.google.com/chart?cht=qr&chs={1}x{2}&chl={0}", bidderRegistrationPath, "250", "250");
                 WebResponse response = default(WebResponse);
                 Stream remoteStream = default(Stream);
                 StreamReader readStream = default(StreamReader);

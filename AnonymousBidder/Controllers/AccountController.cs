@@ -80,7 +80,7 @@ namespace AnonymousBidder.Controllers
             auctionGUID = model.auctionGUID;
 
             return DoRegisterBidder(model,auctionGUID ,returnUrl);
-            //return RedirectToAction("", "");
+           
         }
 
         [HttpGet]
@@ -98,7 +98,7 @@ namespace AnonymousBidder.Controllers
                 {
                     
                     return DoRegisterBidder(model, model.auctionGUID,returnUrl);
-                    //return RedirectToAction("","");
+                    
                 }
                 catch (Exception)
                 {
@@ -109,7 +109,15 @@ namespace AnonymousBidder.Controllers
             return View(model);
 
         }
-        
+
+
+        [HttpPost]
+        public JsonResult CheckBidderEmail(string emailAddress)
+        {
+            bool valid = AccountService.DuplicateBidderEmailCheck(emailAddress);
+            return Json(valid, JsonRequestBehavior.AllowGet);
+        }
+
 
 
         [HttpPost]
@@ -351,11 +359,13 @@ namespace AnonymousBidder.Controllers
 
             Guid tempCurrentAuctionGuid = auctionGuid;
             var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
+            var cleanedAlias = Utilities.RemoveSpecialCharacters(model.Alias);
             BAccountCreateViewModel vm = new BAccountCreateViewModel();
             vm.Password = hashedPassword;
             vm.EmailAddress = model.EmailAddress;
             vm.ConfirmPassword = hashedPassword;
-            vm.Alias = model.Alias;
+            vm.Alias = cleanedAlias;
+            vm.Money = model.Money;
 
 
             ServiceResult result = new ServiceResult();

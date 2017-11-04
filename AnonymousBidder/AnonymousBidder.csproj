@@ -375,6 +375,7 @@
     <Content Include="Scripts\kendo\cultures\kendo.culture.en-US.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\Views\Account\CreateBidder\AccountCreate.js" />
     <Content Include="Scripts\Views\Auction\Create\AuctionCreate.js" />
     <Content Include="Views\Shared\_RenderConfirmDelete.Modal.cshtml" />
     <Content Include="Content\CSS\kendo\fonts\glyphs\KendoUIGlyphs.eot" />
