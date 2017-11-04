@@ -32,7 +32,7 @@
                     }
                     else {
                         var element = this;
-                        $("#btnCreate").closest("form").submit();
+                        $("#btnRegister").closest("form").submit();
                     }
                 },
                 error: function (xhr, status, p3, p4) {
