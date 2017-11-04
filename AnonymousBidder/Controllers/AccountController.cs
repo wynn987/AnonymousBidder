@@ -107,7 +107,15 @@ namespace AnonymousBidder.Controllers
             return View(model);
 
         }
-        
+
+
+        [HttpPost]
+        public JsonResult CheckBidderEmail(string emailAddress)
+        {
+            bool valid = AccountService.DuplicateBidderEmailCheck(emailAddress);
+            return Json(valid, JsonRequestBehavior.AllowGet);
+        }
+
 
 
         [HttpPost]

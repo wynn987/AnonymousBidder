@@ -148,8 +148,14 @@ namespace AnonymousBidder.Services
 
         }
 
+        internal bool DuplicateBidderEmailCheck(string emailAddress)
+        {
+            var user = _userRepository.FindBy(x => x.Email.Equals(emailAddress, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            return (user == null ? true : false);
+        }
 
-  
+
+
 
 
         //save account for seller

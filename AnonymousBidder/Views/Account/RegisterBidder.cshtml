@@ -11,16 +11,23 @@
     <meta name="viewport" content="width=device-width" />
     <title>Register AnonymousBidder</title>
     <link rel="shortcut icon" href="~/Content/Images/Others/AnonymousBidderFavicon.ico" />
+    <link href="/Content/CSS/kendo/kendo.common-material.min.css" rel="stylesheet" />
+    <link href="/Content/CSS/kendo/kendo.default.min.css" rel="stylesheet" />
+    <link href="/Content/CSS/kendo/kendo.default.mobile.min.css" rel="stylesheet" />
     @Styles.Render("~/Style/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
+    <script src="/Scripts/kendo/kendo.all.min.js"></script>
+    <script src="/Scripts/kendo/kendo.aspnetmvc.min.js"></script>
+    <script src="/Scripts/kendo/cultures/kendo.culture.en-SG.min.js"></script>
+    <script src="~/Scripts/Views/Account/CreateBidder/AccountCreate.js"></script>
 </head>
 <body>
 
     @*@using (Html.BeginForm("Login", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))*@
-    <form action="/Account/RegisterBidder/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
+    <form id="registerBidderForm" action="/Account/RegisterBidder/?returnUrl=@ViewBag.ReturnUrl" method="post" novalidate="novalidate">
         @Html.ValidationSummary(true)
         @Html.AntiForgeryToken()
         <div class="container signin-page">
@@ -37,9 +44,9 @@
                 <div class="form-section clearfix">
 
                     <div class="form-group paddingleft">
-                        <label>Email Address</label>
-                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control input-md email-field" })
-                        @Html.ValidationMessageFor(model => model.EmailAddress)
+                        <label>Alias</label>
+                        <input type="text" id="Bidder_Email" name="Seller.Email" class="form-control text-box single-line" placeholder="Email address" required data-email-msg="Enter valid email" style="width: 220px;" />
+                        
 
                     </div>
 
@@ -78,7 +85,7 @@
                     <div class="form-group paddingleft">
                         <span class="field-validation-error">@message</span>
 
-                        <input type="submit" class="btn btn-signin" value="Register" />
+                        <input type="submit" id="btnRegister" name="btnRegister" value="Register" class="btn btn-default" />
                     </div>
 
 
