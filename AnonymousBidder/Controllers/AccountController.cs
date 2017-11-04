@@ -110,8 +110,8 @@ namespace AnonymousBidder.Controllers
 
         }
 
-
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult CheckBidderEmail(string emailAddress)
         {
             bool valid = AccountService.DuplicateBidderEmailCheck(emailAddress);
