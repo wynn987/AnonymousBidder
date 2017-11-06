@@ -40,6 +40,11 @@ namespace AnonymousBidder.Controllers
         public ActionResult SaveSellerItemStatus(AuctionItemViewModel itemViewModel, FormCollection form)
         {
             string valueOf = form["auctionItem.SellerSent"].ToString();
+            //UserInfoModel.Email
+
+            ABUser seller = _auctionService.ViewSellerAuctionIdViaEmail(UserInfoModel.Email);
+            
+
             if (valueOf.Equals("1"))
             {
                 itemViewModel.auctionItem.SellerSent = true;
@@ -50,11 +55,20 @@ namespace AnonymousBidder.Controllers
             }
             else
             {
-                //if somebody tries to hack through here....
+                //if they tries to tamper with the drop down list value.
             }
 
-            Auction queryObj = _auctionService.ViewAuctionByGUID(itemViewModel.auctionItem.AuctionGUID);
-            queryObj.SellerSent = itemViewModel.auctionItem.SellerSent;
+
+            Auction queryObj;
+            try
+            {
+                queryObj = _auctionService.ViewAuctionByGUID(seller.ABUser_AuctionGUID.Value);
+                queryObj.SellerSent = itemViewModel.auctionItem.SellerSent;
+            }
+            catch
+            {
+                return null;
+            }
 
             ServiceResult result = _auctionService.SaveSellerShippingStatus(queryObj);
             if (result.Success)
