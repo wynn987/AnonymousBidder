@@ -222,6 +222,13 @@ namespace AnonymousBidder.Services
             return user != null;
         }
 
+       
+        public bool checkAuctionIdExists(Guid auctionGuid)
+        {
+            var haveGuid = _userRepository.FindBy(x => x.ABUser_AuctionGUID == auctionGuid).FirstOrDefault();
+            return haveGuid != null;
+        }
+        
 
         // get roleGUID for seller
         public UserRole getGUID()

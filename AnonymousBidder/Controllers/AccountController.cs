@@ -367,10 +367,18 @@ namespace AnonymousBidder.Controllers
             vm.Alias = cleanedAlias;
             vm.Money = model.Money;
 
+            // do check if acution guid already exist.
 
+            bool checkAuctionExist = false;
+            checkAuctionExist = AccountService.checkAuctionIdExists(auctionGuid);
+            
+
+
+
+            // do the service of add bidder account
             ServiceResult result = new ServiceResult();
                 result = AccountService.AddBidderAccount(vm,tempCurrentAuctionGuid);
-                if (result.Success)
+                if (result.Success && checkAuctionExist)
                 {
                     return RedirectToAction("RegisterSuccess", result);
                 }
