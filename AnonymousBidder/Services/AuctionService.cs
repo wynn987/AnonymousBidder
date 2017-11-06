@@ -60,20 +60,28 @@ namespace AnonymousBidder.Services
             //Save File
             if (validAuction.Success && validSeller.Success)
             {
-                Auction addAuctionSuccess = SaveAuction(vm.Auction);
-                // auction guid
-                Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
-                //bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
+                
+               
+                bool checkSellerEmailExist = DuplicateEmailCheck(vm.Seller.Email);
 
 
-                bool commitSuccess = Commit();
-                if (commitSuccess)
+                if (checkSellerEmailExist)
                 {
-                    return new ServiceResult()
+                    Auction addAuctionSuccess = SaveAuction(vm.Auction);
+                    // auction guid
+                    Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
+                    //bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
+
+
+                    bool commitSuccess = Commit();
+                    if (commitSuccess)
                     {
-                        Success = true,
-                        Params = addUserSuccess.ToString()
-                    };
+                        return new ServiceResult()
+                        {
+                            Success = true,
+                            Params = addUserSuccess.ToString()
+                        };
+                    }
                 }
             }
             return new ServiceResult()
