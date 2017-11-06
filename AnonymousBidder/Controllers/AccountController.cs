@@ -352,8 +352,8 @@ namespace AnonymousBidder.Controllers
             return null;
         }
 
-       
 
+        [HttpPost]
         private ActionResult DoRegisterBidder(BAccountCreateViewModel model, Guid auctionGuid, string returnUrl)
         {
 
