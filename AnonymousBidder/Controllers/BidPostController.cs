@@ -42,7 +42,7 @@ namespace AnonymousBidder.Controllers
         
         [HttpPost]
         [BidderFilter]
-        public ActionResult BidPost(BidPostViewModel data, string returnUrl) 
+        public ActionResult BidPost(BidPostViewModel data) 
         {
             if (data.AuctionModel != null && data.AuctionModel.BuyerReceived == true)
             {
