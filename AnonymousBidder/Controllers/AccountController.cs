@@ -371,14 +371,22 @@ namespace AnonymousBidder.Controllers
 
             bool checkAuctionExist = false;
             checkAuctionExist = AccountService.checkAuctionIdExists(auctionGuid);
+
+            bool checkEmailExist = false;
+            checkEmailExist = AccountService.DuplicateBidderEmailCheck(model.EmailAddress);
+
             
 
 
 
             // do the service of add bidder account
             ServiceResult result = new ServiceResult();
-                result = AccountService.AddBidderAccount(vm,tempCurrentAuctionGuid);
-                if (result.Success && checkAuctionExist)
+           
+            if (checkAuctionExist && checkEmailExist)
+            {
+                result = AccountService.AddBidderAccount(vm, tempCurrentAuctionGuid);
+            }
+                if (result.Success)
                 {
                     return RedirectToAction("RegisterSuccess", result);
                 }
