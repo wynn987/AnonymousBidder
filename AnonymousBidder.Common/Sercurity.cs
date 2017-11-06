@@ -9,7 +9,9 @@ namespace AnonymousBidder.Common
     {
         public static string Encrypt(string clearText)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+            StreamReader sr = new StreamReader(parent + "\abc.txt");
+            string EncryptionKey = sr.ReadLine();
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
@@ -30,7 +32,9 @@ namespace AnonymousBidder.Common
         }
         public static string Decrypt(string cipherText)
         {
-            string EncryptionKey = "MAKV2SPBNI99212";
+            var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+            StreamReader sr = new StreamReader(parent + "\\abc.txt");
+            string EncryptionKey = sr.ReadLine();
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {

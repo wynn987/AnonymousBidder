@@ -8,6 +8,7 @@ using AnonymousBidder.Data.Entity;
 using AnonymousBidder.ViewModels;
 using AnonymousBidder.Common;
 using AnonymousBidder.Models;
+using System.IO;
 
 namespace AnonymousBidder.Services
 {
@@ -206,6 +207,23 @@ namespace AnonymousBidder.Services
             };
             _userRepository.Add(user);
             return user;
+        }
+
+        internal string GetSiteKey()
+        {
+            var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+            StreamReader sr = new StreamReader(parent + "\\abc.txt");
+            sr.ReadLine();
+            sr.ReadLine();
+            return sr.ReadLine();
+        }
+
+        internal string GetSecretKey()
+        {
+            var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+            StreamReader sr = new StreamReader(parent + "\\abc.txt");
+            sr.ReadLine();
+            return sr.ReadLine();
         }
 
         #region Login
