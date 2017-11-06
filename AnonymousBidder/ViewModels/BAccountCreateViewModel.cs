@@ -13,6 +13,7 @@ namespace AnonymousBidder.ViewModels
         
 
         [Required]
+        [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "The email address is not valid.")]
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "The Email Address is invalid.")]
         public string EmailAddress { get; set; }
