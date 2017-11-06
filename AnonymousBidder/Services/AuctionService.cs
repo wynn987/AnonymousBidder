@@ -90,7 +90,8 @@ namespace AnonymousBidder.Services
                 Success = false
             };
         }
-        
+
+
         internal bool DuplicateEmailCheck(string emailAddress)
         {
             var user = _abUserRepository.FindBy(x => x.Email.Equals(emailAddress, StringComparison.InvariantCultureIgnoreCase) ).FirstOrDefault();
@@ -199,6 +200,14 @@ namespace AnonymousBidder.Services
             };
 
         }
+
+        #region Find seller auction id via seller email
+        internal ABUser ViewSellerAuctionIdViaEmail(string sellerEmail)
+        {
+            ABUser queryResultObj = _abUserRepository.FindBy(x => x.Email == sellerEmail).FirstOrDefault();
+            return queryResultObj;
+        }
+        #endregion
 
         #region View Auction Item by seller
         internal AuctionItemViewModel ViewSellerAuction(string sellerEmail)

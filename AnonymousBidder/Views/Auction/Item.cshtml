@@ -123,11 +123,11 @@
                     </dd>
                     using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
                     {
+                        @Html.AntiForgeryToken()
                         <dt>
                             Has item being sent out?
                         </dt>
                         <dd>
-                            <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
                             @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
                             {
                                  new SelectListItem {Text="No", Value="0" },
@@ -144,11 +144,11 @@
                     </dd>
                     using (Html.BeginForm("SaveSellerItemStatus", "Auction", FormMethod.Post, new { name = "AuctionUpdate", id = "AuctionUpdate" }))
                     {
+                        @Html.AntiForgeryToken()
                         <dt>
                             Has item being sent out?
                         </dt>
                         <dd>
-                            <input type="hidden" name="auctionItem.AuctionGUID" value="@Model.auctionItem.AuctionGUID">
                             @Html.DropDownList("auctionItem.SellerSent", new List<SelectListItem>
                             {
                                  new SelectListItem {Text="No", Value="0" },
