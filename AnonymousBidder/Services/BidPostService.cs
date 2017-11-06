@@ -139,7 +139,8 @@ namespace AnonymousBidder.Services
                 if (auctionResult.Auction_BidGUID == null)
                 {
                     // no one has bid before
-                    if (bid > auctionResult.StartingBid)
+                    if (bid > auctionResult.StartingBid &&
+                        bid < user.Money) 
                     {
                         // create new bid
                         Bid b = createNewBid(user, auctionResult, bid);
@@ -155,7 +156,8 @@ namespace AnonymousBidder.Services
                 }
                 else
                 {
-                    if (bid > auctionResult.CurrentBid.BidPlaced)
+                    if (bid > auctionResult.CurrentBid.BidPlaced &&
+                        bid < user.Money)
                     {
                         // save previous bidder
                         Bid pBid = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auctionResult.AuctionGUID).FirstOrDefault();
