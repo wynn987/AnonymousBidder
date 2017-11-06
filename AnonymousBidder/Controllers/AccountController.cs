@@ -211,7 +211,7 @@ namespace AnonymousBidder.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             //var response = Request["g-recaptcha-response"];
-            //string secretKey = "6LfACTcUAAAAAAUtHbQSZwH17ksmX9x2n8HRv5CB";
+            //string secretKey = AccountService.GetSecretKey();
             //var client = new WebClient();
             //var result = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
             //var obj = JObject.Parse(result);
@@ -250,6 +250,7 @@ namespace AnonymousBidder.Controllers
                 {
                 }
             }
+            model.siteKey = AccountService.GetSiteKey();
             ViewBag.ReturnUrl = returnUrl;
 
             return View(model);
@@ -352,8 +353,8 @@ namespace AnonymousBidder.Controllers
             return null;
         }
 
-       
 
+        [HttpPost]
         private ActionResult DoRegisterBidder(BAccountCreateViewModel model, Guid auctionGuid, string returnUrl)
         {
 
@@ -371,14 +372,22 @@ namespace AnonymousBidder.Controllers
 
             bool checkAuctionExist = false;
             checkAuctionExist = AccountService.checkAuctionIdExists(auctionGuid);
+
+            bool checkEmailExist = false;
+            checkEmailExist = AccountService.DuplicateBidderEmailCheck(model.EmailAddress);
+
             
 
 
 
             // do the service of add bidder account
             ServiceResult result = new ServiceResult();
-                result = AccountService.AddBidderAccount(vm,tempCurrentAuctionGuid);
-                if (result.Success && checkAuctionExist)
+           
+            if (checkAuctionExist && checkEmailExist)
+            {
+                result = AccountService.AddBidderAccount(vm, tempCurrentAuctionGuid);
+            }
+                if (result.Success)
                 {
                     return RedirectToAction("RegisterSuccess", result);
                 }

@@ -23,6 +23,7 @@ namespace AnonymousBidder.Common
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
         public string HashedPassword { get; set; }
+        public string siteKey { get; set; }
     }
 
     public class ResetPasswordViewModel
