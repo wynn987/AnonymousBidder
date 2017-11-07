@@ -13,6 +13,7 @@ using AnonymousBidder.Data.Entity;
 using AnonymousBidder.ViewModels;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace AnonymousBidder.Controllers
 {
@@ -367,6 +368,8 @@ namespace AnonymousBidder.Controllers
             vm.ConfirmPassword = hashedPassword;
             vm.Alias = cleanedAlias;
             vm.Money = model.Money;
+
+            //Match checkEmailFormat = System.Text.RegularExpressions.Regex.Match(model.EmailAddress, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
 
             // do check if acution guid already exist.
 
