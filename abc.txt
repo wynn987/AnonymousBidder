@@ -1,3 +1,7 @@
 MAKV2SPBNI99212
 6LfACTcUAAAAAAUtHbQSZwH17ksmX9x2n8HRv5CB
 6LfACTcUAAAAAGawFAkWsbXh38fSwfh-OntUjMgb
+anonymousbidderdb.database.windows.net
+AnonymousBidderDb
+0VB5w0oDuNUUOBewbl8hqU2UxmW9HemHqdKs0A8wL84=
+l7JNMeQuWITLoidlrS3H+I1cetUfFYzrTUyai7wXCUU=
