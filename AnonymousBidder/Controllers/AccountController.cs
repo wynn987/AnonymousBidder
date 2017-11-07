@@ -259,68 +259,77 @@ namespace AnonymousBidder.Controllers
 
         private ActionResult DoLogin(LoginViewModel model, string returnUrl)
         {
-            if (string.IsNullOrEmpty(model.HashedPassword))
-                model.HashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
-            ABUser user = AccountService.GetUserByUserNameAndPassword(model.EmailAddress, model.HashedPassword);
-
-            if (user != null) 
+            if (isValidEmail(model.EmailAddress))
             {
-                UserInfoModel userInfo = new UserInfoModel
+
+                if (string.IsNullOrEmpty(model.HashedPassword))
+                    model.HashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
+                ABUser user = AccountService.GetUserByUserNameAndPassword(model.EmailAddress, model.HashedPassword);
+
+                if (user != null) 
                 {
-                    Email = user.Email,
-                    Role = user.Role.UserRoleName
-                };
+                    UserInfoModel userInfo = new UserInfoModel
+                    {
+                        Email = user.Email,
+                        Role = user.Role.UserRoleName
+                    };
 
-                Session["User"] = userInfo;
-                HttpSession.SetInSession(userInfo);
+                    Session["User"] = userInfo;
+                    HttpSession.SetInSession(userInfo);
 
-                FormsAuthentication.SetAuthCookie(model.EmailAddress, model.RememberMe);
+                    FormsAuthentication.SetAuthCookie(model.EmailAddress, model.RememberMe);
 
-                #region Remember Me
-                if (model.RememberMe)
-                {
-                    var userData = model.HashedPassword;
-                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                                1,
-                                model.EmailAddress,
-                                DateTime.Now,
-                                DateTime.Now.AddDays(7),//Remember for 7 days
-                                model.RememberMe,
-                                userData);
+                    #region Remember Me
+                    if (model.RememberMe)
+                    {
+                        var userData = model.HashedPassword;
+                        FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                                    1,
+                                    model.EmailAddress,
+                                    DateTime.Now,
+                                    DateTime.Now.AddDays(7),//Remember for 7 days
+                                    model.RememberMe,
+                                    userData);
 
-                    string encTicket = FormsAuthentication.Encrypt(authTicket);
-                    HttpCookie cookie = new HttpCookie("AnonymousBidder", encTicket);
-                    cookie.Expires = authTicket.Expiration; //must do it for cookie expiration 
-                    Response.Cookies.Add(cookie);
-                }
-                #endregion Remember Me
+                        string encTicket = FormsAuthentication.Encrypt(authTicket);
+                        HttpCookie cookie = new HttpCookie("AnonymousBidder", encTicket);
+                        cookie.Expires = authTicket.Expiration; //must do it for cookie expiration 
+                        Response.Cookies.Add(cookie);
+                    }
+                    #endregion Remember Me
 
-                if (Url.IsLocalUrl(returnUrl) 
-                    && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                    && !returnUrl.StartsWith("//") 
-                    && !returnUrl.StartsWith("/\\"))
-                {
-                    return Redirect(returnUrl);
-                }
+                    if (Url.IsLocalUrl(returnUrl) 
+                        && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") 
+                        && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
 
-                if (userInfo.Role == "ADMIN")
-                {
-                    return RedirectToAction("Create", "Auction");
-                }
-                else if (userInfo.Role == "SELLER")
-                {
-                    return RedirectToAction("Item", "Auction");
+                    if (userInfo.Role == "ADMIN")
+                    {
+                        return RedirectToAction("Create", "Auction");
+                    }
+                    else if (userInfo.Role == "SELLER")
+                    {
+                        return RedirectToAction("Item", "Auction");
 
-                } 
+                    } 
 
                 
-                else if (userInfo.Role == "BIDDER")
-                {
-                    return RedirectToAction("BidPost", "BidPost");
-                }
+                    else if (userInfo.Role == "BIDDER")
+                    {
+                        return RedirectToAction("BidPost", "BidPost");
+                    }
 
+                }
             }
             return View();
+        }
+
+        private bool isValidEmail(string emailAddress)
+        {
+            return Regex.IsMatch(emailAddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 
         // register a seller
