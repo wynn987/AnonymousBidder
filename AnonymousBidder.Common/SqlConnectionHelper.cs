@@ -1,54 +1,94 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.SqlClient;
+using System.IO;
 using System.Web.Configuration;
 
 namespace AnonymousBidder.Common
 {
     public static class SqlConnectionHelper
     {
+        private static string[] connectionStrings;
+       
         private static string ServerName
         {
             get
             {
-                if (WebConfigurationManager.AppSettings["ServerName"] != null)
+                if (connectionStrings == null)
                 {
-                    return WebConfigurationManager.AppSettings["ServerName"];
+                    connectionStrings = new string[4];
+                    var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+                    StreamReader sr = new StreamReader(parent + "\\abc.txt");
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    connectionStrings[0] = sr.ReadLine();
+                    connectionStrings[1] = sr.ReadLine();
+                    connectionStrings[2] = Sercurity.Decrypt(sr.ReadLine());
+                    connectionStrings[3] = Sercurity.Decrypt(sr.ReadLine());
                 }
-                return string.Empty;
+                return connectionStrings[0];
             }
         }
         private static string DatabaseName
         {
             get
             {
-                if (WebConfigurationManager.AppSettings["DatabaseName"] != null)
+                if (connectionStrings == null)
                 {
-                    return WebConfigurationManager.AppSettings["DatabaseName"];
+                    connectionStrings = new string[4];
+                    var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+                    StreamReader sr = new StreamReader(parent + "\\abc.txt");
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    connectionStrings[0] = sr.ReadLine();
+                    connectionStrings[1] = sr.ReadLine();
+                    connectionStrings[2] = Sercurity.Decrypt(sr.ReadLine());
+                    connectionStrings[3] = Sercurity.Decrypt(sr.ReadLine());
                 }
-                return string.Empty;
+                return connectionStrings[1];
             }
         }
         private static string Password
         {
             get
             {
-                if (WebConfigurationManager.AppSettings["Password"] != null)
+                if (connectionStrings == null)
                 {
-                    return Sercurity.Decrypt(WebConfigurationManager.AppSettings["Password"]);
+                    connectionStrings = new string[4];
+                    var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+                    StreamReader sr = new StreamReader(parent + "\\abc.txt");
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    connectionStrings[0] = sr.ReadLine();
+                    connectionStrings[1] = sr.ReadLine();
+                    connectionStrings[2] = Sercurity.Decrypt(sr.ReadLine());
+                    connectionStrings[3] = Sercurity.Decrypt(sr.ReadLine());
                 }
-                return string.Empty;
+                return connectionStrings[3];
             }
         }
         private static string UserId
         {
             get
             {
-                if (WebConfigurationManager.AppSettings["UserID"] != null)
+                if (connectionStrings == null)
                 {
-                    return Sercurity.Decrypt(WebConfigurationManager.AppSettings["UserID"]);
+                    connectionStrings = new string[4];
+                    var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+                    StreamReader sr = new StreamReader(parent + "\\abc.txt");
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    sr.ReadLine();
+                    connectionStrings[0] = sr.ReadLine();
+                    connectionStrings[1] = sr.ReadLine();
+                    connectionStrings[2] = Sercurity.Decrypt(sr.ReadLine());
+                    connectionStrings[3] = Sercurity.Decrypt(sr.ReadLine());
                 }
-                return string.Empty;
+                return connectionStrings[2];
             }
         }
         public static string GetEntityConnectionString()
