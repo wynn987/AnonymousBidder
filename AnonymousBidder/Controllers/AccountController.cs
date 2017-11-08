@@ -333,35 +333,44 @@ namespace AnonymousBidder.Controllers
         }
 
         // register a seller
+        [HttpPost]
         private ActionResult DoRegister(AccountCreateViewModel model, Guid sellerGuid, string token, string returnUrl)
         {
-            
-            ABUser currentUser = AccountService.GetUserByUserName(model.EmailAddress);
-            var currentUserGuid = currentUser.ABUserGUID;
-            var currentUserToken = currentUser.Token;
-            Guid tempCurrentUserGuid = sellerGuid;
 
-            if(tempCurrentUserGuid == currentUserGuid && currentUserToken == token)
+            bool isRegisterValidEmail = isValidEmail(model.EmailAddress);
+
+            if (isRegisterValidEmail)
             {
-                var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
-                AccountCreateViewModel vm = new AccountCreateViewModel();
-                vm.Password = hashedPassword;
-                vm.EmailAddress = model.EmailAddress;
-                vm.ConfirmPassword = hashedPassword;
-                vm.Alias = model.Alias;
+                ABUser currentUser = AccountService.GetUserByUserName(model.EmailAddress);
+                var currentUserGuid = currentUser.ABUserGUID;
+                var currentUserToken = currentUser.Token;
+                Guid tempCurrentUserGuid = sellerGuid;
 
-                ServiceResult result = new ServiceResult();
-                result = AccountService.AddAccount(vm);
-                if (result.Success)
+
+
+                if (tempCurrentUserGuid == currentUserGuid && currentUserToken == token && isRegisterValidEmail)
                 {
-                    return RedirectToAction("RegisterSuccess", result);
+                    var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
+                    AccountCreateViewModel vm = new AccountCreateViewModel();
+                    vm.Password = hashedPassword;
+                    vm.EmailAddress = model.EmailAddress;
+                    vm.ConfirmPassword = hashedPassword;
+                    vm.Alias = model.Alias;
+
+                    ServiceResult result = new ServiceResult();
+                    result = AccountService.AddAccount(vm);
+                    if (result.Success)
+                    {
+                        return RedirectToAction("RegisterSuccess", result);
+                    }
+                    return RedirectToAction("RegisterFail", result);
+
                 }
-                return RedirectToAction("RegisterFail", result);
 
+              
             }
-
             return null;
-        }
+        } // end do registr
 
 
         [HttpPost]
@@ -378,7 +387,7 @@ namespace AnonymousBidder.Controllers
             vm.Alias = cleanedAlias;
             vm.Money = model.Money;
 
-            //Match checkEmailFormat = System.Text.RegularExpressions.Regex.Match(model.EmailAddress, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
+            bool isRegisterValidEmail = isValidEmail(model.EmailAddress);
 
             // do check if acution guid already exist.
 
@@ -395,7 +404,7 @@ namespace AnonymousBidder.Controllers
             // do the service of add bidder account
             ServiceResult result = new ServiceResult();
            
-            if (checkAuctionExist && checkEmailExist)
+            if (checkAuctionExist && checkEmailExist && isRegisterValidEmail)
             {
                 result = AccountService.AddBidderAccount(vm, tempCurrentAuctionGuid);
             }
