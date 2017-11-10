@@ -184,7 +184,6 @@
     <Compile Include="ViewModels\BAccountCreateViewModel.cs" />
     <Compile Include="ViewModels\BidPostViewModel.cs" />
     <Compile Include="ViewModels\DepositMoneyViewModel.cs" />
-    <Compile Include="ViewModels\MAccountCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSS\Custom\bootstrap-multiselect.css" />

@@ -93,32 +93,7 @@ namespace AnonymousBidder.Services
 
         }
 
-        internal ServiceResult AddModeratorAccount(MAccountCreateViewModel moderatorViewModel)
-        {
-            ABUserModel userModel = new ABUserModel();
-            userModel.Alias = moderatorViewModel.Alias;
-            userModel.Email = moderatorViewModel.EmailAddress;
-            userModel.Password = moderatorViewModel.Password;
-            userModel.ABUserGUID = Guid.NewGuid();
-            ABUser addModeratorSuccess = ModeratorAccount(userModel);
-            bool commitSuccess = UpdateUser(addModeratorSuccess);
-
-            if (commitSuccess)
-            {
-                return new ServiceResult()
-                {
-                    Success = true,
-                    Params = addModeratorSuccess.ToString()
-                };
-            }
-
-            return new ServiceResult()
-            {
-                ErrorMessage = "Error message",
-                Success = false
-            };
-
-        }
+       
 
         internal ServiceResult UpdateAccountWithMoney(DepositMoneyViewModel vm)
         {
@@ -192,22 +167,7 @@ namespace AnonymousBidder.Services
             return abuser;
         }
 
-        //Moderator account record
-        private ABUser ModeratorAccount(ABUserModel userModel)
-        {
-            var role = getAdminRoleGUID();
-            ABUser user = new ABUser()
-            {
-                ABUserGUID = Guid.NewGuid(),
-                Alias = userModel.Alias,
-                Email = userModel.Email,
-                Password = userModel.Password,
-                Role = role,
-              
-            };
-            _userRepository.Add(user);
-            return user;
-        }
+       
 
         internal string GetSiteKey()
         {
