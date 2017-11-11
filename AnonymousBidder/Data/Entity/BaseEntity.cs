@@ -4,10 +4,6 @@ namespace AnonymousBidder.Data.Entity
 {
     public abstract class BaseEntity
     {
-        //public override bool Equals(object obj)
-        //{
-        //    return Equals(obj as BaseEntity);
-        //}
         private Type GetUnproxiedType()
         {
             return GetType();

@@ -134,7 +134,6 @@ namespace AnonymousBidder.Services
 
 
 
-        //save account for seller
         private ABUser SaveAccount(ABUserModel abuserModel)
         {
             var role = getGUID();
@@ -208,7 +207,6 @@ namespace AnonymousBidder.Services
         }
         
 
-        // get roleGUID for seller
         public UserRole getGUID()
         {
             var sellerRole = _roleRepository.FindBy(x => x.UserRoleName == "SELLER").FirstOrDefault();

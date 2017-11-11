@@ -38,7 +38,6 @@ namespace AnonymousBidder.Controllers
         public ActionResult DepositMoney(string returnUrl)
         {
             DepositMoneyViewModel model = new DepositMoneyViewModel();
-            //Request for cookie
             HttpCookie cookie = Request.Cookies["AnonymousBidder"];
 
             if (cookie != null)

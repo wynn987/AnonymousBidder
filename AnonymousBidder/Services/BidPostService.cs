@@ -35,11 +35,9 @@ namespace AnonymousBidder.Services
 
         internal BidPostViewModel RetrieveUserGUID(String email)
         {
-            //Create a viewmodel thsat has AUctionModel data
             BidPostViewModel result = GetBidPostByEmail(email);
             if (result != null)
             {
-                // if no such email
                 return result;
             }
 
@@ -52,7 +50,6 @@ namespace AnonymousBidder.Services
             Auction auction = user.Auction;
             if (auction != null)
             {
-                // only delete if current user is the winner
                 if (auction.CurrentBid.Bidder.Email == email)
                 {
                     auction.Auction_BidGUID = null;
@@ -82,7 +79,6 @@ namespace AnonymousBidder.Services
 
         private BidPostViewModel GetBidPostByEmail(string email)
         {
-            //Get database values and pass it to the view model
             ABUser user = _abUserRepository.FindBy(x => x.Email == email).FirstOrDefault();
             if (user != null && user.Role.UserRoleName == "BIDDER"
                     && user.ABUser_AuctionGUID != null)
@@ -100,7 +96,6 @@ namespace AnonymousBidder.Services
                 Auction auctionBid = _auctionRepository.FindBy(x => x.AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
                 if (auctionBid.Auction_BidGUID == null)
                 {
-                    // no one has bid before
                     result.BidModel = new BidModel()
                     {
                         BidPlaced = auctionBid.StartingBid
@@ -116,8 +111,6 @@ namespace AnonymousBidder.Services
                 
                 if (auction == null || auctionBid == null)
                 {
-                    // if any of the details cannot be found,
-                    // bid post is either corrupted or not setup
                     return null;
                 }
 
@@ -125,7 +118,6 @@ namespace AnonymousBidder.Services
             }
             else
             {
-                // if user cannot be found
                 return null;
             }
         }
@@ -138,14 +130,11 @@ namespace AnonymousBidder.Services
                 Auction auctionResult = _auctionRepository.FindBy(x => x.AuctionGUID == user.ABUser_AuctionGUID).FirstOrDefault();
                 if (auctionResult.Auction_BidGUID == null)
                 {
-                    // no one has bid before
                     if (bid > auctionResult.StartingBid &&
                         bid < user.Money) 
                     {
-                        // create new bid
                         Bid b = createNewBid(user, auctionResult, bid);
                         _bidRepository.Add(b);
-                        // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
                         return new ServiceResult()
@@ -159,16 +148,12 @@ namespace AnonymousBidder.Services
                     if (bid > auctionResult.CurrentBid.BidPlaced &&
                         bid < user.Money)
                     {
-                        // save previous bidder
                         Bid pBid = _bidRepository.FindBy(x => x.Bid_AuctionGUID == auctionResult.AuctionGUID).FirstOrDefault();
                         ABUser pBidder = _abUserRepository.FindBy(x => x.ABUserGUID == pBid.Bid_ABUserGUID).FirstOrDefault();
-                        // create new bid
                         Bid b = createNewBid(user, auctionResult, bid);
                         _bidRepository.Add(b);
-                        // update bid here
                         auctionResult.Auction_BidGUID = b.BidGUID;
                         _unitOfWork.Commit();
-                        // send email to previous bidder                        
                         SendEmail(pBidder);
 
                         return new ServiceResult()
@@ -205,7 +190,6 @@ namespace AnonymousBidder.Services
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    //string htmlBody = "<img src='data:image/png;base64," + Convert.ToBase64String(imageBytes) + @"'/>";                                
 
                     string body = @"<p>Dear User,</p>
                                 <br/>

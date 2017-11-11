@@ -26,7 +26,6 @@ namespace AnonymousBidder
         {
             Exception exception = Server.GetLastError();
             HttpException httpException = exception as HttpException;
-            //ToDO :  Log this exception in here
         }
         protected void Application_EndRequest()
         {
