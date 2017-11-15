@@ -25,9 +25,6 @@ namespace AnonymousBidder.Common
     public class EmailHelper
     {
         #region Email
-        //if send mail successfully
-        //return 1
-        //else return 0
         public static string FixBase64ForImage(string Image)
         {
             System.Text.StringBuilder sbText = new System.Text.StringBuilder(Image, Image.Length);
@@ -38,14 +35,23 @@ namespace AnonymousBidder.Common
 
 
         public static bool SendMail(string fromAddress, string toAddress, string subject, string body, string cc, string sectionName, string attachmentFilename="", string pathImageEmbedded = "", string bcc = "")
-        //public static bool SendMail(string fromAddress, string toAddress, string subject, string body, string cc, string sectionName, string pathImageEmbedded = "", string bcc = "")
         {
             string sectionPath = "mailSettings/" + sectionName;
             SmtpSection mailSetting = (SmtpSection)ConfigurationManager.GetSection(sectionPath);
             string HOST = mailSetting.Network.Host;
             int PORT = mailSetting.Network.Port;
             string USERNAME = mailSetting.Network.UserName;
-            string PASSWORD = Sercurity.Decrypt(mailSetting.Network.Password);
+            var parent = Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName;
+            StreamReader sr = new StreamReader(parent + "\\abc.txt");
+            sr.ReadLine();
+            sr.ReadLine();
+            sr.ReadLine();
+            sr.ReadLine();
+            sr.ReadLine();
+            sr.ReadLine();
+            sr.ReadLine();
+            string mailPassword = sr.ReadLine();
+            string PASSWORD = Sercurity.Decrypt(mailPassword);
             string ADMIN_MAIL = mailSetting.From;
             string ADMIN_MAIL_NAME = "AnonymousBidder Administrator";
             string mailFrom = !string.IsNullOrEmpty(fromAddress) ? fromAddress : ADMIN_MAIL;
@@ -53,12 +59,10 @@ namespace AnonymousBidder.Common
             {
                 MailMessage mailMessage = BuildMailMessage(ADMIN_MAIL_NAME, mailFrom, toAddress, subject, body, pathImageEmbedded);
 
-                //Handle CC
                 if (!string.IsNullOrEmpty(cc))
                 {
                     var toCcList = cc.Split(',');
 
-                    //set the carbon copy address
                     if (toCcList != null && toCcList.Any())
                     {
                         foreach (var toCc in toCcList)
@@ -68,12 +72,10 @@ namespace AnonymousBidder.Common
                     }
                 }
 
-                //Handle BCC
                 if (!string.IsNullOrEmpty(bcc))
                 {
                     var toBccList = bcc.Split(',');
 
-                    //set the carbon copy address
                     if (toBccList != null && toBccList.Any())
                     {
                         foreach (var toBcc in toBccList)
@@ -84,7 +86,6 @@ namespace AnonymousBidder.Common
                 }
 
                 
-                //Handle Attachment
                 if (!string.IsNullOrEmpty(attachmentFilename))
                 {
 
@@ -134,7 +135,6 @@ namespace AnonymousBidder.Common
             {
                 AlternateView avHtml = AlternateView.CreateAlternateViewFromString(body, null, System.Net.Mime.MediaTypeNames.Text.Html);
 
-                // Create a LinkedResource object for each embedded image                
                 LinkedResource img = new LinkedResource(pathImageEmbedded, System.Net.Mime.MediaTypeNames.Image.Jpeg);
                 img.ContentId = "ImageEmbedded";
                 img.ContentType.MediaType = System.Net.Mime.MediaTypeNames.Image.Jpeg;
@@ -143,7 +143,6 @@ namespace AnonymousBidder.Common
                 img.ContentLink = new Uri("cid:" + img.ContentId);
                 avHtml.LinkedResources.Add(img);
 
-                // Add the alternate views instead of using MailMessage.Body               
                 message.AlternateViews.Add(avHtml);
             }
             else

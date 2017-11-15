@@ -22,12 +22,7 @@ namespace AnonymousBidder.Controllers
         {
             _auctionService = new AuctionService();
         }
-
-        //TODO: Complete Item Function
-        /// <summary>
-        /// Controller function for bidders to bid
-        /// </summary>
-        /// <returns>Auction Item View</returns>
+        
         [SellerFilter]
         public ActionResult Item()
         {
@@ -40,7 +35,6 @@ namespace AnonymousBidder.Controllers
         public ActionResult SaveSellerItemStatus(AuctionItemViewModel itemViewModel, FormCollection form)
         {
             string valueOf = form["auctionItem.SellerSent"].ToString();
-            //UserInfoModel.Email
 
             ABUser seller = _auctionService.ViewSellerAuctionIdViaEmail(UserInfoModel.Email);
             
@@ -55,7 +49,6 @@ namespace AnonymousBidder.Controllers
             }
             else
             {
-                //if they tries to tamper with the drop down list value.
             }
 
 
@@ -78,12 +71,7 @@ namespace AnonymousBidder.Controllers
             return null;
 
         }
-
-        //TODO: Test
-        /// <summary>
-        /// Controller function for admins to create auction
-        /// </summary>
-        /// <returns>Auction Item View</returns>
+        
         [AdminFilter]
         public ActionResult Create()
         {
@@ -96,11 +84,7 @@ namespace AnonymousBidder.Controllers
             bool valid = _auctionService.DuplicateEmailCheck(emailAddress);
             return Json(valid, JsonRequestBehavior.AllowGet);
         }
-
-        /// <summary>
-        /// Controller function for system to save admin's new auction
-        /// </summary>
-        /// <returns>ServiceResult with new Seller Guid as Params</returns>
+        
         [HttpPost]
         [AdminFilter]
         public ActionResult Save(AuctionCreateViewModel vm)
@@ -114,10 +98,6 @@ namespace AnonymousBidder.Controllers
             }
             return RedirectToAction("Create");
         }
-        /// <summary>
-        /// Controller function to send registration email to seller when admin creates successfully
-        /// Input ServiceReslt has seller GUID as Params
-        /// </summary>
         [AdminFilter]
         public ActionResult SendRegistrationEmail(ServiceResult result)
         {
@@ -131,11 +111,6 @@ namespace AnonymousBidder.Controllers
 
             return RedirectToAction("Create");
         }
-        /// <summary>   
-        /// Function to generate seller registration callback url
-        /// </summary>
-        /// <param name="sellerGuid"></param>
-        /// <returns></returns>
         private string GenerateEmailRegistrationCode(Guid sellerGuid)
         {
             string code = Utilities.CreateRandomCode();
@@ -150,9 +125,6 @@ namespace AnonymousBidder.Controllers
 
             return Url.Action("RegisterBidder", "Account", new { auctionGuid = bidderGuid }, protocol: Request.Url.Scheme);
         }
-        /// <summary>
-        /// Controller function to display server errors if auction not successfully created
-        /// </summary>
         [AdminFilter]
         public ActionResult FailedtoCreate(ServiceResult result)
         {

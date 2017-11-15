@@ -27,18 +27,8 @@ namespace AnonymousBidder.Controllers
 
         }
 
-        // Write Controller function to receive URL
-        // Write View Model to tell the system what data to expect
-        // Write View to receive the data
-        // Write Service layer to get the data
-
         #region Login
-
-        /// <summary>
-        /// Check If User email address is Existing
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <returns></returns>
+        
         [AllowAnonymous]
         public JsonResult EmailExists(string emailAddress)
         {
@@ -48,12 +38,7 @@ namespace AnonymousBidder.Controllers
 
             return Json(isUserExisted, JsonRequestBehavior.AllowGet);
         }
-
-        /// <summary>
-        /// Check If User email address is Existing
-        /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <returns></returns>
+        
         [AllowAnonymous]
         public JsonResult CheckPassword(string emailAddress, string password)
         {
@@ -138,7 +123,6 @@ namespace AnonymousBidder.Controllers
         [AllowAnonymous]
         public ActionResult RegisterSeller(string returnUrl)
         {
-            //fetch the url sellerGUID and token code
             var sellerGuid = Request.QueryString["sellerGuid"];
             var code = Request.QueryString["code"];
 
@@ -166,39 +150,9 @@ namespace AnonymousBidder.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [AdminFilter]
-        //[AllowAnonymous]
-        public ActionResult RegisterModerator(MAccountCreateViewModel model, string returnUrl)
-        {    
-            ViewBag.ReturnUrl = returnUrl;      
-            return DoRegisterModerator(model, returnUrl);
-        }
+        
 
-        [AdminFilter]
-        //[AllowAnonymous]
-        public ActionResult RegisterModerator(string returnUrl)
-        {
-            MAccountCreateViewModel model = new MAccountCreateViewModel();
-            //Request for cookie
-            HttpCookie cookie = Request.Cookies["AnonymousBidder"];
-
-
-            if (cookie != null)
-            {
-                try
-                {
-                    return DoRegisterModerator(model, returnUrl);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-
-            return View(model);
-        }
-
+        
        
 
 
@@ -211,17 +165,17 @@ namespace AnonymousBidder.Controllers
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            //var response = Request["g-recaptcha-response"];
-            //string secretKey = AccountService.GetSecretKey();
-            //var client = new WebClient();
-            //var result = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
-            //var obj = JObject.Parse(result);
-            //var status = (bool)obj.SelectToken("success");
-            //ViewBag.Message = status ? "Google reCaptcha validation success" : "Google reCaptcha validation failed";
-            //if (!status)
-            //{
-            //    throw new Exception();
-            //}
+            var response = Request["g-recaptcha-response"];
+            string secretKey = AccountService.GetSecretKey();
+            var client = new WebClient();
+            var result = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response));
+            var obj = JObject.Parse(result);
+            var status = (bool)obj.SelectToken("success");
+            ViewBag.Message = status ? "Google reCaptcha validation success" : "Google reCaptcha validation failed";
+            if (!status)
+            {
+                throw new Exception();
+            }
             return DoLogin(model, returnUrl);
         }
         
@@ -230,17 +184,14 @@ namespace AnonymousBidder.Controllers
         public ActionResult Login(string returnUrl)
         {
             LoginViewModel model = new LoginViewModel();
-            //Request for cookie
             HttpCookie cookie = Request.Cookies["AnonymousBidder"];
 
             if (cookie != null)
             {
                 try
                 {
-                    //some times no cookie in browser
                     FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
-
-                    //Get login info from cookie
+                    
                     model.EmailAddress = ticket.Name;
                     model.HashedPassword = ticket.UserData;
                     model.RememberMe = ticket.IsPersistent;
@@ -332,8 +283,7 @@ namespace AnonymousBidder.Controllers
             return Regex.IsMatch(emailAddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*
            [a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
-
-        // register a seller
+        
         [HttpPost]
         private ActionResult DoRegister(AccountCreateViewModel model, Guid sellerGuid, string token, string returnUrl)
         {
@@ -371,7 +321,7 @@ namespace AnonymousBidder.Controllers
               
             }
             return null;
-        } // end do registr
+        } 
 
 
         [HttpPost]
@@ -389,8 +339,7 @@ namespace AnonymousBidder.Controllers
             vm.Money = model.Money;
 
             bool isRegisterValidEmail = isValidEmail(model.EmailAddress);
-
-            // do check if acution guid already exist.
+           
 
             bool checkAuctionExist = false;
             checkAuctionExist = AccountService.checkAuctionIdExists(auctionGuid);
@@ -401,8 +350,7 @@ namespace AnonymousBidder.Controllers
             
 
 
-
-            // do the service of add bidder account
+            
             ServiceResult result = new ServiceResult();
            
             if (checkAuctionExist && checkEmailExist && isRegisterValidEmail)
@@ -417,32 +365,13 @@ namespace AnonymousBidder.Controllers
 
         }
 
-        private ActionResult DoRegisterModerator(MAccountCreateViewModel ModeratorViewModel, string returnUrl)
-        {
-            
-                var hashedPassword = Utilities.CreatePasswordHash(ModeratorViewModel.Password, ModeratorViewModel.EmailAddress);
-                MAccountCreateViewModel ModViewModel = new MAccountCreateViewModel();
-                ModViewModel.Password = hashedPassword;
-                ModViewModel.EmailAddress = ModeratorViewModel.EmailAddress;
-                ModViewModel.ConfirmPassword = hashedPassword;
-                ModViewModel.Alias = ModeratorViewModel.Alias;
-
-                ServiceResult result = new ServiceResult();
-                result = AccountService.AddModeratorAccount(ModViewModel);
-                if (result.Success)
-                {
-                    return RedirectToAction("ModRegistrationSuccess", result);
-                }
-                return RedirectToAction("RegisterFail", result);
-
-        }
+    
         
         [AllowAnonymous]
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-
-            //Request for cookie
+            
             Response.Cookies["AnonymousBidder"].Expires = DateTime.Now.AddDays(-1);
 
             Session.Abandon();
@@ -471,8 +400,7 @@ namespace AnonymousBidder.Controllers
             return View();
         }
 
-
-        // POST: /Account/DoChangePassword
+        
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

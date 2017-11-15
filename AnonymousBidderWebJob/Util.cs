@@ -11,10 +11,7 @@ namespace AnonymousBidderWebJob
         }
 
         public static string JobKeyFormat = "{0}###{1}"; //ID###EmailAddress
-
-        /// <summary>
-        /// Get current local TimeZone Name of running system
-        /// </summary>
+        
         public static string TimeZoneName
         {
             get
@@ -22,10 +19,7 @@ namespace AnonymousBidderWebJob
                 return ConfigurationManager.AppSettings["TimeZoneName"];
             }
         }
-
-        /// <summary>
-        /// A conversion from DateTime.Now to current local TimeZone DateTime
-        /// </summary>
+        
         public static DateTime LocalDateTimeNow
         {
             get
@@ -34,12 +28,6 @@ namespace AnonymousBidderWebJob
                 //return DateTime.Now;
             }
         }
-
-        /// <summary>
-        /// Convert current local TimeZone DateTime to UTC DateTime
-        /// </summary>
-        /// <param name="localTime"></param>
-        /// <returns></returns>
         public static DateTime ConvertLocalDateTimeToUTC(DateTime localTime)
         {
             TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
@@ -47,12 +35,7 @@ namespace AnonymousBidderWebJob
 
             return uctTime;
         }
-
-        /// <summary>
-        /// Convert Current UTC DateTime to current local TimeZone
-        /// </summary>
-        /// <param name="utcTime"></param>
-        /// <returns></returns>
+        
         public static DateTime ConvertUCTDateTimeToLocal(DateTime utcTime)
         {
             TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);

@@ -5,7 +5,6 @@ namespace AnonymousBidder.Controllers
     public class ErrorController : Controller
     {
         [AllowAnonymous]
-        // The 404 action handler
         public ActionResult PageNotFound()
         {
             Response.StatusCode = 404;

@@ -39,25 +39,12 @@ namespace AnonymousBidder.Services
 
 
 
-
-        //TODO: Create Seller
-        /// <summary>
-        /// Point of access from controller's Save function
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns>
-        /// Service Result indicating pass or fail and any relevant error message. 
-        /// Returns Seller GUID for email registration
-        /// </returns>
+        
         internal ServiceResult AddAuction(AuctionCreateViewModel vm)
         {
             vm = StripStringsAuctionCreate(vm);
-            //Validate Data
             ServiceResult validAuction = ValidateAuction(vm.Auction);
-            //Save Auction
-            //ServiceResult validFilePath = ValidateFilePath(vm.Files);
             ServiceResult validSeller = ValidateSeller(vm.Seller);
-            //Save File
             if (validAuction.Success && validSeller.Success)
             {
                 
@@ -68,9 +55,7 @@ namespace AnonymousBidder.Services
                 if (checkSellerEmailExist)
                 {
                     Auction addAuctionSuccess = SaveAuction(vm.Auction);
-                    // auction guid
                     Guid addUserSuccess = SaveSeller(vm.Seller, addAuctionSuccess.AuctionGUID);
-                    //bool addFileSuccess = SaveFile(vm.Files, addAuctionSuccess.AuctionGUID);
 
 
                     bool commitSuccess = Commit();
@@ -119,24 +104,16 @@ namespace AnonymousBidder.Services
         {
             ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
             Guid auctionGuid = seller.Auction.AuctionGUID;
-            //ABUser bidderQr = _abUserRepository.FindBy(x => x.ABUser_AuctionGUID == seller.ABUser_AuctionGUID).FirstOrDefault();
             return auctionGuid;
 
             if (seller != null)
             {
-                //user.Token = code;
                 Commit();
             }
 
         }
-
-        /// <summary>
-        /// Function to send email to seller to register and view his auction
-        /// </summary>
-        /// <param name="registrationPath"></param>
-        /// <param name="sellerGuid"></param>
-
-        /// <returns></returns>
+        
+        
         internal ServiceResult SendEmail(string registrationPath, Guid sellerGuid, string bidderRegistrationPath)
         {
             ABUser seller = _abUserRepository.FindBy(x => x.ABUserGUID == sellerGuid).FirstOrDefault();
@@ -168,7 +145,6 @@ namespace AnonymousBidder.Services
                     byte[] imageBytes = ms.ToArray();
 
                     string attachment = Convert.ToBase64String(imageBytes);
-                    //string htmlBody = "<img src='data:image/png;base64," + Convert.ToBase64String(imageBytes) + @"'/>";                                
 
                     string body = @"<p>Your auction has been listed.</p>
 
@@ -212,44 +188,32 @@ namespace AnonymousBidder.Services
         #region View Auction Item by seller
         internal AuctionItemViewModel ViewSellerAuction(string sellerEmail)
         {
-            //define all the needed Model to pass into ViewModel
-            AuctionModel postedAuctionModel = new AuctionModel();       // auction info
-            BidModel bidInfoModel = new BidModel();                     // bid details
-            ABUserModel bidderInfoModel = new ABUserModel();            // bidder user info (if any)
+            AuctionModel postedAuctionModel = new AuctionModel();       
+            BidModel bidInfoModel = new BidModel();                     
+            ABUserModel bidderInfoModel = new ABUserModel();            
 
-
-            //look for the seller's GUID
+            
             var sellerInfoObj = _abUserRepository.FindBy(x => x.Email == sellerEmail).FirstOrDefault();
 
-            //Look for the Auction based on seller's GUID
             var postedAuctionObj = _auctionRepository.FindBy(x => x.AuctionGUID == sellerInfoObj.ABUser_AuctionGUID).FirstOrDefault();
 
-            //Look for the Auction's bid information
             var bidInfoObj = _bidRepository.FindBy(x => x.Bid_AuctionGUID == postedAuctionObj.AuctionGUID).FirstOrDefault();
 
-            //try to look for Bid (if any)
             try
             {
-                //Look for auction's bidder info
                 var auctionBidderObj = _abUserRepository.FindBy(x => x.ABUserGUID == bidInfoObj.Bid_ABUserGUID && x.ABUser_AuctionGUID == bidInfoObj.Bid_AuctionGUID).FirstOrDefault();
 
-                //Storing Bidder Info into BidderModel
                 bidderInfoModel.Alias = auctionBidderObj.Alias;
 
-                //Storing Bid Info into BidModel
-                //BidModel bidInfoModel = new BidModel();
                 bidInfoModel.BidPlaced = bidInfoObj.BidPlaced;
             }
             catch
             {
-                //Storing Bidder Info into BidderModel
                 bidderInfoModel.Alias = "No Bidders";
-                //BidModel bidInfoModel = new BidModel();
                 bidInfoModel.BidPlaced = -1;
             }
 
 
-            //Storing Auction information into AuctionModel
             postedAuctionModel.AuctionGUID = postedAuctionObj.AuctionGUID;
             postedAuctionModel.ItemName = postedAuctionObj.ItemName;
             postedAuctionModel.StartingBid = postedAuctionObj.StartingBid;
@@ -262,7 +226,6 @@ namespace AnonymousBidder.Services
 
             if (postedAuctionObj != null)
             {
-                //if there are bids for this auction
                 if (bidInfoModel != null)
                 {
                     return new AuctionItemViewModel()
@@ -273,7 +236,6 @@ namespace AnonymousBidder.Services
                     };
 
                 }
-                //if there are NO bids for this auction
                 else
                 {
                     return new AuctionItemViewModel()
@@ -298,7 +260,6 @@ namespace AnonymousBidder.Services
         #region Save Auction Item Seller Shipping Status
         internal ServiceResult SaveSellerShippingStatus(Auction auctionItemVM)
         {
-            //auctionItemVM.auctionItem.AuctionGUID;
 
 
             _auctionRepository.Update(auctionItemVM);
@@ -316,11 +277,6 @@ namespace AnonymousBidder.Services
         #endregion
 
         #region Save
-        /// <summary>
-        /// Save Seller when admin creates auction
-        /// </summary>
-        /// <param name="files"></param>
-        /// <returns>true if success, false if fail</returns>
         private Guid SaveSeller(ABUserModel ABUserModel, Guid auctionGUID)
         {
             Guid sellerRoleGuid = _userRoleRepository.FindBy(x => x.UserRoleName == "SELLER").FirstOrDefault().UserRoleGUID;
@@ -338,23 +294,15 @@ namespace AnonymousBidder.Services
             }
             return Guid.Empty;
         }
-
-        /// <summary>
-        /// Save image file when admin creates auction
-        /// </summary>
-        /// <param name="files"></param>
-        /// <returns>true if success, false if fail</returns>
+        
         private bool SaveFile(IEnumerable<HttpPostedFileBase> files, Guid auctionGuid)
         {
-            // The Name of the Upload component is "files"
             if (files != null)
             {
                 HttpPostedFileBase file = files.First();
-                // Some browsers send file names with full path. This needs to be stripped.
                 var fileName = Path.GetFileName(file.FileName);
                 var physicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "/App_Data/Auction_Images", fileName);
 
-                // The files are not actually saved in this demo
                 file.SaveAs(physicalPath);
 
                 FilePath filePath = new FilePath()
@@ -367,16 +315,8 @@ namespace AnonymousBidder.Services
                 _filePathRepository.Add(filePath);
             }
 
-            // Return an empty string to signify success
             return true;
         }
-
-        //TODO: Complete Function
-        /// <summary>
-        /// Save auction details when admin creates auction
-        /// </summary>
-        /// <param name="auction"></param>
-        /// <returns>Returns newly created auction</returns>
         private Auction SaveAuction(AuctionModel auctionModel)
         {
             Auction auction = new Auction()
@@ -393,12 +333,7 @@ namespace AnonymousBidder.Services
             _auctionRepository.Add(auction);
             return auction;
         }
-
-        //TODO: Add logging function for exceptions
-        /// <summary>
-        /// This function will "officially" save all edits to the db since this function was last called
-        /// </summary>
-        /// <returns>Auction Item View</returns>
+        
         private bool Commit()
         {
             try
@@ -414,11 +349,6 @@ namespace AnonymousBidder.Services
         }
         #endregion
         #region Validate
-        /// <summary>
-        /// Validate if file path is in valid format before saving
-        /// </summary>
-        /// <param name="files"></param>
-        /// <returns>return true if success, false if fail</returns>
         private ServiceResult ValidateFilePath(IEnumerable<HttpPostedFileBase> files)
         {
             ServiceResult results = new ServiceResult
@@ -443,12 +373,7 @@ namespace AnonymousBidder.Services
             results.Success = (results.ErrorMessage == string.Empty || files.First() == null) ? true : false;
             return results;
         }
-
-        /// <summary>
-        /// Validate if auction is in valid format before saving
-        /// </summary>
-        /// <param name="files"></param>
-        /// <returns>return true if success, false if fail</returns>
+        
         private ServiceResult ValidateAuction(AuctionModel auction)
         {
             ServiceResult results = new ServiceResult
@@ -483,12 +408,7 @@ namespace AnonymousBidder.Services
             results.Success = results.ErrorMessage == string.Empty ? true : false;
             return results;
         }
-
-        /// <summary>
-        /// Check if seller's email is valid when admin creating auction
-        /// </summary>
-        /// <param name="ABUser"></param>
-        /// <returns></returns>
+        
         private ServiceResult ValidateSeller(ABUserModel abUserModel)
         {
             ServiceResult results = new ServiceResult

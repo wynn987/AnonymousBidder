@@ -5,3 +5,4 @@ anonymousbidderdb.database.windows.net
 AnonymousBidderDb
 0VB5w0oDuNUUOBewbl8hqU2UxmW9HemHqdKs0A8wL84=
 l7JNMeQuWITLoidlrS3H+I1cetUfFYzrTUyai7wXCUU=
+0VB5w0oDuNUUOBewbl8hqRWicdTFY+SzgnFhjPU1hx4=

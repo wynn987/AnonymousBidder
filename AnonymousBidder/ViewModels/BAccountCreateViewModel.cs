@@ -8,7 +8,6 @@ namespace AnonymousBidder.ViewModels
 {
     public class BAccountCreateViewModel
     {
-        //public ABUserModel ABUser { get; set; }
         public Guid auctionGUID { get; set; }
         
 

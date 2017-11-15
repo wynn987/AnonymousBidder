@@ -8,7 +8,6 @@ namespace AnonymousBidder.ViewModels
 {
     public class AccountCreateViewModel
     {
-        //public ABUserModel ABUser { get; set; }
         public Guid userGUID { get; set; }
         public string userToken { get; set; }
         

@@ -22,7 +22,6 @@ namespace AnonymousBidder.Controllers
             get { return (UserInfoModel)System.Web.HttpContext.Current.Session["UserLoginKey"]; }
         }
 
-        // GET: BidPost
         [BidderFilter]
         public ActionResult BidPost()
         {
@@ -64,6 +63,5 @@ namespace AnonymousBidder.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        // new methods here
     }
 }
