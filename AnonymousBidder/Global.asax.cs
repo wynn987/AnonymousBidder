@@ -31,5 +31,9 @@ namespace AnonymousBidder
         {
            
         }
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.AddHeader("x-frame-options", "DENY");
+        }
     }
 }

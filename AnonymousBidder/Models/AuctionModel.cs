@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,7 @@ namespace AnonymousBidder.Models
         public Guid AuctionGUID { get; set; }
         [DisplayName("Item Name")]
         public string ItemName { get; set; }
+        [Range(0.0, 99999999)]
         [DisplayName("Starting Bid")]
         public decimal StartingBid { get; set; }
         [DisplayName("Start Date and Time")]
