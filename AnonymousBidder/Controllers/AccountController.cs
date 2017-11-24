@@ -283,14 +283,22 @@ namespace AnonymousBidder.Controllers
             return Regex.IsMatch(emailAddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*
            [a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
+
+        private bool isValidPassword(string password)
+        {
+            return Regex.IsMatch(password, @"((?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{8,16})",RegexOptions.IgnoreCase);
+        }
+
         
         [HttpPost]
         private ActionResult DoRegister(AccountCreateViewModel model, Guid sellerGuid, string token, string returnUrl)
         {
+            
 
             bool isRegisterValidEmail = isValidEmail(model.EmailAddress);
+            bool isRegisterValidPassword = isValidPassword(model.Password);
 
-            if (isRegisterValidEmail)
+            if (isRegisterValidEmail && isRegisterValidPassword)
             {
                 ABUser currentUser = AccountService.GetUserByUserName(model.EmailAddress);
                 var currentUserGuid = currentUser.ABUserGUID;
@@ -327,7 +335,7 @@ namespace AnonymousBidder.Controllers
         [HttpPost]
         private ActionResult DoRegisterBidder(BAccountCreateViewModel model, Guid auctionGuid, string returnUrl)
         {
-
+            
             Guid tempCurrentAuctionGuid = auctionGuid;
             var hashedPassword = Utilities.CreatePasswordHash(model.Password, model.EmailAddress);
             var cleanedAlias = Utilities.RemoveSpecialCharacters(model.Alias);
@@ -339,6 +347,7 @@ namespace AnonymousBidder.Controllers
             vm.Money = model.Money;
 
             bool isRegisterValidEmail = isValidEmail(model.EmailAddress);
+            bool isRegisterValidPassword = isValidPassword(model.Password);
            
 
             bool checkAuctionExist = false;
@@ -353,7 +362,7 @@ namespace AnonymousBidder.Controllers
             
             ServiceResult result = new ServiceResult();
            
-            if (checkAuctionExist && checkEmailExist && isRegisterValidEmail)
+            if (checkAuctionExist && checkEmailExist && isRegisterValidEmail && isRegisterValidPassword)
             {
                 result = AccountService.AddBidderAccount(vm, tempCurrentAuctionGuid);
             }
